@@ -1,0 +1,9 @@
+Metadata-Version: 2.4
+Name: gpu-price-mining
+Version: 0.1.0
+Summary: Daily GPU price collectors for the sources in 算力价格爬虫数据整理.xlsx
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+Requires-Dist: beautifulsoup4==4.15.0
+Requires-Dist: openpyxl==3.1.5
+Requires-Dist: requests==2.34.2
