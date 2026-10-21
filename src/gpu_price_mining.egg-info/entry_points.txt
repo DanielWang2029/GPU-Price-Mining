@@ -1,2 +1,0 @@
-[console_scripts]
-gpu-prices = gpu_prices.collect:main
