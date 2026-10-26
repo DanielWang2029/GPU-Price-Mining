@@ -1,0 +1,94 @@
+﻿dtstatdate,source_name,gpu_model_code,price_type,region,cloud_type,price
+20261021,Kalshi,B200,N/A,N/A,N/A,7.68
+20261021,Kalshi,H200,N/A,N/A,N/A,5.68
+20261021,Kalshi,A100,N/A,N/A,N/A,0.95
+20261021,Ornn,B200,N/A,N/A,N/A,8.83
+20261021,Ornn,H200,N/A,N/A,N/A,6.16
+20261021,CoreWeave,GB200,On-Demand,North America,N/A,42.00
+20261021,CoreWeave,B200,On-Demand,North America,N/A,68.80
+20261021,CoreWeave,A100,On-Demand,North America,N/A,21.60
+20261021,SiliconData,B300,N/A,N/A,N/A,7.02
+20261021,SiliconData,B200,N/A,N/A,N/A,6.14
+20261021,SiliconData,H200,N/A,N/A,N/A,3.53
+20261021,Nebius,B300,N/A,N/A,N/A,9.50
+20261021,Nebius,B200,N/A,N/A,N/A,8.50
+20261021,Nebius,H200,N/A,N/A,N/A,5.40
+20261021,Nebius,B300,N/A,North America,N/A,7.39
+20261021,Nebius,B300,N/A,United Kingdom,N/A,3.80
+20261021,Nebius,B300,N/A,Europe,N/A,5.89
+20261021,Nebius,B200,N/A,North America,N/A,2.20
+20261021,Nebius,B200,N/A,Middle East,N/A,3.80
+20261021,Nebius,H200,N/A,Europe,N/A,4.79
+20261021,GetDeploying,B300,On-Demand,N/A,N/A,8.99
+20261021,GetDeploying,B300,Reserve,N/A,N/A,5.99
+20261021,GetDeploying,B300,Spot,N/A,N/A,5.68
+20261021,GetDeploying,B200,On-Demand,N/A,N/A,7.68
+20261021,GetDeploying,B200,Reserve,N/A,N/A,6.70
+20261021,GetDeploying,B200,Spot,N/A,N/A,4.52
+20261021,GetDeploying,H200,On-Demand,N/A,N/A,5.07
+20261021,GetDeploying,H200,Reserve,N/A,N/A,4.27
+20261021,GetDeploying,H200,Spot,N/A,N/A,3.57
+20261021,GetDeploying,A100,On-Demand,N/A,N/A,1.80
+20261021,GetDeploying,A100,Reserve,N/A,N/A,1.75
+20261021,GetDeploying,A100,Spot,N/A,N/A,1.19
+20261021,RunPod,B300,N/A,N/A,Secure,8.99
+20261021,RunPod,H200,N/A,N/A,Secure,5.29
+20261021,RunPod,B200,N/A,N/A,Secure,7.99
+20261021,RunPod,A100,N/A,N/A,Secure,1.79
+20261021,RunPod,B300,N/A,N/A,Community,6.94
+20261021,RunPod,H200,N/A,N/A,Community,3.59
+20261021,RunPod,B200,N/A,N/A,Community,5.98
+20261021,RunPod,A100,N/A,N/A,Community,1.19
+20261021,Together.ai,H200,On-Demand,N/A,N/A,5.99
+20261021,Together.ai,H200,Reserve,N/A,N/A,3.99
+20261021,Together.ai,H200,Spot,N/A,N/A,2.99
+20261021,Together.ai,B200,On-Demand,N/A,N/A,8.19
+20261021,Together.ai,B200,Reserve,N/A,N/A,6.79
+20261021,Together.ai,B200,Spot,N/A,N/A,4.09
+20261021,Together.ai,B300,On-Demand,N/A,N/A,9.99
+20261021,Together.ai,B300,Spot,N/A,N/A,4.99
+20261021,Daytona,B300,On-Demand,N/A,N/A,6.25
+20261021,Daytona,B300,Spot,N/A,N/A,4.08
+20261021,Daytona,B200,On-Demand,N/A,N/A,6.25
+20261021,Daytona,B200,Spot,N/A,N/A,3.59
+20261021,Daytona,H200,On-Demand,N/A,N/A,
+20261021,Daytona,H200,Spot,N/A,N/A,
+20261021,UpCloud,B300,On-Demand,N/A,N/A,7.99
+20261021,UpCloud,B300,Spot,N/A,N/A,5.99
+20261021,UpCloud,B200,On-Demand,N/A,N/A,6.05
+20261021,UpCloud,B200,Spot,N/A,N/A,4.23
+20261021,Gpu.ai,B300,N/A,N/A,N/A,8.99
+20261021,Gpu.ai,B200,N/A,N/A,N/A,7.99
+20261021,Gpu.ai,H200,N/A,N/A,N/A,5.29
+20261021,Gpu.ai,A100,N/A,N/A,N/A,1.07
+20261021,Spheron,B300,On-Demand,N/A,N/A,
+20261021,Spheron,B300,Spot,N/A,N/A,5.84
+20261021,Spheron,B200,On-Demand,N/A,N/A,11.06
+20261021,Spheron,B200,Spot,N/A,N/A,5.22
+20261021,Spheron,H200,On-Demand,N/A,N/A,4.80
+20261021,Spheron,H200,Spot,N/A,N/A,3.32
+20261021,Spheron,A100,On-Demand,N/A,N/A,1.43
+20261021,Spheron,A100,Spot,N/A,N/A,1.19
+20261021,Hyperbolic,B200,N/A,N/A,N/A,5.99
+20261021,Hyperbolic,H200,N/A,N/A,N/A,3.99
+20261021,DeepInfra,B300,N/A,N/A,N/A,5.89
+20261021,DeepInfra,B200,N/A,N/A,N/A,4.89
+20261021,DeepInfra,H200,N/A,N/A,N/A,3.49
+20261021,DeepInfra,A100,N/A,N/A,N/A,1.49
+20261021,Fireworks.ai,GB300,N/A,N/A,N/A,20.00
+20261021,Fireworks.ai,B300,N/A,N/A,N/A,15.00
+20261021,Fireworks.ai,B200,N/A,N/A,N/A,13.00
+20261021,Fireworks.ai,H200,N/A,N/A,N/A,8.00
+20261021,Astra Intellectus,GB300,Reserve,N/A,N/A,6.25
+20261021,Astra Intellectus,B300,Reserve,N/A,N/A,5.45
+20261021,Astra Intellectus,H200,Reserve,N/A,N/A,
+20261021,Verda,GB300,On-Demand,N/A,N/A,12.05
+20261021,Verda,GB300,Spot,N/A,N/A,6.026
+20261021,Verda,B300,On-Demand,N/A,N/A,10.48
+20261021,Verda,B300,Spot,N/A,N/A,5.240
+20261021,Verda,B200,On-Demand,N/A,N/A,8.190
+20261021,Verda,B200,Spot,N/A,N/A,4.095
+20261021,Verda,H200,On-Demand,N/A,N/A,5.772
+20261021,Verda,H200,Spot,N/A,N/A,2.886
+20261021,Verda,A100,On-Demand,N/A,N/A,2.086
+20261021,Verda,A100,Spot,N/A,N/A,1.043

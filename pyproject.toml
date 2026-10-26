@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=80"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gpu-price-mining"
+version = "0.1.0"
+description = "Daily GPU price collectors for the sources in 算力价格爬虫数据整理.xlsx"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "beautifulsoup4==4.15.0",
+  "openpyxl==3.1.5",
+  "requests==2.34.2",
+]
+
+[project.scripts]
+gpu-prices = "gpu_prices.collect:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+
+[tool.ruff]
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I"]
