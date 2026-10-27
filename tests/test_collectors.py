@@ -5,10 +5,17 @@ from pathlib import Path
 
 from gpu_prices.providers.astra_intellectus import parse_visible_offers
 from gpu_prices.providers.daytona import parse_panels
-from gpu_prices.providers.getdeploying import parse_history_prices
+from gpu_prices.providers.getdeploying import (
+    parse_dataset_prices,
+    parse_history_prices,
+)
+from gpu_prices.providers.hyperbolic import parse_marketplace
 from gpu_prices.providers.kalshi import pchip
 from gpu_prices.providers.silicondata import parse_index_page
-from gpu_prices.providers.upcloud import parse_public_page
+from gpu_prices.providers.upcloud import (
+    parse_getdeploying_mirror,
+    parse_public_page,
+)
 from gpu_prices.workbook import load_source_rows
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -65,6 +72,19 @@ class ParserTests(unittest.TestCase):
         self.assertEqual(str(values["Reserve"][0]), "5.72")
         self.assertEqual(str(values["Spot"][0]), "5.49")
 
+    def test_getdeploying_dataset_fills_client_rendered_chart(self) -> None:
+        csv_text = """gpu_slug,date,billing_type,reservation_months,min_price,max_price,median_price,provider_median_price,provider_count,offering_count
+nvidia-b200,2026-10-26,ON_DEMAND,,3.75,12,6.62,7.99,20,40
+nvidia-b200,2026-10-26,SPOT,,3.59,8,4.77,4.38,8,12
+nvidia-b200,2026-10-26,RESERVATION,6,3.99,8,6.12,6.13,2,2
+nvidia-b200,2026-10-26,RESERVATION,12,3.99,8,6.67,6.67,4,4
+"""
+        values = parse_dataset_prices(csv_text)
+        self.assertEqual(str(values["On-Demand"][0]), "7.99")
+        self.assertEqual(str(values["Spot"][0]), "4.38")
+        self.assertEqual(str(values["Reserve"][0]), "6.67")
+        self.assertIn("12 months", values["Reserve"][2])
+
     def test_upcloud_reads_one_gpu_usd_rows(self) -> None:
         markdown = """
         | GPU | CPU cores | RAM | Spot Price | Price |
@@ -75,6 +95,32 @@ class ParserTests(unittest.TestCase):
         values = parse_public_page(markdown)
         self.assertEqual(str(values[("B200", "Spot")][0]), "4.23")
         self.assertEqual(str(values[("B300", "On-Demand")][0]), "7.99")
+
+    def test_upcloud_reads_scoped_mirror_summary(self) -> None:
+        markdown = """
+        ### [UpCloud](https://getdeploying.com/upcloud)
+        On-Demand from $6.05
+        Spot from $4.23
+        ### [Another provider](https://example.com)
+        On-Demand from $1.00
+        """
+        values = parse_getdeploying_mirror(markdown, "B200")
+        self.assertEqual(str(values[("B200", "On-Demand")][0]), "6.05")
+        self.assertEqual(str(values[("B200", "Spot")][0]), "4.23")
+
+    def test_hyperbolic_reads_semantic_price_table(self) -> None:
+        html = """
+        <table>
+          <thead><tr><th>GPU Type</th><th>Starting From (per GPU hour)</th></tr></thead>
+          <tbody>
+            <tr><td>Nvidia H200</td><td>$3.99 / HR</td></tr>
+            <tr><td>Nvidia B200</td><td>$5.99 / HR</td></tr>
+          </tbody>
+        </table>
+        """
+        values = parse_marketplace(html)
+        self.assertEqual(str(values["H200"][0]), "3.99")
+        self.assertEqual(str(values["B200"][0]), "5.99")
 
     def test_astra_rejects_all_viewport_hidden_table(self) -> None:
         html = """
