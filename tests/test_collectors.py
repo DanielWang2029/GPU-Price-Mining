@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import unittest
+from decimal import Decimal
 from pathlib import Path
 
 from gpu_prices.providers.astra_intellectus import parse_visible_offers
@@ -9,6 +10,7 @@ from gpu_prices.providers.daytona import (
     parse_panels,
 )
 from gpu_prices.providers.getdeploying import (
+    chart_money_2,
     parse_dataset_prices,
     parse_history_prices,
     select_reservation_chart_row,
@@ -91,6 +93,10 @@ class ParserTests(unittest.TestCase):
         self.assertEqual(str(values["On-Demand"][0]), "8.99")
         self.assertEqual(str(values["Reserve"][0]), "5.72")
         self.assertEqual(str(values["Spot"][0]), "5.49")
+
+    def test_getdeploying_matches_javascript_display_rounding(self) -> None:
+        self.assertEqual(chart_money_2("8.625"), Decimal("8.63"))
+        self.assertEqual(chart_money_2("5.265"), Decimal("5.26"))
 
     def test_getdeploying_dataset_fills_client_rendered_chart(self) -> None:
         csv_text = """gpu_slug,date,billing_type,reservation_months,min_price,max_price,median_price,provider_median_price,provider_count,offering_count

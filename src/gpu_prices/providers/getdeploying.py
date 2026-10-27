@@ -3,7 +3,7 @@ from __future__ import annotations
 import csv
 import re
 from datetime import datetime
-from decimal import Decimal
+from decimal import ROUND_HALF_UP, Decimal
 
 from bs4 import BeautifulSoup
 
@@ -22,7 +22,10 @@ LABELS = {
 
 def chart_money_2(value: object) -> Decimal:
     """Match the chart's JavaScript toFixed(2) display rounding."""
-    return Decimal(f"{float(value):.2f}")
+    return Decimal.from_float(float(value)).quantize(
+        Decimal("0.01"),
+        rounding=ROUND_HALF_UP,
+    )
 
 
 def select_reservation_chart_row(
