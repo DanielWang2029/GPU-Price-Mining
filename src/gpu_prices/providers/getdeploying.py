@@ -3,11 +3,12 @@ from __future__ import annotations
 import csv
 import re
 from datetime import datetime
+from decimal import ROUND_HALF_UP, Decimal
 
 from bs4 import BeautifulSoup
 
 from gpu_prices.http import FetchError, HttpClient
-from gpu_prices.models import Observation, SourceRow, money_2, ok, unavailable
+from gpu_prices.models import Observation, SourceRow, ok, unavailable
 from gpu_prices.providers.common import parse_price, run_provider_cli
 
 URL_TEMPLATE = "https://getdeploying.com/gpus/nvidia-{model}"
@@ -17,6 +18,36 @@ LABELS = {
     "Reserve": r"Reserved",
     "Spot": r"Spot",
 }
+
+
+def chart_money_2(value: object) -> Decimal:
+    """Match the chart's JavaScript toFixed(2) display rounding."""
+    return Decimal.from_float(float(value)).quantize(
+        Decimal("0.01"),
+        rounding=ROUND_HALF_UP,
+    )
+
+
+def select_reservation_chart_row(
+    rows: list[dict[str, str]],
+) -> dict[str, str] | None:
+    candidates = [
+        row
+        for row in rows
+        if row["billing_type"] == "RESERVATION"
+        and row["provider_median_price"]
+        and int(row["offering_count"]) > 0
+    ]
+    if not candidates:
+        return None
+    candidates.sort(key=lambda row: Decimal(row["provider_median_price"]))
+    total_weight = sum(int(row["offering_count"]) for row in candidates)
+    cumulative = 0
+    for row in candidates:
+        cumulative += int(row["offering_count"])
+        if 2 * cumulative >= total_weight:
+            return row
+    raise AssertionError("Weighted reservation median selection failed")
 
 
 def parse_history_prices(content: str) -> dict[str, tuple[object, str]]:
@@ -59,34 +90,22 @@ def parse_dataset_prices(
             selected = candidates[0]
             raw = selected["provider_median_price"]
             result[price_type] = (
-                money_2(raw),
+                chart_money_2(raw),
                 raw,
                 f"Public weekly dataset dated {latest_date}.",
             )
 
-    reservations = [
-        row
-        for row in latest
-        if row["billing_type"] == "RESERVATION"
-        and row["reservation_months"]
-        and row["provider_median_price"]
-    ]
-    if reservations:
-        selected = max(
-            reservations,
-            key=lambda row: (
-                int(row["provider_count"]),
-                int(row["offering_count"]),
-            ),
-        )
+    selected = select_reservation_chart_row(latest)
+    if selected:
         raw = selected["provider_median_price"]
-        months = selected["reservation_months"]
+        months = selected["reservation_months"] or "unspecified"
+        term = f"{months} months" if months != "unspecified" else months
         result["Reserve"] = (
-            money_2(raw),
-            f"{raw} ({months} months)",
+            chart_money_2(raw),
+            f"{raw} ({term})",
             (
-                f"Public weekly dataset dated {latest_date}; generic Reserve maps "
-                f"to the best-covered term ({months} months)."
+                f"Public weekly dataset dated {latest_date}; generic Reserve is "
+                f"the offering-count-weighted median ({term})."
             ),
         )
     return result

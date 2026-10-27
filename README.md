@@ -83,6 +83,39 @@ The audit file records when this fallback was used. It never sends API tokens to
 the proxy. The same setting can be enabled with
 `GPU_PRICES_ALLOW_READ_PROXY=true`.
 
+## Historical backfill
+
+`gpu_prices.backfill` creates one row per workbook price and calendar date.
+
+```bash
+python3 -m gpu_prices.backfill \
+  --start-date 20261001 \
+  --end-date 20261026 \
+  --current-csv output/gpu_prices_20261026.csv \
+  --allow-read-proxy
+```
+
+The output defaults to
+`output/gpu_prices_history_20261001_20261026.csv`. Historical sources are:
+
+- Kalshi's realized history plus its currently published forward curve,
+  evaluated daily at 20:00 UTC.
+- Ornn's settled daily index history.
+- Silicon Data's explicit daily chart points.
+- Nebius spot-price 15-minute history, sampled at the DAG's 9:00 PM
+  `America/Los_Angeles` cutoff.
+- GetDeploying's weekly chart dataset, carried forward through each week. Its
+  generic Reserve value is the offering-count-weighted median used by the
+  online chart.
+
+All other rows have no published curve and therefore carry the end-date price
+back across the requested range. The backfill fails rather than inventing a
+value if any curve-based source omits a requested date.
+
+Kalshi does not expose archived point-in-time forward-curve snapshots. Its past
+dates can be evaluated on the curve published today, but the exact curve that
+users saw on a prior day cannot be reconstructed retroactively.
+
 ## Airflow
 
 `dags/gpu_prices_daily.py` runs all suppliers every day at 9:00 PM in

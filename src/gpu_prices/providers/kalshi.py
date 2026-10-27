@@ -34,11 +34,11 @@ def _get_json(
             pass
 
     last_error: Exception | None = None
-    for attempt in range(4):
+    for attempt in range(6):
         separator = "&" if "?" in url else "?"
         candidate = (
             url
-            if attempt == 0
+            if attempt < 3
             else f"{url}{separator}collector_retry={int(time.time())}-{attempt}"
         )
         try:
@@ -49,22 +49,13 @@ def _get_json(
             return payload, proxy_url, True
         except (FetchError, json.JSONDecodeError, ValueError) as exc:
             last_error = exc
-            if attempt < 3:
-                time.sleep(attempt + 1)
+            if attempt < 5:
+                time.sleep(min(attempt + 1, 3))
     raise ValueError(f"Kalshi JSON remained unavailable at {url}: {last_error}")
 
 
 def _same_sign(left: float, right: float) -> bool:
     return left != 0 and right != 0 and (left > 0) == (right > 0)
-
-
-def _endpoint_slope(h0: float, h1: float, d0: float, d1: float) -> float:
-    slope = ((2 * h0 + h1) * d0 - h0 * d1) / (h0 + h1)
-    if not _same_sign(slope, d0):
-        return 0.0
-    if not _same_sign(d0, d1) and abs(slope) > abs(3 * d0):
-        return 3 * d0
-    return slope
 
 
 def pchip(xs: list[float], ys: list[float], target: float) -> float:
@@ -78,7 +69,7 @@ def pchip(xs: list[float], ys: list[float], target: float) -> float:
     if len(xs) == 2:
         slopes = [deltas[0], deltas[0]]
     else:
-        slopes = [_endpoint_slope(hs[0], hs[1], deltas[0], deltas[1])]
+        slopes = [deltas[0]]
         for index in range(1, len(xs) - 1):
             before = deltas[index - 1]
             after = deltas[index]
@@ -90,7 +81,7 @@ def pchip(xs: list[float], ys: list[float], target: float) -> float:
             slopes.append(
                 (weight_1 + weight_2) / (weight_1 / before + weight_2 / after)
             )
-        slopes.append(_endpoint_slope(hs[-1], hs[-2], deltas[-1], deltas[-2]))
+        slopes.append(deltas[-1])
 
     index = max(0, min(bisect.bisect_right(xs, target) - 1, len(xs) - 2))
     width = hs[index]
@@ -123,18 +114,24 @@ def curve_value(
     spot_day = datetime.fromtimestamp(spot_timestamp, timezone.utc).date()
     points_by_day[spot_day] = (spot_timestamp, float(spot["value"]))
 
-    knots = list(points_by_day.values())
+    forward = list(curve.get("forward", []))
+    first_forward = min(
+        (float(point["expiry_ts"]) for point in forward),
+        default=float("inf"),
+    )
+    knots = [point for point in points_by_day.values() if point[0] < first_forward]
     for contract in ("weekly", "monthly"):
         knots.extend(
             (float(point["expiry_ts"]), float(point["price"]))
-            for point in curve.get("forward", [])
+            for point in forward
             if point.get("contract") == contract
         )
     deduplicated = {timestamp: value for timestamp, value in sorted(knots)}
     ordered = sorted(deduplicated.items())
     xs = [item[0] for item in ordered]
     ys = [math.log(item[1]) for item in ordered]
-    return math.exp(pchip(xs, ys, target.timestamp()))
+    target_timestamp = max(xs[0], min(target.timestamp(), xs[-1]))
+    return math.exp(pchip(xs, ys, target_timestamp))
 
 
 def collect(

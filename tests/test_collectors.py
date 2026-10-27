@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import unittest
+from decimal import Decimal
 from pathlib import Path
 
 from gpu_prices.providers.astra_intellectus import parse_visible_offers
@@ -9,12 +10,17 @@ from gpu_prices.providers.daytona import (
     parse_panels,
 )
 from gpu_prices.providers.getdeploying import (
+    chart_money_2,
     parse_dataset_prices,
     parse_history_prices,
+    select_reservation_chart_row,
 )
 from gpu_prices.providers.hyperbolic import parse_marketplace
 from gpu_prices.providers.kalshi import pchip
-from gpu_prices.providers.silicondata import parse_index_page
+from gpu_prices.providers.silicondata import (
+    parse_index_history,
+    parse_index_page,
+)
 from gpu_prices.providers.upcloud import (
     parse_getdeploying_mirror,
     parse_public_page,
@@ -63,6 +69,16 @@ class ParserTests(unittest.TestCase):
         self.assertEqual(raw, "7.02")
         self.assertEqual(effective_at, "As of Oct 20, 2026")
 
+    def test_silicondata_reads_explicit_daily_points(self) -> None:
+        html = (
+            '<script>{"rawValue":"7.02","points":['
+            '{"date":"2026-10-01","price":6.78},'
+            '{"date":"2026-10-02","price":6.80}]}</script>'
+        )
+        values = parse_index_history(html)
+        self.assertEqual(str(values["2026-10-01"]), "6.78")
+        self.assertEqual(str(values["2026-10-02"]), "6.8")
+
     def test_getdeploying_reads_only_price_history_summary(self) -> None:
         text = """
         ## Price history
@@ -78,6 +94,10 @@ class ParserTests(unittest.TestCase):
         self.assertEqual(str(values["Reserve"][0]), "5.72")
         self.assertEqual(str(values["Spot"][0]), "5.49")
 
+    def test_getdeploying_matches_javascript_display_rounding(self) -> None:
+        self.assertEqual(chart_money_2("8.625"), Decimal("8.63"))
+        self.assertEqual(chart_money_2("5.265"), Decimal("5.26"))
+
     def test_getdeploying_dataset_fills_client_rendered_chart(self) -> None:
         csv_text = """gpu_slug,date,billing_type,reservation_months,min_price,max_price,median_price,provider_median_price,provider_count,offering_count
 nvidia-b200,2026-10-26,ON_DEMAND,,3.75,12,6.62,7.99,20,40
@@ -90,6 +110,29 @@ nvidia-b200,2026-10-26,RESERVATION,12,3.99,8,6.67,6.67,4,4
         self.assertEqual(str(values["Spot"][0]), "4.38")
         self.assertEqual(str(values["Reserve"][0]), "6.67")
         self.assertIn("12 months", values["Reserve"][2])
+
+    def test_getdeploying_reserve_uses_weighted_chart_median(self) -> None:
+        rows = [
+            {
+                "billing_type": "RESERVATION",
+                "reservation_months": months,
+                "provider_median_price": price,
+                "offering_count": count,
+            }
+            for months, price, count in (
+                ("", "4.25", "1"),
+                ("60", "4.53", "1"),
+                ("36", "5.00", "5"),
+                ("6", "5.7531", "4"),
+                ("24", "5.99", "5"),
+                ("1", "6.0031", "4"),
+                ("12", "6.49", "6"),
+            )
+        ]
+        selected = select_reservation_chart_row(rows)
+        self.assertIsNotNone(selected)
+        self.assertEqual(selected["reservation_months"], "24")
+        self.assertEqual(selected["provider_median_price"], "5.99")
 
     def test_upcloud_reads_one_gpu_usd_rows(self) -> None:
         markdown = """
