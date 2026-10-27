@@ -58,7 +58,7 @@ present on several A100 and Community rows.
 | GetDeploying | Latest weekly provider-median values in the page's Price history summary. |
 | RunPod | Public GraphQL catalog; A100 means A100 80GB PCIe, matching the screenshot. |
 | Together.ai | GPU cluster table; Reserve means the marked 91–180 day column and Spot means Preemptible. |
-| Daytona | Current on-demand/preemptible panels. A removed model is emitted as unavailable. |
+| Daytona | Complete on-demand/preemptible panel, cross-checked against GetDeploying's provider-specific listing because Daytona's server-rendered B300 cell currently duplicates the B200 price. |
 | UpCloud | Authenticated catalog when `UPCLOUD_TOKEN` is set; otherwise the public global USD one-GPU table. |
 | Gpu.ai | Documented public catalog; lowest available secure on-demand per-GPU price. |
 | Spheron | Public offer feed; lowest available Dedicated or Spot offer normalized by GPU count. |
