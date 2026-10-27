@@ -34,11 +34,11 @@ def _get_json(
             pass
 
     last_error: Exception | None = None
-    for attempt in range(4):
+    for attempt in range(6):
         separator = "&" if "?" in url else "?"
         candidate = (
             url
-            if attempt == 0
+            if attempt < 3
             else f"{url}{separator}collector_retry={int(time.time())}-{attempt}"
         )
         try:
@@ -49,8 +49,8 @@ def _get_json(
             return payload, proxy_url, True
         except (FetchError, json.JSONDecodeError, ValueError) as exc:
             last_error = exc
-            if attempt < 3:
-                time.sleep(attempt + 1)
+            if attempt < 5:
+                time.sleep(min(attempt + 1, 3))
     raise ValueError(f"Kalshi JSON remained unavailable at {url}: {last_error}")
 
 
