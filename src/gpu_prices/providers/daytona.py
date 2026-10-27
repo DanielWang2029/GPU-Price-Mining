@@ -1,14 +1,16 @@
 from __future__ import annotations
 
+import re
 from datetime import datetime
 
 from bs4 import BeautifulSoup
 
-from gpu_prices.http import HttpClient
-from gpu_prices.models import Observation, SourceRow, ok, unavailable
+from gpu_prices.http import FetchError, HttpClient
+from gpu_prices.models import Observation, SourceRow, ok
 from gpu_prices.providers.common import parse_price, run_provider_cli, text
 
 URL = "https://www.daytona.io/pricing"
+MIRROR_URL_TEMPLATE = "https://getdeploying.com/gpus/nvidia-{model}"
 PANEL_LABELS = {
     "On-Demand": "On-demand GPU prices per hour",
     "Spot": "Preemptible GPU prices per hour",
@@ -27,6 +29,13 @@ def parse_panels(html: str) -> dict[str, dict[str, str]]:
                 price = container.select_one('[data-framer-name="GPU Price"]')
                 if name is not None and price is not None:
                     values[text(name)] = text(price)
+            for row in panel.select('[data-framer-name="Range"]'):
+                match = re.fullmatch(
+                    r"(Nvidia [A-Za-z0-9 ]+)\s+(\$[0-9.]+/h)",
+                    text(row),
+                )
+                if match:
+                    values[match.group(1)] = match.group(2)
             if values:
                 copies.append(values)
         if not copies:
@@ -37,37 +46,79 @@ def parse_panels(html: str) -> dict[str, dict[str, str]]:
     return result
 
 
+def parse_getdeploying_daytona(
+    content: str,
+    model: str,
+) -> dict[str, str]:
+    start = content.find("### [Daytona]")
+    if start < 0:
+        raise ValueError(f"GetDeploying omitted its Daytona {model} section")
+    end = content.find("\n### [", start + 1)
+    section = content[start : end if end >= 0 else None]
+    result: dict[str, str] = {}
+    for price_type, label in (("On-Demand", "On-Demand"), ("Spot", "Spot")):
+        match = re.search(
+            rf"{label}\s+from\s+\$([0-9.]+)",
+            section,
+            re.IGNORECASE,
+        )
+        if not match:
+            raise ValueError(
+                f"GetDeploying Daytona section omitted {model} {price_type}"
+            )
+        result[price_type] = match.group(1)
+    return result
+
+
+def _fetch_mirror(
+    client: HttpClient,
+    model: str,
+) -> tuple[dict[str, str], str]:
+    url = MIRROR_URL_TEMPLATE.format(model=model.lower())
+    try:
+        content = client.get_text(url)
+        source_url = url
+    except FetchError:
+        content, source_url = client.read_proxy_text(url)
+    return parse_getdeploying_daytona(content, model), source_url
+
+
 def collect(
     rows: list[SourceRow], client: HttpClient, now: datetime
 ) -> list[Observation]:
     panels = parse_panels(client.get_text(URL))
+    mirrors = {
+        model: _fetch_mirror(client, model)
+        for model in sorted({row.gpu_model_code for row in rows})
+    }
     observations: list[Observation] = []
     for row in rows:
-        raw = panels[row.price_type].get(f"Nvidia {row.gpu_model_code}", "")
-        if not raw:
-            observations.append(
-                unavailable(
-                    row,
-                    fetched_at=now,
-                    source_url=URL,
-                    note=(
-                        f"Daytona's current {row.price_type} panel does not list "
-                        f"{row.gpu_model_code}; no stale price was carried forward."
-                    ),
-                )
+        direct_raw = panels[row.price_type].get(f"Nvidia {row.gpu_model_code}", "")
+        mirror, mirror_source = mirrors[row.gpu_model_code]
+        mirror_raw = mirror[row.price_type]
+        direct_matches = bool(
+            direct_raw and parse_price(direct_raw) == parse_price(mirror_raw)
+        )
+        raw = direct_raw if direct_matches else mirror_raw
+        source_url = URL if direct_matches else mirror_source
+        note = (
+            "Published GPU-only rate in USD per GPU-hour; Spot maps to Daytona's "
+            "Preemptible tier. Cross-checked against GetDeploying's provider-specific "
+            "Daytona listing."
+        )
+        if not direct_matches:
+            note += (
+                f" Mirror value used because Daytona's server-rendered cell was "
+                f"{direct_raw or 'missing'}."
             )
-            continue
         observations.append(
             ok(
                 row,
                 parse_price(raw),
                 fetched_at=now,
-                source_url=URL,
+                source_url=source_url,
                 raw_value=raw,
-                note=(
-                    "Published GPU-only rate in USD per GPU-hour; Spot maps to "
-                    "Daytona's Preemptible tier."
-                ),
+                note=note,
             )
         )
     return observations

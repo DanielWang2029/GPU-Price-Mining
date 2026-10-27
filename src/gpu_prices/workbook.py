@@ -102,13 +102,13 @@ def write_outputs(
     audit_path = output_dir / f"gpu_prices_{run_date}_audit.csv"
 
     with csv_path.open("w", newline="", encoding="utf-8-sig") as handle:
-        writer = csv.writer(handle)
+        writer = csv.writer(handle, lineterminator="\n")
         writer.writerow(OUTPUT_HEADERS)
         for observation in ordered:
             writer.writerow(_data_row(run_date, observation))
 
     with audit_path.open("w", newline="", encoding="utf-8-sig") as handle:
-        writer = csv.writer(handle)
+        writer = csv.writer(handle, lineterminator="\n")
         writer.writerow(AUDIT_HEADERS)
         for observation in ordered:
             writer.writerow(
