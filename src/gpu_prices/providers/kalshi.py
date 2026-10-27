@@ -3,6 +3,7 @@ from __future__ import annotations
 import bisect
 import json
 import math
+import time
 from datetime import datetime, timezone
 
 from gpu_prices.http import FetchError, HttpClient
@@ -19,16 +20,38 @@ def _proxied_json(text: str) -> object:
     return json.loads(text.split(marker, 1)[1].strip())
 
 
-def _get_json(client: HttpClient, url: str) -> tuple[dict[str, object], str, bool]:
-    try:
-        payload = client.get_json(url, headers={"Accept": "application/json"})
-        return payload, url, False
-    except FetchError:
-        text, proxy_url = client.read_proxy_text(url)
-        payload = _proxied_json(text)
-        if not isinstance(payload, dict):
-            raise ValueError(f"Unexpected Kalshi payload from {url}")
-        return payload, proxy_url, True
+def _get_json(
+    client: HttpClient,
+    url: str,
+    *,
+    skip_direct: bool = False,
+) -> tuple[dict[str, object], str, bool]:
+    if not skip_direct:
+        try:
+            payload = client.get_json(url, headers={"Accept": "application/json"})
+            return payload, url, False
+        except FetchError:
+            pass
+
+    last_error: Exception | None = None
+    for attempt in range(4):
+        separator = "&" if "?" in url else "?"
+        candidate = (
+            url
+            if attempt == 0
+            else f"{url}{separator}collector_retry={int(time.time())}-{attempt}"
+        )
+        try:
+            text, proxy_url = client.read_proxy_text(candidate)
+            payload = _proxied_json(text)
+            if not isinstance(payload, dict):
+                raise ValueError(f"Unexpected Kalshi payload from {url}")
+            return payload, proxy_url, True
+        except (FetchError, json.JSONDecodeError, ValueError) as exc:
+            last_error = exc
+            if attempt < 3:
+                time.sleep(attempt + 1)
+    raise ValueError(f"Kalshi JSON remained unavailable at {url}: {last_error}")
 
 
 def _same_sign(left: float, right: float) -> bool:
@@ -118,12 +141,19 @@ def collect(
     rows: list[SourceRow], client: HttpClient, now: datetime
 ) -> list[Observation]:
     observations: list[Observation] = []
+    prefer_proxy = False
     for row in rows:
         model = row.gpu_model_code
         curve_url = f"{BASE_URL}/{model}"
         history_url = f"{curve_url}/history"
-        curve, curve_source, curve_proxied = _get_json(client, curve_url)
-        history, _, history_proxied = _get_json(client, history_url)
+        curve, curve_source, curve_proxied = _get_json(
+            client, curve_url, skip_direct=prefer_proxy
+        )
+        prefer_proxy = prefer_proxy or curve_proxied
+        history, _, history_proxied = _get_json(
+            client, history_url, skip_direct=prefer_proxy
+        )
+        prefer_proxy = prefer_proxy or history_proxied
         value = curve_value(curve, history, now)
         note = "Forward-curve tooltip value interpolated with log-PCHIP at collection time."
         if curve_proxied or history_proxied:

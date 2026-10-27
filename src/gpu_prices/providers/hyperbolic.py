@@ -13,22 +13,34 @@ URL = "https://www.hyperbolic.ai/marketplace"
 
 def parse_marketplace(html: str) -> dict[str, tuple[object, str]]:
     soup = BeautifulSoup(html, "html.parser")
-    wrapper = next(
+    container = next(
         (
             candidate
-            for candidate in soup.select("div.d-list-wrapper")
+            for candidate in soup.select("table, div.d-list-wrapper")
             if "Starting From (per GPU hour)" in text(candidate)
         ),
         None,
     )
-    if wrapper is None:
+    if container is None:
         raise ValueError("Hyperbolic marketplace starting-price table was not found")
     result: dict[str, tuple[object, str]] = {}
-    for row in wrapper.select("div.row.item"):
-        cells = [text(cell) for cell in row.select("p")]
+    if container.name == "table":
+        parsed_rows = [
+            [text(cell) for cell in row.find_all(["th", "td"])]
+            for row in container.select("tr")
+        ]
+    else:
+        parsed_rows = [
+            [text(cell) for cell in row.select("p")]
+            for row in container.select("div.row.item")
+        ]
+    for cells in parsed_rows:
         if len(cells) >= 2:
             model = cells[0].removeprefix("Nvidia ").strip()
-            result[model] = (parse_price(cells[1]), cells[1])
+            try:
+                result[model] = (parse_price(cells[1]), cells[1])
+            except ValueError:
+                continue
     return result
 
 

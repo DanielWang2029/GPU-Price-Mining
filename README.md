@@ -85,18 +85,25 @@ the proxy. The same setting can be enabled with
 
 ## Airflow
 
-Scheduling is intentionally not included. A task can invoke:
+`dags/gpu_prices_daily.py` runs all suppliers every day at 9:00 PM in
+`America/Los_Angeles`. The DAG uses the local data-interval end for
+`dtstatdate`, so an Airflow scheduler running in UTC does not write the next
+day's date early.
 
-```bash
-python3 -m gpu_prices.collect \
-  --workbook /path/to/算力价格爬虫数据整理.xlsx \
-  --output-dir /path/to/daily-output \
-  --run-date '{{ ds_nodash }}' \
-  --strict
-```
+Install this project and place or symlink the DAG into the Airflow DAG folder.
+The scheduler and worker must see the same project, workbook, and output paths.
+These environment variables can override the repository defaults:
 
-Persist the audit file with the database load so source changes and unavailable
-products remain distinguishable from valid numeric prices.
+- `GPU_PRICE_PROJECT_ROOT`: project checkout used as the task working directory.
+- `GPU_PRICE_WORKBOOK`: absolute path to the source workbook.
+- `GPU_PRICE_OUTPUT_DIR`: directory for the daily CSV, XLSX, and audit files.
+- `GPU_PRICES_ALLOW_READ_PROXY`: defaults to `true` in the DAG because three
+  public sources commonly block datacenter IPs.
+
+The task retries twice, prevents overlapping DAG runs, disables historical
+catchup, and uses `--strict` so collection errors fail the Airflow task.
+Unavailable products remain valid null prices. Persist the audit file with the
+database load so unavailable products remain distinguishable from failures.
 
 ## Tests
 

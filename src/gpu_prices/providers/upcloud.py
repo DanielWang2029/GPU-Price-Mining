@@ -13,6 +13,7 @@ from gpu_prices.providers.common import parse_price, run_provider_cli, text
 
 PAGE_URL = "https://upcloud.com/global/products/gpu-servers/"
 API_URL = "https://api.upcloud.com/1.3/price"
+MIRROR_URL_TEMPLATE = "https://getdeploying.com/gpus/nvidia-{model}"
 PLAN_NAMES = {
     ("B200", "On-Demand"): "GPU-24xCPU-240GB-1xB200",
     ("B200", "Spot"): "GPU-SPOT-24xCPU-240GB-1xB200",
@@ -60,6 +61,31 @@ def parse_public_page(content: str) -> dict[tuple[str, str], tuple[object, str]]
     return result
 
 
+def parse_getdeploying_mirror(
+    content: str,
+    model: str,
+) -> dict[tuple[str, str], tuple[object, str]]:
+    start = content.find("### [UpCloud]")
+    if start < 0:
+        raise ValueError(f"GetDeploying omitted its UpCloud {model} section")
+    end = content.find("\n### [", start + 1)
+    section = content[start : end if end >= 0 else None]
+    result: dict[tuple[str, str], tuple[object, str]] = {}
+    for price_type, label in (("On-Demand", "On-Demand"), ("Spot", "Spot")):
+        match = re.search(
+            rf"{label}\s+from\s+\$([0-9.]+)",
+            section,
+            re.IGNORECASE,
+        )
+        if not match:
+            raise ValueError(
+                f"GetDeploying UpCloud section omitted {model} {price_type}"
+            )
+        raw = match.group(1)
+        result[(model, price_type)] = (parse_price(raw), raw)
+    return result
+
+
 def fetch_api_prices(
     client: HttpClient, token: str
 ) -> dict[tuple[str, str], tuple[object, str]]:
@@ -89,6 +115,7 @@ def collect(
 ) -> list[Observation]:
     token = os.getenv("UPCLOUD_TOKEN")
     proxied = False
+    mirror_sources: dict[str, str] = {}
     if token:
         prices = fetch_api_prices(client, token)
         source_url = API_URL
@@ -100,20 +127,33 @@ def collect(
         except FetchError:
             content, source_url = client.read_proxy_text(PAGE_URL)
             proxied = True
-        prices = parse_public_page(content)
-        source_note = "Published global USD one-GPU server-hour price."
+        try:
+            prices = parse_public_page(content)
+            source_note = "Published global USD one-GPU server-hour price."
+        except ValueError:
+            prices = {}
+            for model in ("B200", "B300"):
+                mirror_url = MIRROR_URL_TEMPLATE.format(model=model.lower())
+                mirror, mirror_source = client.read_proxy_text(mirror_url)
+                prices.update(parse_getdeploying_mirror(mirror, model))
+                mirror_sources[model] = mirror_source
+            source_note = (
+                "Published UpCloud USD server-hour price mirrored by GetDeploying; "
+                "the UpCloud public page no longer server-renders these tabs."
+            )
     if proxied:
         source_note += " Direct access was blocked; public read proxy used."
 
     observations: list[Observation] = []
     for row in rows:
         value, raw = prices[(row.gpu_model_code, row.price_type)]
+        row_source = mirror_sources.get(row.gpu_model_code, source_url)
         observations.append(
             ok(
                 row,
                 value,
                 fetched_at=now,
-                source_url=source_url,
+                source_url=row_source,
                 raw_value=raw,
                 note=source_note,
             )
