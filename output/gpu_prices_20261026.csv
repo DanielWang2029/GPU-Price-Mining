@@ -16,9 +16,9 @@
 20261026,Nebius,B300,N/A,North America,N/A,0.99
 20261026,Nebius,B300,N/A,United Kingdom,N/A,5.50
 20261026,Nebius,B300,N/A,Europe,N/A,9.49
-20261026,Nebius,B200,N/A,North America,N/A,3.00
+20261026,Nebius,B200,N/A,North America,N/A,2.70
 20261026,Nebius,B200,N/A,Middle East,N/A,6.20
-20261026,Nebius,H200,N/A,Europe,N/A,5.39
+20261026,Nebius,H200,N/A,Europe,N/A,5.09
 20261026,GetDeploying,B300,On-Demand,N/A,N/A,9.15
 20261026,GetDeploying,B300,Reserve,N/A,N/A,5.99
 20261026,GetDeploying,B300,Spot,N/A,N/A,5.39
@@ -47,17 +47,16 @@
 20261026,Together.ai,B200,Spot,N/A,N/A,4.09
 20261026,Together.ai,B300,On-Demand,N/A,N/A,9.99
 20261026,Together.ai,B300,Spot,N/A,N/A,4.99
-20261026,Daytona,B300,On-Demand,N/A,N/A,6.25
+20261026,Daytona,B300,On-Demand,N/A,N/A,7.10
 20261026,Daytona,B300,Spot,N/A,N/A,4.08
 20261026,Daytona,B200,On-Demand,N/A,N/A,6.25
 20261026,Daytona,B200,Spot,N/A,N/A,3.59
-20261026,Daytona,H200,On-Demand,N/A,N/A,
-20261026,Daytona,H200,Spot,N/A,N/A,
+20261026,Daytona,H200,On-Demand,N/A,N/A,4.54
+20261026,Daytona,H200,Spot,N/A,N/A,2.61
 20261026,UpCloud,B300,On-Demand,N/A,N/A,7.99
 20261026,UpCloud,B300,Spot,N/A,N/A,5.99
 20261026,UpCloud,B200,On-Demand,N/A,N/A,6.05
 20261026,UpCloud,B200,Spot,N/A,N/A,4.23
-20261026,Gpu.ai,B300,N/A,N/A,N/A,
 20261026,Gpu.ai,B200,N/A,N/A,N/A,7.99
 20261026,Gpu.ai,H200,N/A,N/A,N/A,5.29
 20261026,Gpu.ai,A100,N/A,N/A,N/A,1.07
@@ -68,7 +67,7 @@
 20261026,Spheron,H200,On-Demand,N/A,N/A,7.09
 20261026,Spheron,H200,Spot,N/A,N/A,3.35
 20261026,Spheron,A100,On-Demand,N/A,N/A,1.43
-20261026,Spheron,A100,Spot,N/A,N/A,1.38
+20261026,Spheron,A100,Spot,N/A,N/A,1.20
 20261026,Hyperbolic,B200,N/A,N/A,N/A,5.99
 20261026,Hyperbolic,H200,N/A,N/A,N/A,3.99
 20261026,DeepInfra,B300,N/A,N/A,N/A,5.89
@@ -81,7 +80,6 @@
 20261026,Fireworks.ai,H200,N/A,N/A,N/A,8.00
 20261026,Astra Intellectus,GB300,Reserve,N/A,N/A,6.25
 20261026,Astra Intellectus,B300,Reserve,N/A,N/A,5.45
-20261026,Astra Intellectus,H200,Reserve,N/A,N/A,
 20261026,Verda,GB300,On-Demand,N/A,N/A,12.55
 20261026,Verda,GB300,Spot,N/A,N/A,6.273
 20261026,Verda,B300,On-Demand,N/A,N/A,10.91
