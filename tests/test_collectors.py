@@ -33,12 +33,23 @@ ROOT = Path(__file__).resolve().parents[1]
 class WorkbookTests(unittest.TestCase):
     def test_source_workbook_has_one_normalized_row_per_request(self) -> None:
         rows = load_source_rows(ROOT / "算力价格爬虫数据整理.xlsx")
-        self.assertEqual(len(rows), 91)
-        self.assertEqual(len({row.workbook_row for row in rows}), 91)
-        self.assertEqual(len({row.source_name for row in rows}), 17)
-        identities = {(row.source_name, row.gpu_model_code) for row in rows}
-        self.assertNotIn(("Gpu.ai", "B300"), identities)
-        self.assertNotIn(("Astra Intellectus", "H200"), identities)
+        self.assertEqual(len(rows), 122)
+        self.assertEqual(len({row.workbook_row for row in rows}), 122)
+        self.assertEqual(len({row.source_name for row in rows}), 25)
+        identities = {
+            (
+                row.source_name,
+                row.gpu_model_code,
+                row.price_type,
+                row.term,
+            )
+            for row in rows
+        }
+        self.assertIn(("Gpu.ai", "B300", "On-Demand", None), identities)
+        self.assertIn(("Together.ai", "H200", "Reserve", Decimal("1")), identities)
+        self.assertIn(("Together.ai", "H200", "Reserve", Decimal("3")), identities)
+        self.assertIn(("Together.ai", "H200", "Reserve", Decimal("6")), identities)
+        self.assertIn(("TheAI Cloud", "B300", "Reserve", Decimal("24")), identities)
         self.assertTrue(
             all(
                 value == value.strip()

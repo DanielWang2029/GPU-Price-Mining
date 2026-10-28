@@ -14,7 +14,8 @@ MODEL_LABELS = {
     "B200": "NVIDIA HGX B200",
     "B300": "NVIDIA HGX B300",
 }
-PRICE_COLUMNS = {"Spot": 1, "On-Demand": 2, "Reserve": 5}
+PRICE_COLUMNS = {"Spot": 1, "On-Demand": 2}
+RESERVE_COLUMNS = {1: 3, 3: 4, 6: 5}
 
 
 def parse_table(html: str) -> dict[str, list[str]]:
@@ -47,7 +48,15 @@ def collect(
         cells = table.get(label)
         if cells is None:
             raise ValueError(f"Together GPU table omitted {label}")
-        column = PRICE_COLUMNS[row.price_type]
+        if row.price_type == "Reserve":
+            if row.term is None or int(row.term) not in RESERVE_COLUMNS:
+                raise ValueError(
+                    f"Unsupported Together reserve term at row {row.workbook_row}: "
+                    f"{row.term}"
+                )
+            column = RESERVE_COLUMNS[int(row.term)]
+        else:
+            column = PRICE_COLUMNS[row.price_type]
         raw = cells[column] if column < len(cells) else ""
         try:
             value = parse_price(raw)
@@ -63,7 +72,7 @@ def collect(
             continue
         note = "Published GPU cluster price in USD per GPU-hour."
         if row.price_type == "Reserve":
-            note += " Workbook reserve rows select the 91-180 day column."
+            note += f" Workbook term {row.term} maps to pricing column {column}."
         elif row.price_type == "Spot":
             note += " Together labels this tier Preemptible Compute."
         observations.append(
