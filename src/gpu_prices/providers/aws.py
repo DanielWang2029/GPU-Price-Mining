@@ -44,7 +44,7 @@ def parse_capacity_prices(html: str) -> dict[str, tuple[Decimal, str]]:
         table = heading.find_next("table")
         selected = None
         for row in table.select("tr"):
-            cells = [text(cell) for cell in row.find_all("td")]
+            cells = [text(cell) for cell in row.find_all(["th", "td"])]
             if len(cells) >= 3 and cells[0] == sku and cells[1] == region:
                 selected = cells
                 break
