@@ -12,7 +12,7 @@ from gpu_prices.http import FetchError, HttpClient
 from gpu_prices.models import Observation, SourceRow, ok
 from gpu_prices.providers.common import parse_price, run_provider_cli, text
 
-PAGE_URL = "https://upcloud.com/global/products/gpu-servers/"
+PAGE_URL = "https://upcloud.com/global/products/gpu-servers/?currency=USD"
 API_URL = "https://api.upcloud.com/1.3/price"
 MIRROR_URL_TEMPLATE = "https://getdeploying.com/gpus/nvidia-{model}"
 PLAN_NAMES = {

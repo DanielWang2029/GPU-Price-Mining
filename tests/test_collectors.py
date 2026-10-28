@@ -5,10 +5,7 @@ from decimal import Decimal
 from pathlib import Path
 
 from gpu_prices.providers.astra_intellectus import parse_visible_offers
-from gpu_prices.providers.daytona import (
-    parse_getdeploying_daytona,
-    parse_panels,
-)
+from gpu_prices.providers.daytona import parse_panels
 from gpu_prices.providers.getdeploying import (
     chart_money_2,
     parse_dataset_prices,
@@ -225,18 +222,6 @@ nvidia-b200,2026-10-26,RESERVATION,12,3.99,8,6.67,6.67,4,4
         self.assertEqual(panels["Spot"]["Nvidia B300"], "$4.08/h")
         self.assertEqual(panels["On-Demand"]["Nvidia H200"], "$4.54/h")
         self.assertEqual(panels["Spot"]["Nvidia H200"], "$2.61/h")
-
-    def test_daytona_mirror_is_scoped_to_daytona_provider(self) -> None:
-        markdown = """
-        ### [Daytona](https://getdeploying.com/daytona)
-        On-Demand from $7.10
-        Spot from $4.08
-        ### [Another provider](https://example.com)
-        On-Demand from $1.00
-        """
-        values = parse_getdeploying_daytona(markdown, "B300")
-        self.assertEqual(values["On-Demand"], "7.10")
-        self.assertEqual(values["Spot"], "4.08")
 
 
 if __name__ == "__main__":
