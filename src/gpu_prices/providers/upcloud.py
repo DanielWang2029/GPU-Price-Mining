@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import os
 import re
+import time
 from datetime import datetime
 from decimal import Decimal
 
@@ -86,6 +87,29 @@ def parse_getdeploying_mirror(
     return result
 
 
+def fetch_getdeploying_mirror(
+    client: HttpClient,
+    model: str,
+) -> tuple[dict[tuple[str, str], tuple[object, str]], str]:
+    url = MIRROR_URL_TEMPLATE.format(model=model.lower())
+    last_error: ValueError | None = None
+    for attempt in range(4):
+        separator = "&" if "?" in url else "?"
+        candidate = (
+            url
+            if attempt < 2
+            else f"{url}{separator}collector_retry={int(time.time())}-{attempt}"
+        )
+        mirror, source_url = client.read_proxy_text(candidate)
+        try:
+            return parse_getdeploying_mirror(mirror, model), source_url
+        except ValueError as exc:
+            last_error = exc
+            if attempt < 3:
+                time.sleep(attempt + 1)
+    raise last_error or ValueError(f"UpCloud mirror remained unavailable for {model}")
+
+
 def fetch_api_prices(
     client: HttpClient, token: str
 ) -> dict[tuple[str, str], tuple[object, str]]:
@@ -133,9 +157,8 @@ def collect(
         except ValueError:
             prices = {}
             for model in ("B200", "B300"):
-                mirror_url = MIRROR_URL_TEMPLATE.format(model=model.lower())
-                mirror, mirror_source = client.read_proxy_text(mirror_url)
-                prices.update(parse_getdeploying_mirror(mirror, model))
+                mirror_prices, mirror_source = fetch_getdeploying_mirror(client, model)
+                prices.update(mirror_prices)
                 mirror_sources[model] = mirror_source
             source_note = (
                 "Published UpCloud USD server-hour price mirrored by GetDeploying; "

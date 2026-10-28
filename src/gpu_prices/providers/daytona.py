@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import re
+import time
 from datetime import datetime
 
 from bs4 import BeautifulSoup
@@ -77,10 +78,25 @@ def _fetch_mirror(
     url = MIRROR_URL_TEMPLATE.format(model=model.lower())
     try:
         content = client.get_text(url)
-        source_url = url
+        return parse_getdeploying_daytona(content, model), url
     except FetchError:
-        content, source_url = client.read_proxy_text(url)
-    return parse_getdeploying_daytona(content, model), source_url
+        pass
+    last_error: ValueError | None = None
+    for attempt in range(4):
+        separator = "&" if "?" in url else "?"
+        candidate = (
+            url
+            if attempt < 2
+            else f"{url}{separator}collector_retry={int(time.time())}-{attempt}"
+        )
+        content, source_url = client.read_proxy_text(candidate)
+        try:
+            return parse_getdeploying_daytona(content, model), source_url
+        except ValueError as exc:
+            last_error = exc
+            if attempt < 3:
+                time.sleep(attempt + 1)
+    raise last_error or ValueError(f"Daytona mirror remained unavailable for {model}")
 
 
 def collect(
