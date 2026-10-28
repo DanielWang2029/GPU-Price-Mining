@@ -75,6 +75,14 @@ class NewProviderParserTests(unittest.TestCase):
     def test_civo_normalizes_multi_gpu_node_prices(self) -> None:
         html = """
         <table>
+          <caption>NVIDIA H200 SXM GPU pricing</caption>
+          <tbody><tr><td>Small 1 x NVIDIA H200</td></tr></tbody>
+        </table>
+        <table>
+          <caption>NVIDIA B200 GPU pricing</caption>
+          <tbody><tr><td>Extra Large 8 x NVIDIA B200</td></tr></tbody>
+        </table>
+        <table>
           <caption>NVIDIA B300 GPU pricing</caption>
           <tbody><tr>
             <td>Extra Large 8 x NVIDIA B300</td>
@@ -92,11 +100,12 @@ class NewProviderParserTests(unittest.TestCase):
         self.assertEqual(str(prices[("B300", "Reserve")][0]), "5.49")
 
     def test_cyfuture_reads_single_gpu_b300_row(self) -> None:
-        markdown = """
-        | 1B300.32v.256m | NVIDIA 1xB300 (1X) | 288 | 75 | 2250 | 32 |
-        256 | 1800 | 800 | 8000 | - | ₹ 570 | ₹ 546 | ₹ 523 | Reserve |
-        """
-        cells = parse_b300_row(markdown.replace("\n256", " 256"))
+        markdown = (
+            "| 1B300.32v.256m | NVIDIA 1xB300 (1X) | 288 | 75 | 2250 | "
+            "32 | 256 | 1800 | 800 | 8000 | - | ₹ 570 | ₹ 546 | ₹ 523 | "
+            "Reserve |"
+        )
+        cells = parse_b300_row(markdown)
         self.assertEqual(cells[0], "1B300.32v.256m")
         self.assertEqual(cells[11], "₹ 570")
 
