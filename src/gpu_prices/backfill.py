@@ -21,7 +21,8 @@ from gpu_prices.providers.getdeploying import (
     chart_money_2,
     select_reservation_chart_row,
 )
-from gpu_prices.workbook import OUTPUT_HEADERS, load_source_rows
+from gpu_prices.sql_export import write_sql
+from gpu_prices.workbook import DATA_SOURCE, OUTPUT_HEADERS, load_source_rows
 
 ORNN_HISTORY_URL = "https://api.ornnai.com/api/gpu/{model}/index-history"
 NEBIUS_SERIES_URL = "https://api.nebius.cloud/billing/v1alpha1/spot-price/list-series"
@@ -29,17 +30,20 @@ LOS_ANGELES = ZoneInfo("America/Los_Angeles")
 NEW_YORK = ZoneInfo("America/New_York")
 UTC = timezone.utc
 
-RowKey = tuple[str, str, str, str, str]
+RowKey = tuple[str, str, str, str, str, str, str, str]
 History = dict[int, dict[date, Decimal]]
 
 
 def row_key(row: SourceRow) -> RowKey:
     return (
         row.source_name,
+        row.supplier_type,
         row.gpu_model_code,
         row.price_type,
         row.region,
         row.cloud_type,
+        "" if row.term is None else str(row.term),
+        row.url,
     )
 
 
@@ -72,11 +76,14 @@ def load_current_prices(
                 f"{path} contains date {record['dtstatdate']}, expected {expected_date}"
             )
         key: RowKey = (
-            record["source_name"].strip(),
+            record["supplier_name"].strip(),
+            record["supplier_type"].strip(),
             record["gpu_model_code"].strip(),
             record["price_type"].strip(),
             record["region"].strip(),
             record["cloud_type"].strip(),
+            record["term"].strip(),
+            record["url"].strip(),
         )
         if key in by_key:
             raise ValueError(f"Duplicate current-price identity in {path}: {key}")
@@ -423,11 +430,15 @@ def write_history_csv(
                     [
                         dtstatdate,
                         row.source_name,
+                        row.supplier_type,
                         row.gpu_model_code,
                         row.price_type,
                         row.region,
                         row.cloud_type,
+                        "" if row.term is None else str(row.term),
+                        row.url,
                         str(history[row.workbook_row][day]),
+                        DATA_SOURCE,
                     ]
                 )
 
@@ -449,7 +460,10 @@ def build_parser() -> argparse.ArgumentParser:
         default=Path("算力价格爬虫数据整理.xlsx"),
     )
     parser.add_argument("--start-date", default="20261001")
-    parser.add_argument("--end-date", default="20261026")
+    parser.add_argument(
+        "--end-date",
+        default=datetime.now(LOS_ANGELES).strftime("%Y%m%d"),
+    )
     parser.add_argument(
         "--current-csv",
         type=Path,
@@ -465,6 +479,12 @@ def build_parser() -> argparse.ArgumentParser:
             "Historical output path. Defaults to "
             "output/gpu_prices_history_<start>_<end>.csv."
         ),
+    )
+    parser.add_argument(
+        "--sql-output",
+        type=Path,
+        default=Path("sql/t_gpu_daily_prices.sql"),
+        help="Create-table and direct-value population SQL output path.",
     )
     parser.add_argument(
         "--allow-read-proxy",
@@ -493,6 +513,7 @@ def main(argv: list[str] | None = None) -> int:
             HttpClient(allow_read_proxy=args.allow_read_proxy),
         )
         write_history_csv(output, rows, dates, history)
+        sql_output = write_sql(output, args.sql_output)
     except Exception as exc:
         print(f"Backfill failed: {type(exc).__name__}: {exc}", file=sys.stderr)
         return 1
@@ -506,6 +527,7 @@ def main(argv: list[str] | None = None) -> int:
         f"{len(rows) - len(curve_rows)} static rows used end-date prices"
     )
     print(output)
+    print(sql_output)
     print(
         "Note: Kalshi does not publish archived curve vintages; historical dates "
         "are evaluated on its currently published curve."

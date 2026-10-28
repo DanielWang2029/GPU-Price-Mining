@@ -32,7 +32,7 @@ python3 -m gpu_prices.collect \
 
 Each run writes:
 
-- `gpu_prices_YYYYMMDD.csv`: the seven database columns from `表结构设计`.
+- `gpu_prices_YYYYMMDD.csv`: the eleven database columns from `表结构设计`.
 - `gpu_prices_YYYYMMDD.xlsx`: the same rows as an Excel table.
 - `gpu_prices_YYYYMMDD_audit.csv`: source row, status, source URL, effective time,
   raw value, and collection note.
@@ -44,7 +44,8 @@ code, which is suitable for Airflow. An unavailable product does not fail the jo
 and is never replaced with zero or an old value.
 
 Workbook values are trimmed before matching, fixing the leading spaces currently
-present on several A100 and Community rows.
+present on several A100 and Community rows. Every generated row sets
+`data_source` to `price_mining`.
 
 ## Source behavior
 
@@ -57,7 +58,7 @@ present on several A100 and Community rows.
 | Nebius | Structured standard-price page data plus the public current spot-price API with explicit region mapping. |
 | GetDeploying | Latest weekly provider-median values in the page's Price history summary. |
 | RunPod | Public GraphQL catalog; A100 means A100 80GB PCIe, matching the screenshot. |
-| Together.ai | GPU cluster table; Reserve means the marked 91–180 day column and Spot means Preemptible. |
+| Together.ai | GPU cluster table; reserve terms 1/3/6 map to the 3–30, 31–90, and 91–180 day columns. |
 | Daytona | Complete on-demand/preemptible panel, cross-checked against GetDeploying's provider-specific listing because Daytona's server-rendered B300 cell currently duplicates the B200 price. |
 | UpCloud | Authenticated catalog when `UPCLOUD_TOKEN` is set; otherwise the public global USD one-GPU table. |
 | Gpu.ai | Documented public catalog; lowest available secure on-demand per-GPU price. |
@@ -67,10 +68,18 @@ present on several A100 and Community rows.
 | Fireworks.ai | Public pricing CMS, hourly on-demand deployment column. |
 | Astra Intellectus | Lowest visible static indicative offer. Hidden stale tables are ignored; client-side randomized prices are intentionally not ingested. |
 | Verda | Exact public one-GPU SKU from the instance catalog, using on-demand or spot price. |
+| Impossible Cloud | First page-order model card with numeric GPU capacity; validates selected region and term. |
+| TheAI Cloud | Public pricing API. Workbook H200 labels are normalized to B300 because the supplier discontinued H200 and the screenshots show B300. |
+| Digital Ocean | Reserved, spot, and on-demand GPU pricing cards. |
+| Bentaus | Lower bound of the advertised B300 per-GPU price range. |
+| Civo | GPU tables with multi-GPU node prices normalized per GPU. |
+| Cyfuture.ai | INR B300 rates converted with the current Frankfurter USD/INR reference rate. |
+| Latitude.sh | Embedded B300 plan data, normalized from monthly/yearly eight-GPU node prices. |
+| AWS | Capacity Block per-accelerator prices plus current us-east-1 Linux Spot prices divided by eight. |
 
 ### Anti-bot fallback
 
-Kalshi, GetDeploying, and UpCloud may reject datacenter IPs even though their data
+Kalshi, GetDeploying, UpCloud, and Cyfuture may reject datacenter IPs even though their data
 is public. Prefer running from an allowed network or using the suppliers'
 authenticated API where supported. For a one-off collection, the command can use
 a public read-only text proxy:
@@ -90,13 +99,15 @@ the proxy. The same setting can be enabled with
 ```bash
 python3 -m gpu_prices.backfill \
   --start-date 20261001 \
-  --end-date 20261026 \
-  --current-csv output/gpu_prices_20261026.csv \
+  --end-date 20261028 \
+  --current-csv output/gpu_prices_20261028.csv \
   --allow-read-proxy
 ```
 
 The output defaults to
-`output/gpu_prices_history_20261001_20261026.csv`. Historical sources are:
+`output/gpu_prices_history_20261001_20261028.csv`. The command also writes
+`sql/t_gpu_daily_prices.sql`, containing the unconstrained PostgreSQL table
+definition and direct values for every historical row. Historical sources are:
 
 - Kalshi's realized history plus its currently published forward curve,
   evaluated daily at 20:00 UTC.

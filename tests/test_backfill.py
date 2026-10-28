@@ -14,6 +14,7 @@ from gpu_prices.backfill import (
     write_history_csv,
 )
 from gpu_prices.models import SourceRow
+from gpu_prices.sql_export import render_sql
 
 
 class TextClient:
@@ -58,6 +59,7 @@ nvidia-b300,2026-10-05,ON_DEMAND,,1,10,8.7,8.99,5,10
         source = SourceRow(
             workbook_row=7,
             source_name="CoreWeave",
+            supplier_type="NeoCloud",
             gpu_model_code="GB200",
             price_type="On-Demand",
             region="North America",
@@ -68,9 +70,10 @@ nvidia-b300,2026-10-05,ON_DEMAND,,1,10,8.7,8.99,5,10
             root = Path(directory)
             current_path = root / "current.csv"
             current_path.write_text(
-                "dtstatdate,source_name,gpu_model_code,price_type,region,"
-                "cloud_type,price\n"
-                "20261026,CoreWeave,GB200,On-Demand,North America,N/A,42.00\n",
+                "dtstatdate,supplier_name,supplier_type,gpu_model_code,"
+                "price_type,region,cloud_type,term,url,price,data_source\n"
+                "20261026,CoreWeave,NeoCloud,GB200,On-Demand,North America,"
+                "N/A,,https://www.coreweave.com/pricing,42.00,price_mining\n",
                 encoding="utf-8",
             )
             current = load_current_prices(
@@ -94,7 +97,13 @@ nvidia-b300,2026-10-05,ON_DEMAND,,1,10,8.7,8.99,5,10
             self.assertEqual(len(records), 2)
             self.assertEqual(records[0]["dtstatdate"], "20261025")
             self.assertEqual(records[1]["price"], "42.00")
+            self.assertEqual(records[1]["supplier_type"], "NeoCloud")
+            self.assertEqual(records[1]["data_source"], "price_mining")
             self.assertNotIn(b"\r\n", output_path.read_bytes())
+            sql = render_sql(output_path)
+            self.assertIn("CREATE TABLE public.t_gpu_daily_prices", sql)
+            self.assertIn("'CoreWeave','NeoCloud','GB200'", sql)
+            self.assertNotIn("COPY ", sql)
 
 
 if __name__ == "__main__":

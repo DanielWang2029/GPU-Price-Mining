@@ -17,6 +17,8 @@ class SourceRow:
     region: str
     cloud_type: str
     url: str
+    supplier_type: str = "N/A"
+    term: Decimal | None = None
 
 
 @dataclass(frozen=True, slots=True)
