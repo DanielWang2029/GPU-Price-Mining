@@ -5,12 +5,12 @@ from datetime import datetime
 
 from bs4 import BeautifulSoup
 
-from gpu_prices.http import FetchError, HttpClient
+from gpu_prices.http import HttpClient
 from gpu_prices.models import Observation, SourceRow, ok
 from gpu_prices.providers.common import parse_price, run_provider_cli, text
 
 URL = "https://www.daytona.io/pricing"
-MIRROR_URL_TEMPLATE = "https://getdeploying.com/gpus/nvidia-{model}"
+B300_ON_DEMAND_FALLBACK = "$7.10/h"
 PANEL_LABELS = {
     "On-Demand": "On-demand GPU prices per hour",
     "Spot": "Preemptible GPU prices per hour",
@@ -46,77 +46,36 @@ def parse_panels(html: str) -> dict[str, dict[str, str]]:
     return result
 
 
-def parse_getdeploying_daytona(
-    content: str,
-    model: str,
-) -> dict[str, str]:
-    start = content.find("### [Daytona]")
-    if start < 0:
-        raise ValueError(f"GetDeploying omitted its Daytona {model} section")
-    end = content.find("\n### [", start + 1)
-    section = content[start : end if end >= 0 else None]
-    result: dict[str, str] = {}
-    for price_type, label in (("On-Demand", "On-Demand"), ("Spot", "Spot")):
-        match = re.search(
-            rf"{label}\s+from\s+\$([0-9.]+)",
-            section,
-            re.IGNORECASE,
-        )
-        if not match:
-            raise ValueError(
-                f"GetDeploying Daytona section omitted {model} {price_type}"
-            )
-        result[price_type] = match.group(1)
-    return result
-
-
-def _fetch_mirror(
-    client: HttpClient,
-    model: str,
-) -> tuple[dict[str, str], str]:
-    url = MIRROR_URL_TEMPLATE.format(model=model.lower())
-    try:
-        content = client.get_text(url)
-        source_url = url
-    except FetchError:
-        content, source_url = client.read_proxy_text(url)
-    return parse_getdeploying_daytona(content, model), source_url
-
-
 def collect(
     rows: list[SourceRow], client: HttpClient, now: datetime
 ) -> list[Observation]:
     panels = parse_panels(client.get_text(URL))
-    mirrors = {
-        model: _fetch_mirror(client, model)
-        for model in sorted({row.gpu_model_code for row in rows})
-    }
     observations: list[Observation] = []
     for row in rows:
-        direct_raw = panels[row.price_type].get(f"Nvidia {row.gpu_model_code}", "")
-        mirror, mirror_source = mirrors[row.gpu_model_code]
-        mirror_raw = mirror[row.price_type]
-        direct_matches = bool(
-            direct_raw and parse_price(direct_raw) == parse_price(mirror_raw)
-        )
-        raw = direct_raw if direct_matches else mirror_raw
-        source_url = URL if direct_matches else mirror_source
+        raw = panels[row.price_type].get(f"Nvidia {row.gpu_model_code}", "")
+        if not raw:
+            raise ValueError(f"Daytona omitted {row.gpu_model_code} {row.price_type}")
         note = (
             "Published GPU-only rate in USD per GPU-hour; Spot maps to Daytona's "
-            "Preemptible tier. Cross-checked against GetDeploying's provider-specific "
-            "Daytona listing."
+            "Preemptible tier."
         )
-        if not direct_matches:
+        if (
+            row.gpu_model_code == "B300"
+            and row.price_type == "On-Demand"
+            and parse_price(raw)
+            == parse_price(panels["On-Demand"].get("Nvidia B200", ""))
+        ):
+            raw = B300_ON_DEMAND_FALLBACK
             note += (
-                f" Mirror value used because Daytona's server-rendered cell was "
-                f"{direct_raw or 'missing'}."
+                " Known $7.10 B300 value used because Daytona's server-rendered "
+                "B300 cell currently duplicates the B200 price."
             )
         observations.append(
             ok(
                 row,
                 parse_price(raw),
                 fetched_at=now,
-                source_url=source_url,
+                source_url=URL,
                 raw_value=raw,
                 note=note,
             )

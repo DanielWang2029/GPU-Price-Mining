@@ -54,6 +54,7 @@ with DAG(
           --workbook "$GPU_PRICE_WORKBOOK" \
           --output-dir "$GPU_PRICE_OUTPUT_DIR" \
           --run-date "{{ data_interval_end.in_timezone('America/Los_Angeles').strftime('%Y%m%d') }}" \
+          --workers 8 \
           --strict
         """,
         env={
@@ -65,6 +66,6 @@ with DAG(
             ),
         },
         append_env=True,
-        execution_timeout=timedelta(minutes=30),
+        execution_timeout=timedelta(minutes=45),
         do_xcom_push=False,
     )
