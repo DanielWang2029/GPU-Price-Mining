@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import csv
+import hashlib
 import posixpath
 import re
 from datetime import datetime
@@ -233,6 +234,34 @@ def _decimal_text(value: Decimal | None) -> str:
     return "" if value is None else str(value)
 
 
+def make_record_id(
+    *,
+    price_date: str,
+    run_date: str,
+    source_label: str,
+    provider: str,
+    gpu_id: str,
+    billing: str,
+    term_month: str,
+    raw_price: str,
+    price_gpu_hour: str,
+    availability: str,
+) -> str:
+    values = [
+        price_date,
+        run_date,
+        source_label,
+        provider,
+        gpu_id,
+        billing,
+        term_month,
+        raw_price,
+        price_gpu_hour,
+        availability,
+    ]
+    return hashlib.md5(":".join(values).encode("utf-8")).hexdigest()
+
+
 def data_row(
     price_date: str,
     run_date: str,
@@ -259,15 +288,35 @@ def record_row(
     gpu_count: int,
     availability: str,
 ) -> list[object]:
+    normalized_price_date = iso_date(price_date)
+    normalized_run_date = iso_date(run_date)
+    provider = provider_id(row.source_name)
+    billing = billing_type(row.price_type)
+    term = "" if row.term is None else str(row.term)
+    raw_text = _decimal_text(raw_price)
+    normalized_text = _decimal_text(price_gpu_hour)
+    gpu_id = ""
+    record_id = make_record_id(
+        price_date=normalized_price_date,
+        run_date=normalized_run_date,
+        source_label=DATA_SOURCE,
+        provider=provider,
+        gpu_id=gpu_id,
+        billing=billing,
+        term_month=term,
+        raw_price=raw_text,
+        price_gpu_hour=normalized_text,
+        availability=availability,
+    )
     return [
-        iso_date(price_date),
-        iso_date(run_date),
+        normalized_price_date,
+        normalized_run_date,
         DATA_SOURCE,
-        "",
+        record_id,
         row.source_name,
-        provider_id(row.source_name),
+        provider,
         row.supplier_type,
-        "",
+        gpu_id,
         row.gpu_model_code,
         gpu_count,
         "",
@@ -278,12 +327,12 @@ def record_row(
         "",
         "",
         "",
-        billing_type(row.price_type),
-        "" if row.term is None else str(row.term),
+        billing,
+        term,
         "",
         row.region,
-        _decimal_text(raw_price),
-        _decimal_text(price_gpu_hour),
+        raw_text,
+        normalized_text,
         availability,
         "",
         row.url,

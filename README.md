@@ -60,6 +60,11 @@ than being replaced with `N/A`. Every generated row sets `source_label` to
 `price_mining`, derives a letters-only lowercase `provider_id`, and leaves the
 reserved enrichment and note columns blank.
 
+`record_id` is the lowercase MD5 hex digest of the colon-separated
+`price_date`, `run_date`, `source_label`, `provider_id`, `gpu_id`,
+`billing_type`, `term_months`, `raw_price`, `price_gpu_hour`, and
+`availability` output values.
+
 ## Source behavior
 
 | Supplier | Collection source and workbook interpretation |

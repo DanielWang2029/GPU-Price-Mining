@@ -23,7 +23,12 @@ from gpu_prices.providers.upcloud import (
     parse_getdeploying_mirror,
     parse_public_page,
 )
-from gpu_prices.workbook import OUTPUT_HEADERS, load_source_rows, provider_id
+from gpu_prices.workbook import (
+    OUTPUT_HEADERS,
+    load_source_rows,
+    make_record_id,
+    provider_id,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -82,6 +87,21 @@ class WorkbookTests(unittest.TestCase):
         self.assertNotIn("cloud_type", OUTPUT_HEADERS)
         self.assertIn("gpu_id", OUTPUT_HEADERS)
         self.assertIn("gpu_model_code", OUTPUT_HEADERS)
+
+    def test_record_id_matches_concat_ws_field_order(self) -> None:
+        value = make_record_id(
+            price_date="2026-11-03",
+            run_date="2026-11-03",
+            source_label="price_mining",
+            provider="coreweave",
+            gpu_id="",
+            billing="ON_DEMAND",
+            term_month="",
+            raw_price="42.00",
+            price_gpu_hour="10.50",
+            availability="AVAILABLE",
+        )
+        self.assertEqual(value, "a3d6fc3b33bf50f189ae81d7b0031fad")
 
 
 class ParserTests(unittest.TestCase):
