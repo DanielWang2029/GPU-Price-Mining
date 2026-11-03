@@ -117,6 +117,7 @@ python3 -m gpu_prices.backfill \
   --end-date 20261103 \
   --run-date 20261103 \
   --current-csv output/gpu_prices_20261103.csv \
+  --prior-history output/gpu_prices_history_20261001_20261029.csv \
   --allow-read-proxy
 ```
 

@@ -142,6 +142,46 @@ def load_current_prices(
     return result
 
 
+def load_prior_history(
+    path: Path | None,
+    rows: list[SourceRow],
+    dates: list[date],
+) -> History:
+    if path is None or not path.exists():
+        return {}
+    with path.open(newline="", encoding="utf-8-sig") as handle:
+        records = list(csv.DictReader(handle))
+    if records and list(records[0]) != OUTPUT_HEADERS:
+        raise ValueError(
+            f"Unexpected prior-history columns: {list(records[0])}; "
+            f"expected {OUTPUT_HEADERS}"
+        )
+    row_by_key = {row_key(row): row for row in rows}
+    wanted = set(dates)
+    result: History = defaultdict(dict)
+    for record in records:
+        key: RowKey = (
+            record["publisher_name"].strip(),
+            record["provider_id"].strip(),
+            record["supplier_type"].strip(),
+            record["gpu_id"].strip(),
+            record["billing_type"].strip(),
+            record["term_months"].strip(),
+            record["region_or_hq_country"].strip(),
+            record["provider_hq_region"].strip(),
+            record["source_url"].strip(),
+        )
+        row = row_by_key.get(key)
+        if row is None:
+            continue
+        price_date = date.fromisoformat(record["price_date"])
+        if price_date not in wanted:
+            continue
+        value = record["price_gpu_hour"].strip()
+        result[row.workbook_row][price_date] = Decimal(value) if value else None
+    return dict(result)
+
+
 def kalshi_history(
     rows: list[SourceRow],
     dates: list[date],
@@ -445,6 +485,7 @@ def build_history(
     dates: list[date],
     current: CurrentPrices,
     client: HttpClient,
+    prior: History | None = None,
 ) -> tuple[History, set[int]]:
     history: History = {
         row.workbook_row: {
@@ -473,6 +514,10 @@ def build_history(
         values = collectors[source_name](source_rows, dates, client)
         for row in source_rows:
             row_values = values.get(row.workbook_row, {})
+            for day, value in (prior or {}).get(row.workbook_row, {}).items():
+                row_values.setdefault(day, value)
+            if dates[-1] not in row_values:
+                row_values[dates[-1]] = current[row.workbook_row].price_gpu_hour
             missing = [day for day in dates if day not in row_values]
             if missing:
                 raise ValueError(
@@ -567,6 +612,14 @@ def build_parser() -> argparse.ArgumentParser:
         ),
     )
     parser.add_argument(
+        "--prior-history",
+        type=Path,
+        help=(
+            "Optional earlier history CSV used when a rolling source no longer "
+            "retains the beginning of the requested range."
+        ),
+    )
+    parser.add_argument(
         "--allow-read-proxy",
         action="store_true",
         default=_env_flag("GPU_PRICES_ALLOW_READ_PROXY"),
@@ -586,11 +639,13 @@ def main(argv: list[str] | None = None) -> int:
             f"output/gpu_prices_history_{args.start_date}_{args.end_date}.csv"
         )
         current = load_current_prices(current_csv, rows, end)
+        prior = load_prior_history(args.prior_history, rows, dates)
         history, curve_rows = build_history(
             rows,
             dates,
             current,
             HttpClient(allow_read_proxy=args.allow_read_proxy),
+            prior,
         )
         write_history_csv(
             output,
