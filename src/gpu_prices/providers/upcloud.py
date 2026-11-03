@@ -28,7 +28,11 @@ PLAN_NAMES = {
 
 def parse_public_page(content: str) -> dict[tuple[str, str], tuple[object, str]]:
     result: dict[tuple[str, str], tuple[object, str]] = {}
-    if "<html" in content[:1000].lower() or "<!doctype" in content[:1000].lower():
+    if (
+        "<html" in content[:1000].lower()
+        or "<!doctype" in content[:1000].lower()
+        or "<table" in content.lower()
+    ):
         soup = BeautifulSoup(content, "html.parser")
         for model in ("B200", "B300"):
             section = soup.select_one(f"#nvidia-{model.lower()}-tab")
