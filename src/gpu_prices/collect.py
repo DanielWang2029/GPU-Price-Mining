@@ -7,6 +7,7 @@ from collections import Counter, defaultdict
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 from gpu_prices.http import HttpClient
 from gpu_prices.models import Observation, SourceRow, failed
@@ -38,7 +39,9 @@ from gpu_prices.providers import (
     verda,
 )
 from gpu_prices.providers.common import Collector
-from gpu_prices.workbook import load_source_rows, write_outputs
+from gpu_prices.workbook import iso_date, load_source_rows, write_outputs
+
+LOS_ANGELES = ZoneInfo("America/Los_Angeles")
 
 REGISTRY: dict[str, Collector] = {
     "Kalshi": kalshi.collect,
@@ -114,12 +117,14 @@ def run(
     *,
     workbook_path: Path,
     output_dir: Path,
+    price_date: str,
     run_date: str,
     providers: list[str] | None,
     workers: int,
     allow_read_proxy: bool,
 ) -> tuple[list[Observation], tuple[Path, Path, Path]]:
-    datetime.strptime(run_date, "%Y%m%d")
+    iso_date(price_date)
+    iso_date(run_date)
     source_rows = load_source_rows(workbook_path)
     by_provider: dict[str, list[SourceRow]] = defaultdict(list)
     for row in source_rows:
@@ -152,6 +157,7 @@ def run(
 
     outputs = write_outputs(
         observations,
+        price_date=price_date,
         run_date=run_date,
         output_dir=output_dir,
     )
@@ -174,10 +180,16 @@ def build_parser() -> argparse.ArgumentParser:
         default=Path("output"),
         help="Directory for CSV, XLSX, and audit output.",
     )
+    local_today = datetime.now(LOS_ANGELES).strftime("%Y%m%d")
+    parser.add_argument(
+        "--price-date",
+        default=local_today,
+        help="Date associated with the price in YYYYMMDD (default: current LA date).",
+    )
     parser.add_argument(
         "--run-date",
-        default=datetime.now(timezone.utc).strftime("%Y%m%d"),
-        help="dtstatdate in YYYYMMDD format (default: current UTC date).",
+        default=local_today,
+        help="Date the record was collected in YYYYMMDD (default: current LA date).",
     )
     parser.add_argument(
         "--provider",
@@ -214,6 +226,7 @@ def main(argv: list[str] | None = None) -> int:
         observations, outputs = run(
             workbook_path=args.workbook,
             output_dir=args.output_dir,
+            price_date=args.price_date,
             run_date=args.run_date,
             providers=args.provider,
             workers=args.workers,

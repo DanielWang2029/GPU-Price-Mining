@@ -31,9 +31,9 @@ def text(node: object) -> str:
 
 def require_rows(
     rows: Iterable[SourceRow],
-    expected: Iterable[tuple[str, str, str]],
+    expected: Iterable[tuple[str, str]],
 ) -> None:
-    actual = {(row.gpu_model_code, row.price_type, row.cloud_type) for row in rows}
+    actual = {(row.gpu_model_code, row.price_type) for row in rows}
     required = set(expected)
     if actual != required:
         missing = sorted(required - actual)

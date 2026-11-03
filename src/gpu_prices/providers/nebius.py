@@ -80,8 +80,8 @@ def fetch_spot_items(client: HttpClient) -> tuple[list[dict[str, object]], str]:
 def collect(
     rows: list[SourceRow], client: HttpClient, now: datetime
 ) -> list[Observation]:
-    standard_rows = [row for row in rows if row.region == "N/A"]
-    spot_rows = [row for row in rows if row.region != "N/A"]
+    standard_rows = [row for row in rows if not row.region]
+    spot_rows = [row for row in rows if row.region]
     standard = (
         parse_standard_prices(client.get_text(PRICES_URL)) if standard_rows else {}
     )
@@ -123,6 +123,7 @@ def collect(
                 money_2(raw),
                 fetched_at=now,
                 source_url=SPOT_URL,
+                raw_price=raw,
                 effective_at=item.get("effectiveTime", snapshot_time),
                 raw_value=str(raw),
                 note=(

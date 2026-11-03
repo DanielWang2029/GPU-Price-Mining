@@ -52,9 +52,11 @@ def collect(
                 money_2(rates[term]),
                 fetched_at=now,
                 source_url=URL,
-                raw_value=f"{source_price} / {gpu_count} GPU",
+                raw_price=source_price,
+                gpu_count=gpu_count,
+                raw_value=str(source_price),
                 note=(
-                    "US node price normalized by 730 hours/month and eight GPUs. "
+                    "US listed node price normalized by 730 hours/month and eight GPUs. "
                     "Workbook term 1 maps Monthly; term 12 maps Paid yearly."
                 ),
             )

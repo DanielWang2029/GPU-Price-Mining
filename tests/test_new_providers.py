@@ -153,6 +153,9 @@ class NewProviderParserTests(unittest.TestCase):
         """
         capacity = parse_capacity_prices(html)
         self.assertEqual(str(capacity["B300"][0]), "16.146")
+        self.assertEqual(str(capacity["B300"][1]), "129.168")
+        self.assertEqual(capacity["B300"][2], 8)
+        self.assertEqual(capacity["GB200"][2], 72)
         payload = {
             "config": {
                 "regions": [
@@ -189,6 +192,8 @@ class NewProviderParserTests(unittest.TestCase):
         spot = parse_spot_prices(payload)
         self.assertEqual(str(spot["B300"][0]), "9.671825")
         self.assertEqual(str(spot["B200"][0]), "10.4631625")
+        self.assertEqual(str(spot["B300"][1]), "77.3746")
+        self.assertEqual(spot["B300"][2], 8)
 
 
 if __name__ == "__main__":

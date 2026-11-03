@@ -44,7 +44,9 @@ def collect(
                 value,
                 fetched_at=now,
                 source_url=URL,
-                raw_value=f"{raw} / {gpu_count} GPU",
+                raw_price=raw,
+                gpu_count=gpu_count,
+                raw_value=str(raw),
                 note=(
                     f"Exact public catalog SKU {sku}, normalized to USD per GPU-hour. "
                     "Catalog presence does not guarantee current capacity."

@@ -24,28 +24,41 @@ The top-level command also accepts repeatable supplier filters:
 python3 -m gpu_prices.collect \
   --provider Ornn \
   --provider Nebius \
-  --run-date 20261021 \
+  --price-date 20261021 \
+  --run-date 20261022 \
   --strict
 ```
+
+`price_date` is the date associated with the price. `run_date` is the local date
+on which the record was collected; both default to the current
+`America/Los_Angeles` date.
 
 ## Outputs
 
 Each run writes:
 
-- `gpu_prices_YYYYMMDD.csv`: the eleven database columns from `表结构设计`.
+- `gpu_prices_YYYYMMDD.csv`: the 26 database columns from `表结构设计`.
 - `gpu_prices_YYYYMMDD.xlsx`: the same rows as an Excel table.
 - `gpu_prices_YYYYMMDD_audit.csv`: source row, status, source URL, effective time,
   raw value, and collection note.
 
-`price` is blank only when the supplier currently does not publish or offer that
-exact row. This is `status=unavailable` in the audit file. Fetch, schema, and parse
-failures are `status=error`; `--strict` makes those failures return a nonzero exit
-code, which is suitable for Airflow. An unavailable product does not fail the job
-and is never replaced with zero or an old value.
+`raw_price` is the total amount published for the selected offering and
+`price_gpu_hour` is its normalized one-GPU hourly price. `gpu_count` records the
+number of GPUs covered by the raw amount. The two prices are normally equal, but
+multi-GPU instances retain their total price and count. `availability` is
+`AVAILABLE` unless the source explicitly reports that the offering is unavailable
+or waitlisted.
 
-Workbook values are trimmed before matching, fixing the leading spaces currently
-present on several A100 and Community rows. Every generated row sets
-`data_source` to `price_mining`.
+Prices are blank only when the supplier currently does not publish or offer that
+exact row. This is `availability=UNAVAILABLE` and `status=unavailable` in the audit
+file. Fetch, schema, and parse failures are `status=error`; `--strict` makes those
+failures return a nonzero exit code, which is suitable for Airflow. An unavailable
+product does not fail the job and is never replaced with zero or an old value.
+
+Workbook values are trimmed before matching. Empty values remain empty rather
+than being replaced with `N/A`. Every generated row sets `source_label` to
+`price_mining`, derives a letters-only lowercase `provider_id`, and leaves the
+reserved enrichment and note columns blank.
 
 ## Source behavior
 
@@ -53,11 +66,11 @@ present on several A100 and Community rows. Every generated row sets
 | --- | --- |
 | Kalshi | Public forward-curve JSON; evaluates the log-PCHIP chart curve at collection time. |
 | Ornn | Settled global daily index API. |
-| CoreWeave | North America HTML table. The red boxes are whole-instance prices, so the values are deliberately not divided by GPU count. |
+| CoreWeave | North America HTML table. Whole-instance totals and GPU counts are retained, then normalized per GPU. |
 | SiliconData | Structured Neo-Cloud index data embedded in each public product page. |
 | Nebius | Structured standard-price page data plus the public current spot-price API with explicit region mapping. |
 | GetDeploying | Latest weekly provider-median values in the page's Price history summary. |
-| RunPod | Public GraphQL catalog; A100 means A100 80GB PCIe, matching the screenshot. |
+| RunPod | Public GraphQL Secure Cloud catalog; A100 means A100 80GB PCIe. |
 | Together.ai | GPU cluster table; reserve terms 1/3/6 map to the 3–30, 31–90, and 91–180 day columns. |
 | Daytona | Complete on-demand/preemptible panel, cross-checked against GetDeploying's provider-specific listing because Daytona's server-rendered B300 cell currently duplicates the B200 price. |
 | UpCloud | Authenticated catalog when `UPCLOUD_TOKEN` is set; otherwise the public global USD one-GPU table. |
@@ -72,10 +85,10 @@ present on several A100 and Community rows. Every generated row sets
 | TheAI Cloud | Public pricing API. Workbook H200 labels are normalized to B300 because the supplier discontinued H200 and the screenshots show B300. |
 | Digital Ocean | Reserved, spot, and on-demand GPU pricing cards. |
 | Bentaus | Lower bound of the advertised B300 per-GPU price range. |
-| Civo | GPU tables with multi-GPU node prices normalized per GPU. |
+| Civo | GPU tables with raw multi-GPU node prices, GPU counts, and normalized per-GPU prices. |
 | Cyfuture.ai | INR B300 rates converted with the current Frankfurter USD/INR reference rate. |
-| Latitude.sh | Embedded B300 plan data, normalized from monthly/yearly eight-GPU node prices. |
-| AWS | Capacity Block per-accelerator prices plus current us-east-1 Linux Spot prices divided by eight. |
+| Latitude.sh | Embedded B300 plan data, retaining monthly/yearly eight-GPU node totals and normalizing them per GPU-hour. |
+| AWS | Capacity Block and current us-east-1 Linux Spot instance totals with per-GPU normalization (8 GPUs for B200/B300 and 72 for GB200). |
 
 ### Anti-bot fallback
 
@@ -99,13 +112,14 @@ the proxy. The same setting can be enabled with
 ```bash
 python3 -m gpu_prices.backfill \
   --start-date 20261001 \
-  --end-date 20261028 \
-  --current-csv output/gpu_prices_20261028.csv \
+  --end-date 20261029 \
+  --run-date 20261030 \
+  --current-csv output/gpu_prices_20261029.csv \
   --allow-read-proxy
 ```
 
 The output defaults to
-`output/gpu_prices_history_20261001_20261028.csv`. The command also writes
+`output/gpu_prices_history_20261001_20261029.csv`. The command also writes
 `sql/t_gpu_daily_prices.sql`, containing the unconstrained PostgreSQL table
 definition and direct values for every historical row. Historical sources are:
 
@@ -130,9 +144,8 @@ users saw on a prior day cannot be reconstructed retroactively.
 ## Airflow
 
 `dags/gpu_prices_daily.py` runs all suppliers every day at 9:00 PM in
-`America/Los_Angeles`. The DAG uses the local data-interval end for
-`dtstatdate`, so an Airflow scheduler running in UTC does not write the next
-day's date early.
+`America/Los_Angeles`. The DAG uses the local data-interval end for `price_date`
+and records the task's actual local execution date separately as `run_date`.
 
 Install this project and place or symlink the DAG into the Airflow DAG folder.
 The scheduler and worker must see the same project, workbook, and output paths.

@@ -18,7 +18,9 @@ CAPTIONS = {
 }
 
 
-def parse_prices(html: str) -> dict[tuple[str, str], tuple[Decimal, str, int]]:
+def parse_prices(
+    html: str,
+) -> dict[tuple[str, str], tuple[Decimal, Decimal, str, int]]:
     soup = BeautifulSoup(html, "html.parser")
     result: dict[tuple[str, str], tuple[Decimal, str, int]] = {}
     for model, caption_text in CAPTIONS.items():
@@ -42,8 +44,10 @@ def parse_prices(html: str) -> dict[tuple[str, str], tuple[Decimal, str, int]]:
         )
         if on_demand is not None and "N/A" not in text(on_demand):
             raw = text(on_demand)
+            raw_price = parse_price(raw)
             result[(model, "On-Demand")] = (
-                parse_price(raw) / Decimal(gpu_count),
+                raw_price / Decimal(gpu_count),
+                raw_price,
                 raw,
                 gpu_count,
             )
@@ -52,8 +56,10 @@ def parse_prices(html: str) -> dict[tuple[str, str], tuple[Decimal, str, int]]:
             price_node = reserved.select_one(".price-value[data-option='hourly']")
             if price_node is not None and "N/A" not in text(price_node):
                 raw = text(price_node)
+                raw_price = parse_price(raw)
                 result[(model, "Reserve")] = (
-                    parse_price(raw) / Decimal(gpu_count),
+                    raw_price / Decimal(gpu_count),
+                    raw_price,
                     raw,
                     gpu_count,
                 )
@@ -68,14 +74,18 @@ def collect(
     for row in rows:
         if row.price_type == "Reserve" and row.term != 36:
             raise ValueError(f"Civo reserve term must be 36, got {row.term}")
-        value, raw, gpu_count = prices[(row.gpu_model_code, row.price_type)]
+        value, raw_price, raw, gpu_count = prices[
+            (row.gpu_model_code, row.price_type)
+        ]
         observations.append(
             ok(
                 row,
                 value,
                 fetched_at=now,
                 source_url=URL,
-                raw_value=f"{raw} / {gpu_count} GPU",
+                raw_price=raw_price,
+                gpu_count=gpu_count,
+                raw_value=raw,
                 note="Published node price normalized to USD per GPU-hour.",
             )
         )

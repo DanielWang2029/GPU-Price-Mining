@@ -3,9 +3,11 @@ from __future__ import annotations
 from datetime import datetime
 from decimal import Decimal
 
+from bs4 import BeautifulSoup
+
 from gpu_prices.http import FetchError, HttpClient
 from gpu_prices.models import Observation, SourceRow, money_2, ok
-from gpu_prices.providers.common import parse_price, run_provider_cli
+from gpu_prices.providers.common import parse_price, run_provider_cli, text
 
 URL = "https://cyfuture.ai/pricing"
 FX_URL = "https://api.frankfurter.app/latest"
@@ -16,6 +18,11 @@ def parse_b300_row(markdown: str) -> list[str]:
     for line in markdown.splitlines():
         if line.lstrip().startswith("| 1B300.32v.256m |"):
             return [cell.strip() for cell in line.strip().strip("|").split("|")]
+    soup = BeautifulSoup(markdown, "html.parser")
+    for row in soup.select("tr"):
+        cells = [text(cell) for cell in row.find_all("td")]
+        if cells and cells[0] == "1B300.32v.256m":
+            return cells
     raise ValueError("Cyfuture B300 single-GPU pricing row was not found")
 
 
@@ -46,6 +53,7 @@ def collect(
                 money_2(inr / inr_per_usd),
                 fetched_at=now,
                 source_url=source_url,
+                raw_price=inr,
                 effective_at=fx.get("date", ""),
                 raw_value=f"INR {inr} / {inr_per_usd} INR per USD",
                 note=(

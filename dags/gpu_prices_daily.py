@@ -39,8 +39,9 @@ with DAG(
     doc_md="""
     Runs all supplier collectors daily at 9:00 PM America/Los_Angeles.
 
-    The output date is derived from the data interval end in the DAG timezone,
-    rather than Airflow's UTC process clock. Configure `GPU_PRICE_WORKBOOK`,
+    The price date is derived from the data interval end in the DAG timezone;
+    the collector records its actual local execution date separately. Configure
+    `GPU_PRICE_WORKBOOK`,
     `GPU_PRICE_OUTPUT_DIR`, and `GPU_PRICES_ALLOW_READ_PROXY` in the scheduler
     and worker environment when their defaults are not appropriate.
     """,
@@ -53,7 +54,7 @@ with DAG(
         python3 -m gpu_prices.collect \
           --workbook "$GPU_PRICE_WORKBOOK" \
           --output-dir "$GPU_PRICE_OUTPUT_DIR" \
-          --run-date "{{ data_interval_end.in_timezone('America/Los_Angeles').strftime('%Y%m%d') }}" \
+          --price-date "{{ data_interval_end.in_timezone('America/Los_Angeles').strftime('%Y%m%d') }}" \
           --workers 8 \
           --strict
         """,

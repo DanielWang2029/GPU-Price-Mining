@@ -5,6 +5,7 @@ from decimal import Decimal
 from pathlib import Path
 
 from gpu_prices.providers.astra_intellectus import parse_visible_offers
+from gpu_prices.providers.coreweave import parse_prices as parse_coreweave_prices
 from gpu_prices.providers.daytona import parse_panels
 from gpu_prices.providers.getdeploying import (
     chart_money_2,
@@ -22,7 +23,7 @@ from gpu_prices.providers.upcloud import (
     parse_getdeploying_mirror,
     parse_public_page,
 )
-from gpu_prices.workbook import load_source_rows
+from gpu_prices.workbook import OUTPUT_HEADERS, load_source_rows, provider_id
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -30,8 +31,8 @@ ROOT = Path(__file__).resolve().parents[1]
 class WorkbookTests(unittest.TestCase):
     def test_source_workbook_has_one_normalized_row_per_request(self) -> None:
         rows = load_source_rows(ROOT / "算力价格爬虫数据整理.xlsx")
-        self.assertEqual(len(rows), 122)
-        self.assertEqual(len({row.workbook_row for row in rows}), 122)
+        self.assertEqual(len(rows), 117)
+        self.assertEqual(len({row.workbook_row for row in rows}), 117)
         self.assertEqual(len({row.source_name for row in rows}), 25)
         identities = {
             (
@@ -56,11 +57,27 @@ class WorkbookTests(unittest.TestCase):
                     row.gpu_model_code,
                     row.price_type,
                     row.region,
-                    row.cloud_type,
                     row.url,
                 )
             )
         )
+        self.assertTrue(
+            all(
+                value.upper() != "N/A"
+                for row in rows
+                for value in (
+                    row.source_name,
+                    row.supplier_type,
+                    row.gpu_model_code,
+                    row.price_type,
+                    row.region,
+                    row.url,
+                )
+            )
+        )
+        self.assertEqual(provider_id("Together.ai"), "togetherai")
+        self.assertEqual(len(OUTPUT_HEADERS), 26)
+        self.assertNotIn("cloud_type", OUTPUT_HEADERS)
 
 
 class ParserTests(unittest.TestCase):
@@ -76,6 +93,28 @@ class ParserTests(unittest.TestCase):
         self.assertEqual(str(value), "7.02")
         self.assertEqual(raw, "7.02")
         self.assertEqual(effective_at, "As of Oct 20, 2026")
+
+    def test_coreweave_separates_instance_and_per_gpu_prices(self) -> None:
+        html = """
+        <strong class="eyebrow">REGION: NORTH AMERICA</strong>
+        <div class="gpu-pricing">
+          <div role="listitem" class="kubernetes-gpu-pricing">
+            <h3 class="table-model-name" data-product="nvidia-gb200-nvl72">
+              NVIDIA GB200 NVL72
+            </h3>
+            <div class="instance-price"><span class="item-value">$42.00</span></div>
+            <div class="table-meta-text">
+              <div class="table-meta-value">4^1</div><div>GPU Count</div>
+            </div>
+          </div>
+        </div>
+        """
+        normalized, raw, count, _ = parse_coreweave_prices(html)[
+            "nvidia-gb200-nvl72"
+        ]
+        self.assertEqual(normalized, Decimal("10.50"))
+        self.assertEqual(raw, Decimal("42.00"))
+        self.assertEqual(count, 4)
 
     def test_silicondata_reads_explicit_daily_points(self) -> None:
         html = (

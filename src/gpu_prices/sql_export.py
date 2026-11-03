@@ -1,40 +1,71 @@
 from __future__ import annotations
 
 import csv
-from collections import defaultdict
+from decimal import Decimal
 from pathlib import Path
 
 from gpu_prices.workbook import DATA_SOURCE, OUTPUT_HEADERS
 
 TABLE_NAME = "public.t_gpu_daily_prices"
-IDENTITY_COLUMNS = [
-    "supplier_name",
-    "supplier_type",
-    "gpu_model_code",
-    "price_type",
-    "region",
-    "cloud_type",
-    "term",
-    "url",
-    "data_source",
-]
+INTEGER_COLUMNS = {"gpu_count", "term_months"}
+NUMBER_COLUMNS = {
+    "vram_per_gpu_gb",
+    "vram_total_gb",
+    "cpu_cores",
+    "system_ram_gb",
+    "disk_storage_gb",
+    "interconnect_bandwidth_gbps",
+    "gpu_mem_bandwidth_gbps",
+    "raw_price",
+    "price_gpu_hour",
+}
+
+COLUMN_TYPES = {
+    "price_date": "DATE",
+    "run_date": "DATE",
+    "source_label": "TEXT",
+    "record_id": "TEXT",
+    "publisher_name": "TEXT",
+    "provider_id": "TEXT",
+    "supplier_type": "TEXT",
+    "gpu_id": "TEXT",
+    "gpu_count": "INTEGER",
+    "gpu_spec": "TEXT",
+    "vram_per_gpu_gb": "DOUBLE PRECISION",
+    "vram_total_gb": "DOUBLE PRECISION",
+    "cpu_cores": "DOUBLE PRECISION",
+    "system_ram_gb": "DOUBLE PRECISION",
+    "disk_storage_gb": "DOUBLE PRECISION",
+    "interconnect_bandwidth_gbps": "DOUBLE PRECISION",
+    "gpu_mem_bandwidth_gbps": "DOUBLE PRECISION",
+    "billing_type": "TEXT",
+    "term_months": "INTEGER",
+    "region_or_hq_country": "TEXT",
+    "provider_hq_region": "TEXT",
+    "raw_price": "DOUBLE PRECISION",
+    "price_gpu_hour": "DOUBLE PRECISION",
+    "availability": "TEXT",
+    "price_note": "TEXT",
+    "source_url": "TEXT",
+}
 
 
 def _quote(value: str) -> str:
     return "'" + value.replace("'", "''") + "'"
 
 
-def _number(value: str) -> str:
-    return value if value else "NULL"
-
-
-def _values(rows: list[tuple[str, ...]], *, price_last: bool = True) -> str:
-    rendered: list[str] = []
-    for row in rows:
-        fields = [_quote(value) for value in row[:-1]]
-        fields.append(_number(row[-1]) if price_last else _quote(row[-1]))
-        rendered.append("(" + ",".join(fields) + ")")
-    return ",".join(rendered)
+def _value(column: str, value: str) -> str:
+    if not value:
+        return "NULL"
+    if column in INTEGER_COLUMNS:
+        number = Decimal(value)
+        if number != number.to_integral_value():
+            raise ValueError(f"{column} must be an integer, got {value!r}")
+        return str(int(number))
+    if column in NUMBER_COLUMNS:
+        Decimal(value)
+        return value
+    return _quote(value)
 
 
 def render_sql(csv_path: Path) -> str:
@@ -46,58 +77,25 @@ def render_sql(csv_path: Path) -> str:
         raise ValueError(
             f"Unexpected historical columns: {list(rows[0])}; expected {OUTPUT_HEADERS}"
         )
-    if any(row["data_source"] != DATA_SOURCE for row in rows):
+    if any(row["source_label"] != DATA_SOURCE for row in rows):
         raise ValueError("Historical CSV contains a non-price_mining data source")
+    if any(value.strip().upper() == "N/A" for row in rows for value in row.values()):
+        raise ValueError("Historical CSV contains an N/A placeholder")
 
-    dates = sorted({row["dtstatdate"] for row in rows})
-    by_identity: dict[tuple[str, ...], list[dict[str, str]]] = defaultdict(list)
-    for row in rows:
-        identity = tuple(row[column] for column in IDENTITY_COLUMNS)
-        by_identity[identity].append(row)
-
-    static_rows: list[tuple[str, ...]] = []
-    curve_rows: list[tuple[str, ...]] = []
-    for identity, identity_rows in by_identity.items():
-        prices = {row["price"] for row in identity_rows}
-        if len(prices) == 1:
-            static_rows.append((*identity, next(iter(prices))))
-        else:
-            curve_rows.extend(
-                (
-                    row["dtstatdate"],
-                    *(row[column] for column in IDENTITY_COLUMNS),
-                    row["price"],
-                )
-                for row in identity_rows
-            )
-    static_rows.sort()
-    curve_rows.sort()
-
-    date_values = ",".join(f"({_quote(value)})" for value in dates)
-    return f"""CREATE TABLE {TABLE_NAME} (
-    dtstatdate TEXT,
-    supplier_name TEXT,
-    supplier_type TEXT,
-    gpu_model_code TEXT,
-    price_type TEXT,
-    region TEXT,
-    cloud_type TEXT,
-    term DOUBLE PRECISION,
-    url TEXT,
-    price DOUBLE PRECISION,
-    data_source TEXT
-);
-
-WITH dates(dtstatdate) AS (VALUES {date_values}),
-static_prices(supplier_name,supplier_type,gpu_model_code,price_type,region,cloud_type,term,url,data_source,price) AS (VALUES {_values(static_rows)}),
-curve_prices(dtstatdate,supplier_name,supplier_type,gpu_model_code,price_type,region,cloud_type,term,url,data_source,price) AS (VALUES {_values(curve_rows)})
-INSERT INTO {TABLE_NAME} (dtstatdate,supplier_name,supplier_type,gpu_model_code,price_type,region,cloud_type,term,url,price,data_source)
-SELECT d.dtstatdate,s.supplier_name,s.supplier_type,s.gpu_model_code,s.price_type,s.region,s.cloud_type,NULLIF(s.term,'')::DOUBLE PRECISION,s.url,s.price,s.data_source
-FROM dates AS d CROSS JOIN static_prices AS s
-UNION ALL
-SELECT dtstatdate,supplier_name,supplier_type,gpu_model_code,price_type,region,cloud_type,NULLIF(term,'')::DOUBLE PRECISION,url,price,data_source
-FROM curve_prices;
-"""
+    definitions = ",\n".join(
+        f"    {column} {COLUMN_TYPES[column]}" for column in OUTPUT_HEADERS
+    )
+    columns = ",".join(OUTPUT_HEADERS)
+    values = ",\n".join(
+        "    ("
+        + ",".join(_value(column, row[column]) for column in OUTPUT_HEADERS)
+        + ")"
+        for row in rows
+    )
+    return (
+        f"CREATE TABLE {TABLE_NAME} (\n{definitions}\n);\n\n"
+        f"INSERT INTO {TABLE_NAME} ({columns}) VALUES\n{values};\n"
+    )
 
 
 def write_sql(csv_path: Path, output_path: Path) -> Path:

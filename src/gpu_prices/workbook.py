@@ -3,6 +3,7 @@ from __future__ import annotations
 import csv
 import posixpath
 import re
+from datetime import datetime
 from decimal import Decimal
 from pathlib import Path
 from typing import Iterable
@@ -23,26 +24,46 @@ EXPECTED_HEADERS = [
     "卡型",
     "价格类型",
     "地区",
-    "云类型",
     "租期（月）",
     "价格链接",
     "截图",
     "备注",
 ]
 OUTPUT_HEADERS = [
-    "dtstatdate",
-    "supplier_name",
+    "price_date",
+    "run_date",
+    "source_label",
+    "record_id",
+    "publisher_name",
+    "provider_id",
     "supplier_type",
-    "gpu_model_code",
-    "price_type",
-    "region",
-    "cloud_type",
-    "term",
-    "url",
-    "price",
-    "data_source",
+    "gpu_id",
+    "gpu_count",
+    "gpu_spec",
+    "vram_per_gpu_gb",
+    "vram_total_gb",
+    "cpu_cores",
+    "system_ram_gb",
+    "disk_storage_gb",
+    "interconnect_bandwidth_gbps",
+    "gpu_mem_bandwidth_gbps",
+    "billing_type",
+    "term_months",
+    "region_or_hq_country",
+    "provider_hq_region",
+    "raw_price",
+    "price_gpu_hour",
+    "availability",
+    "price_note",
+    "source_url",
 ]
 DATA_SOURCE = "price_mining"
+BILLING_TYPES = {
+    "On-Demand": "ON_DEMAND",
+    "Reserve": "RESERVATION",
+    "Spot": "SPOT",
+    "": "",
+}
 AUDIT_HEADERS = [
     "workbook_row",
     *OUTPUT_HEADERS,
@@ -56,7 +77,8 @@ AUDIT_HEADERS = [
 
 
 def _clean(value: object) -> str:
-    return "" if value is None else str(value).strip()
+    cleaned = "" if value is None else str(value).strip()
+    return "" if cleaned.upper() == "N/A" else cleaned
 
 
 _MAIN_NS = "http://schemas.openxmlformats.org/spreadsheetml/2006/main"
@@ -163,74 +185,128 @@ def load_source_rows(path: Path) -> list[SourceRow]:
         if row_number < 2:
             continue
         values = [
-            _clean(cells.get(get_column_letter(index), "")) for index in range(1, 9)
+            _clean(cells.get(get_column_letter(index), "")) for index in range(1, 8)
         ]
         if not any(values):
             continue
-        required = values[:6] + [values[7]]
+        required = values[:3] + [values[6]]
         if not all(required):
             raise ValueError(
                 f"Incomplete source definition at workbook row {row_number}"
             )
-        gpu_model = values[2]
-        if values[0] == "TheAI Cloud" and gpu_model == "H200":
-            # The workbook screenshots and the supplier API both identify B300;
-            # TheAI discontinued H200 before this data range.
-            gpu_model = "B300"
         rows.append(
             SourceRow(
                 workbook_row=row_number,
                 source_name=values[0],
                 supplier_type=values[1],
-                gpu_model_code=gpu_model,
+                gpu_model_code=values[2],
                 price_type=values[3],
                 region=values[4],
-                cloud_type=values[5],
-                term=_parse_term(values[6], row_number),
-                url=values[7],
+                term=_parse_term(values[5], row_number),
+                url=values[6],
             )
         )
     return rows
 
 
-def _price_text(observation: Observation) -> str:
-    return "" if observation.price is None else str(observation.price)
+def provider_id(name: str) -> str:
+    return re.sub(r"[^a-z]", "", name.lower())
 
 
-def _data_row(run_date: str, observation: Observation) -> list[object]:
-    row = observation.row
-    return [
+def billing_type(value: str) -> str:
+    try:
+        return BILLING_TYPES[value]
+    except KeyError as exc:
+        raise ValueError(f"Unsupported price type {value!r}") from exc
+
+
+def iso_date(value: str) -> str:
+    if re.fullmatch(r"\d{8}", value):
+        return datetime.strptime(value, "%Y%m%d").date().isoformat()
+    if re.fullmatch(r"\d{4}-\d{2}-\d{2}", value):
+        return datetime.strptime(value, "%Y-%m-%d").date().isoformat()
+    raise ValueError(f"Date must be YYYYMMDD or YYYY-MM-DD, got {value!r}")
+
+
+def _decimal_text(value: Decimal | None) -> str:
+    return "" if value is None else str(value)
+
+
+def data_row(
+    price_date: str,
+    run_date: str,
+    observation: Observation,
+) -> list[object]:
+    return record_row(
+        price_date,
         run_date,
+        observation.row,
+        raw_price=observation.raw_price,
+        price_gpu_hour=observation.price_gpu_hour,
+        gpu_count=observation.gpu_count,
+        availability=observation.availability,
+    )
+
+
+def record_row(
+    price_date: str,
+    run_date: str,
+    row: SourceRow,
+    *,
+    raw_price: Decimal | None,
+    price_gpu_hour: Decimal | None,
+    gpu_count: int,
+    availability: str,
+) -> list[object]:
+    return [
+        iso_date(price_date),
+        iso_date(run_date),
+        DATA_SOURCE,
+        "",
         row.source_name,
+        provider_id(row.source_name),
         row.supplier_type,
         row.gpu_model_code,
-        row.price_type,
-        row.region,
-        row.cloud_type,
+        gpu_count,
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        billing_type(row.price_type),
         "" if row.term is None else str(row.term),
+        "",
+        row.region,
+        _decimal_text(raw_price),
+        _decimal_text(price_gpu_hour),
+        availability,
+        "",
         row.url,
-        _price_text(observation),
-        DATA_SOURCE,
     ]
 
 
 def write_outputs(
     observations: Iterable[Observation],
     *,
+    price_date: str,
     run_date: str,
     output_dir: Path,
 ) -> tuple[Path, Path, Path]:
     ordered = sorted(observations, key=lambda item: item.row.workbook_row)
     output_dir.mkdir(parents=True, exist_ok=True)
-    csv_path = output_dir / f"gpu_prices_{run_date}.csv"
-    xlsx_path = output_dir / f"gpu_prices_{run_date}.xlsx"
-    audit_path = output_dir / f"gpu_prices_{run_date}_audit.csv"
+    date_token = iso_date(price_date).replace("-", "")
+    csv_path = output_dir / f"gpu_prices_{date_token}.csv"
+    xlsx_path = output_dir / f"gpu_prices_{date_token}.xlsx"
+    audit_path = output_dir / f"gpu_prices_{date_token}_audit.csv"
 
     with csv_path.open("w", newline="", encoding="utf-8-sig") as handle:
         writer = csv.writer(handle, lineterminator="\n")
         writer.writerow(OUTPUT_HEADERS)
         for observation in ordered:
-            writer.writerow(_data_row(run_date, observation))
+            writer.writerow(data_row(price_date, run_date, observation))
 
     with audit_path.open("w", newline="", encoding="utf-8-sig") as handle:
         writer = csv.writer(handle, lineterminator="\n")
@@ -239,7 +315,7 @@ def write_outputs(
             writer.writerow(
                 [
                     observation.row.workbook_row,
-                    *_data_row(run_date, observation),
+                    *data_row(price_date, run_date, observation),
                     observation.status,
                     observation.effective_at,
                     observation.fetched_at.isoformat(),
@@ -254,19 +330,60 @@ def write_outputs(
     sheet.title = "每日价格"
     sheet.append(OUTPUT_HEADERS)
     for observation in ordered:
-        row = _data_row(run_date, observation)
-        row[7] = (
+        row = data_row(price_date, run_date, observation)
+        row[8] = observation.gpu_count
+        row[18] = (
             float(observation.row.term) if observation.row.term is not None else None
         )
-        row[9] = float(observation.price) if observation.price is not None else None
+        row[21] = (
+            float(observation.raw_price)
+            if observation.raw_price is not None
+            else None
+        )
+        row[22] = (
+            float(observation.price_gpu_hour)
+            if observation.price_gpu_hour is not None
+            else None
+        )
         sheet.append(row)
     for cell in sheet[1]:
         cell.font = Font(bold=True)
     sheet.freeze_panes = "A2"
-    widths = [14, 22, 16, 18, 16, 20, 16, 12, 48, 14, 16]
+    widths = [
+        14,
+        14,
+        16,
+        14,
+        22,
+        18,
+        16,
+        12,
+        12,
+        14,
+        18,
+        16,
+        14,
+        18,
+        18,
+        30,
+        30,
+        16,
+        14,
+        22,
+        22,
+        14,
+        18,
+        16,
+        20,
+        48,
+    ]
     for index, width in enumerate(widths, start=1):
         sheet.column_dimensions[get_column_letter(index)].width = width
-    table = Table(displayName="DailyGpuPrices", ref=f"A1:K{sheet.max_row}")
+    last_column = get_column_letter(len(OUTPUT_HEADERS))
+    table = Table(
+        displayName="DailyGpuPrices",
+        ref=f"A1:{last_column}{sheet.max_row}",
+    )
     table.tableStyleInfo = TableStyleInfo(
         name="TableStyleMedium2",
         showFirstColumn=False,

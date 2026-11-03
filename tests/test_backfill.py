@@ -15,6 +15,7 @@ from gpu_prices.backfill import (
 )
 from gpu_prices.models import SourceRow
 from gpu_prices.sql_export import render_sql
+from gpu_prices.workbook import OUTPUT_HEADERS
 
 
 class TextClient:
@@ -40,8 +41,7 @@ class BackfillTests(unittest.TestCase):
                 source_name="GetDeploying",
                 gpu_model_code="B300",
                 price_type="On-Demand",
-                region="N/A",
-                cloud_type="N/A",
+                region="",
                 url="https://getdeploying.com/gpus/nvidia-b300",
             )
         ]
@@ -63,46 +63,76 @@ nvidia-b300,2026-10-05,ON_DEMAND,,1,10,8.7,8.99,5,10
             gpu_model_code="GB200",
             price_type="On-Demand",
             region="North America",
-            cloud_type="N/A",
             url="https://www.coreweave.com/pricing",
         )
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             current_path = root / "current.csv"
-            current_path.write_text(
-                "dtstatdate,supplier_name,supplier_type,gpu_model_code,"
-                "price_type,region,cloud_type,term,url,price,data_source\n"
-                "20261026,CoreWeave,NeoCloud,GB200,On-Demand,North America,"
-                "N/A,,https://www.coreweave.com/pricing,42.00,price_mining\n",
-                encoding="utf-8",
+            current_record = {column: "" for column in OUTPUT_HEADERS}
+            current_record.update(
+                {
+                    "price_date": "2026-10-26",
+                    "run_date": "2026-10-30",
+                    "source_label": "price_mining",
+                    "publisher_name": "CoreWeave",
+                    "provider_id": "coreweave",
+                    "supplier_type": "NeoCloud",
+                    "gpu_id": "GB200",
+                    "gpu_count": "4",
+                    "billing_type": "ON_DEMAND",
+                    "provider_hq_region": "North America",
+                    "raw_price": "42.00",
+                    "price_gpu_hour": "10.50",
+                    "availability": "AVAILABLE",
+                    "source_url": "https://www.coreweave.com/pricing",
+                }
             )
+            with current_path.open("w", encoding="utf-8", newline="") as handle:
+                writer = csv.DictWriter(handle, fieldnames=OUTPUT_HEADERS)
+                writer.writeheader()
+                writer.writerow(current_record)
             current = load_current_prices(
                 current_path,
                 [source],
                 date(2026, 10, 26),
             )
-            self.assertEqual(current[7], Decimal("42.00"))
+            self.assertEqual(current[7].raw_price, Decimal("42.00"))
+            self.assertEqual(current[7].price_gpu_hour, Decimal("10.50"))
+            self.assertEqual(current[7].gpu_count, 4)
 
             output_path = root / "history.csv"
             dates = [date(2026, 10, 25), date(2026, 10, 26)]
             history = {
                 7: {
-                    date(2026, 10, 25): Decimal("42.00"),
-                    date(2026, 10, 26): Decimal("42.00"),
+                    date(2026, 10, 25): Decimal("10.50"),
+                    date(2026, 10, 26): Decimal("10.50"),
                 }
             }
-            write_history_csv(output_path, [source], dates, history)
+            write_history_csv(
+                output_path,
+                [source],
+                dates,
+                history,
+                current,
+                set(),
+                "20261030",
+            )
             with output_path.open(encoding="utf-8-sig", newline="") as handle:
                 records = list(csv.DictReader(handle))
             self.assertEqual(len(records), 2)
-            self.assertEqual(records[0]["dtstatdate"], "20261025")
-            self.assertEqual(records[1]["price"], "42.00")
+            self.assertEqual(records[0]["price_date"], "2026-10-25")
+            self.assertEqual(records[1]["run_date"], "2026-10-30")
+            self.assertEqual(records[1]["raw_price"], "42.00")
+            self.assertEqual(records[1]["price_gpu_hour"], "10.50")
+            self.assertEqual(records[1]["availability"], "AVAILABLE")
             self.assertEqual(records[1]["supplier_type"], "NeoCloud")
-            self.assertEqual(records[1]["data_source"], "price_mining")
+            self.assertEqual(records[1]["source_label"], "price_mining")
+            self.assertNotIn("N/A", records[1].values())
             self.assertNotIn(b"\r\n", output_path.read_bytes())
             sql = render_sql(output_path)
             self.assertIn("CREATE TABLE public.t_gpu_daily_prices", sql)
-            self.assertIn("'CoreWeave','NeoCloud','GB200'", sql)
+            self.assertIn("raw_price DOUBLE PRECISION", sql)
+            self.assertIn("'CoreWeave','coreweave','NeoCloud','GB200',4", sql)
             self.assertNotIn("COPY ", sql)
 
 

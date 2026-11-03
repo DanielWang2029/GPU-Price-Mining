@@ -45,16 +45,15 @@ def collect(
         item = catalog.get(gpu_id)
         if item is None:
             raise ValueError(f"RunPod catalog omitted {gpu_id}")
-        community = row.cloud_type == "Community"
-        supported = item["communityCloud" if community else "secureCloud"]
-        raw = item["communityPrice" if community else "securePrice"]
+        supported = item["secureCloud"]
+        raw = item["securePrice"]
         if not supported or raw in (None, 0):
             observations.append(
                 unavailable(
                     row,
                     fetched_at=now,
                     source_url=URL,
-                    note=f"RunPod does not currently list {gpu_id} in {row.cloud_type}.",
+                    note=f"RunPod does not currently list {gpu_id} in Secure Cloud.",
                 )
             )
             continue
@@ -66,8 +65,7 @@ def collect(
                 source_url=URL,
                 raw_value=str(raw),
                 note=(
-                    f"Published {row.cloud_type} Cloud on-demand list price "
-                    "in USD per GPU-hour."
+                    "Published Secure Cloud on-demand list price in USD per GPU-hour."
                 ),
             )
         )

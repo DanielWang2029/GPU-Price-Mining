@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime
+from decimal import Decimal
 
 from bs4 import BeautifulSoup
 
@@ -16,7 +17,7 @@ PRODUCTS = {
 }
 
 
-def parse_prices(html: str) -> dict[str, tuple[object, str]]:
+def parse_prices(html: str) -> dict[str, tuple[Decimal, Decimal, int, str]]:
     soup = BeautifulSoup(html, "html.parser")
     label = next(
         (
@@ -32,13 +33,31 @@ def parse_prices(html: str) -> dict[str, tuple[object, str]]:
     if table is None:
         raise ValueError("CoreWeave North America GPU rows were not found")
 
-    parsed: dict[str, tuple[object, str]] = {}
+    parsed: dict[str, tuple[Decimal, Decimal, int, str]] = {}
     for item in table.select('[role="listitem"].kubernetes-gpu-pricing'):
         model = item.select_one("h3.table-model-name[data-product]")
         price = item.select_one(".instance-price .item-value")
         if model is None or price is None or not text(price):
             continue
-        parsed[model["data-product"]] = (parse_price(text(price)), text(price))
+        gpu_count_node = next(
+            (
+                node.select_one(".table-meta-value")
+                for node in item.select(".table-meta-text")
+                if "GPU Count" in text(node)
+            ),
+            None,
+        )
+        if gpu_count_node is None:
+            raise ValueError(f"CoreWeave omitted GPU count for {model['data-product']}")
+        gpu_count = int(parse_price(text(gpu_count_node)))
+        raw = text(price)
+        raw_price = parse_price(raw)
+        parsed[model["data-product"]] = (
+            raw_price / Decimal(gpu_count),
+            raw_price,
+            gpu_count,
+            raw,
+        )
     return parsed
 
 
@@ -51,17 +70,19 @@ def collect(
         product = PRODUCTS[row.gpu_model_code]
         if product not in prices:
             raise ValueError(f"CoreWeave North America table omitted {product}")
-        value, raw = prices[product]
+        value, raw_price, gpu_count, raw = prices[product]
         observations.append(
             ok(
                 row,
                 value,
                 fetched_at=now,
                 source_url=URL,
+                raw_price=raw_price,
+                gpu_count=gpu_count,
                 raw_value=raw,
                 note=(
                     "Published North America on-demand instance-hour price; "
-                    "this follows the workbook's red box and is not divided by GPU count."
+                    "normalized to the source's single-GPU hourly price."
                 ),
             )
         )

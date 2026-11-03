@@ -25,11 +25,14 @@ SPOT_SKUS = {
     "B300": "p6-b300.48xlarge",
     "B200": "p6-b200.48xlarge",
 }
+GPU_COUNTS = {"B300": 8, "B200": 8, "GB200": 72}
 
 
-def parse_capacity_prices(html: str) -> dict[str, tuple[Decimal, str]]:
+def parse_capacity_prices(
+    html: str,
+) -> dict[str, tuple[Decimal, Decimal, int, str]]:
     soup = BeautifulSoup(html, "html.parser")
-    result: dict[str, tuple[Decimal, str]] = {}
+    result: dict[str, tuple[Decimal, Decimal, int, str]] = {}
     for model, (heading_text, sku, region) in CAPACITY_ROWS.items():
         heading = next(
             (
@@ -53,11 +56,18 @@ def parse_capacity_prices(html: str) -> dict[str, tuple[Decimal, str]]:
         amounts = re.findall(r"\$([0-9.]+)", selected[2])
         if len(amounts) < 2:
             raise ValueError(f"AWS {sku} cell omitted per-accelerator price")
-        result[model] = (Decimal(amounts[1]), selected[2])
+        result[model] = (
+            Decimal(amounts[1]),
+            Decimal(amounts[0]),
+            GPU_COUNTS[model],
+            selected[2],
+        )
     return result
 
 
-def parse_spot_prices(payload: dict[str, object]) -> dict[str, tuple[Decimal, str]]:
+def parse_spot_prices(
+    payload: dict[str, object],
+) -> dict[str, tuple[Decimal, Decimal, int, str]]:
     region = next(
         item for item in payload["config"]["regions"] if item["region"] == "us-east-1"
     )
@@ -71,10 +81,12 @@ def parse_spot_prices(payload: dict[str, object]) -> dict[str, tuple[Decimal, st
                 column for column in size["valueColumns"] if column["name"] == "linux"
             )
             by_sku[str(sku)] = linux["prices"]["USD"]
-    return {
-        model: (Decimal(by_sku[sku]) / Decimal(8), by_sku[sku])
-        for model, sku in SPOT_SKUS.items()
-    }
+    result: dict[str, tuple[Decimal, Decimal, int, str]] = {}
+    for model, sku in SPOT_SKUS.items():
+        raw = Decimal(by_sku[sku])
+        count = GPU_COUNTS[model]
+        result[model] = (raw / Decimal(count), raw, count, by_sku[sku])
+    return result
 
 
 def collect(
@@ -85,14 +97,14 @@ def collect(
     observations: list[Observation] = []
     for row in rows:
         if row.price_type == "Reserve":
-            value, raw = capacity[row.gpu_model_code]
+            value, raw_price, gpu_count, raw = capacity[row.gpu_model_code]
             source_url = CAPACITY_URL
             note = (
-                "Published Capacity Block effective hourly rate per accelerator "
+                "Published Capacity Block instance-hour and per-accelerator rates "
                 "for the workbook's selected North America region."
             )
         else:
-            value, raw = spot[row.gpu_model_code]
+            value, raw_price, gpu_count, raw = spot[row.gpu_model_code]
             source_url = SPOT_URL
             note = "Current us-east-1 Linux Spot instance price divided by eight GPUs."
         observations.append(
@@ -101,6 +113,8 @@ def collect(
                 value,
                 fetched_at=now,
                 source_url=source_url,
+                raw_price=raw_price,
+                gpu_count=gpu_count,
                 raw_value=raw,
                 note=note,
             )

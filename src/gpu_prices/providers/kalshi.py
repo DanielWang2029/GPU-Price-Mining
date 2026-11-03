@@ -11,6 +11,14 @@ from gpu_prices.models import Observation, SourceRow, money_2, ok
 from gpu_prices.providers.common import run_provider_cli
 
 BASE_URL = "https://kalshi.com/api-app/compute/forward-curve"
+HEADERS = {
+    "Accept": "application/json",
+    "User-Agent": (
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+        "AppleWebKit/537.36 (KHTML, like Gecko) "
+        "Chrome/141.0.0.0 Safari/537.36"
+    ),
+}
 
 
 def _proxied_json(text: str) -> object:
@@ -28,7 +36,7 @@ def _get_json(
 ) -> tuple[dict[str, object], str, bool]:
     if not skip_direct:
         try:
-            payload = client.get_json(url, headers={"Accept": "application/json"})
+            payload = client.get_json(url, headers=HEADERS)
             return payload, url, False
         except FetchError:
             pass

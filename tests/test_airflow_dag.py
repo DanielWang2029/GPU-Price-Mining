@@ -18,6 +18,7 @@ class AirflowDagTests(unittest.TestCase):
         self.assertIn("catchup=False", source)
         self.assertIn("max_active_runs=1", source)
         self.assertIn("data_interval_end.in_timezone", source)
+        self.assertIn("--price-date", source)
         self.assertIn("--strict", source)
 
 

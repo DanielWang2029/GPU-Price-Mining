@@ -75,7 +75,9 @@ def collect(
                 money_2(value),
                 fetched_at=now,
                 source_url=URL,
-                raw_value=f"{raw_price} / {selected['gpuCount']} GPU",
+                raw_price=raw_price,
+                gpu_count=int(selected["gpuCount"]),
+                raw_value=str(raw_price),
                 note=(
                     "Lowest available public offer normalized to USD per GPU-hour; "
                     f"offer {selected.get('offerId', '')}."

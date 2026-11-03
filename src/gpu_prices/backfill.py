@@ -7,6 +7,7 @@ import os
 import sys
 import time
 from collections import defaultdict
+from dataclasses import dataclass
 from datetime import date, datetime, timedelta, timezone
 from datetime import time as datetime_time
 from decimal import Decimal
@@ -22,7 +23,13 @@ from gpu_prices.providers.getdeploying import (
     select_reservation_chart_row,
 )
 from gpu_prices.sql_export import write_sql
-from gpu_prices.workbook import DATA_SOURCE, OUTPUT_HEADERS, load_source_rows
+from gpu_prices.workbook import (
+    OUTPUT_HEADERS,
+    billing_type,
+    load_source_rows,
+    provider_id,
+    record_row,
+)
 
 ORNN_HISTORY_URL = "https://api.ornnai.com/api/gpu/{model}/index-history"
 NEBIUS_SERIES_URL = "https://api.nebius.cloud/billing/v1alpha1/spot-price/list-series"
@@ -30,19 +37,31 @@ LOS_ANGELES = ZoneInfo("America/Los_Angeles")
 NEW_YORK = ZoneInfo("America/New_York")
 UTC = timezone.utc
 
-RowKey = tuple[str, str, str, str, str, str, str, str]
-History = dict[int, dict[date, Decimal]]
+RowKey = tuple[str, str, str, str, str, str, str, str, str]
+History = dict[int, dict[date, Decimal | None]]
+
+
+@dataclass(frozen=True, slots=True)
+class CurrentPrice:
+    raw_price: Decimal | None
+    price_gpu_hour: Decimal | None
+    gpu_count: int
+    availability: str
+
+
+CurrentPrices = dict[int, CurrentPrice]
 
 
 def row_key(row: SourceRow) -> RowKey:
     return (
         row.source_name,
+        provider_id(row.source_name),
         row.supplier_type,
         row.gpu_model_code,
-        row.price_type,
-        row.region,
-        row.cloud_type,
+        billing_type(row.price_type),
         "" if row.term is None else str(row.term),
+        "",
+        row.region,
         row.url,
     )
 
@@ -65,33 +84,53 @@ def load_current_prices(
     path: Path,
     rows: list[SourceRow],
     end: date,
-) -> dict[int, Decimal]:
+) -> CurrentPrices:
     with path.open(newline="", encoding="utf-8-sig") as handle:
         records = list(csv.DictReader(handle))
-    expected_date = end.strftime("%Y%m%d")
-    by_key: dict[RowKey, Decimal] = {}
+    if records and list(records[0]) != OUTPUT_HEADERS:
+        raise ValueError(
+            f"Unexpected current-price columns: {list(records[0])}; "
+            f"expected {OUTPUT_HEADERS}"
+        )
+    expected_date = end.isoformat()
+    by_key: dict[RowKey, CurrentPrice] = {}
     for record in records:
-        if record["dtstatdate"] != expected_date:
+        if record["price_date"] != expected_date:
             raise ValueError(
-                f"{path} contains date {record['dtstatdate']}, expected {expected_date}"
+                f"{path} contains price date {record['price_date']}, "
+                f"expected {expected_date}"
             )
         key: RowKey = (
-            record["supplier_name"].strip(),
+            record["publisher_name"].strip(),
+            record["provider_id"].strip(),
             record["supplier_type"].strip(),
-            record["gpu_model_code"].strip(),
-            record["price_type"].strip(),
-            record["region"].strip(),
-            record["cloud_type"].strip(),
-            record["term"].strip(),
-            record["url"].strip(),
+            record["gpu_id"].strip(),
+            record["billing_type"].strip(),
+            record["term_months"].strip(),
+            record["region_or_hq_country"].strip(),
+            record["provider_hq_region"].strip(),
+            record["source_url"].strip(),
         )
         if key in by_key:
             raise ValueError(f"Duplicate current-price identity in {path}: {key}")
-        if not record["price"].strip():
-            raise ValueError(f"Current price is blank for {key}")
-        by_key[key] = Decimal(record["price"])
+        availability = record["availability"].strip()
+        if availability not in {"AVAILABLE", "UNAVAILABLE", "WAITLIST", ""}:
+            raise ValueError(f"Invalid availability {availability!r} for {key}")
+        raw_text = record["raw_price"].strip()
+        normalized_text = record["price_gpu_hour"].strip()
+        if availability == "AVAILABLE" and (not raw_text or not normalized_text):
+            raise ValueError(f"Available current price is blank for {key}")
+        gpu_count = int(record["gpu_count"])
+        if gpu_count < 1:
+            raise ValueError(f"Invalid GPU count {gpu_count} for {key}")
+        by_key[key] = CurrentPrice(
+            raw_price=Decimal(raw_text) if raw_text else None,
+            price_gpu_hour=Decimal(normalized_text) if normalized_text else None,
+            gpu_count=gpu_count,
+            availability=availability,
+        )
 
-    result: dict[int, Decimal] = {}
+    result: CurrentPrices = {}
     for row in rows:
         key = row_key(row)
         if key not in by_key:
@@ -318,7 +357,7 @@ def _getdeploying_week_values(
     rows: list[dict[str, str]],
 ) -> dict[str, Decimal]:
     result: dict[str, Decimal] = {}
-    for price_type, billing_type in (
+    for price_type, dataset_billing_type in (
         ("On-Demand", "ON_DEMAND"),
         ("Spot", "SPOT"),
     ):
@@ -326,7 +365,8 @@ def _getdeploying_week_values(
             (
                 row
                 for row in rows
-                if row["billing_type"] == billing_type and row["provider_median_price"]
+                if row["billing_type"] == dataset_billing_type
+                and row["provider_median_price"]
             ),
             None,
         )
@@ -374,11 +414,13 @@ def getdeploying_history(
 def build_history(
     rows: list[SourceRow],
     dates: list[date],
-    current: dict[int, Decimal],
+    current: CurrentPrices,
     client: HttpClient,
 ) -> tuple[History, set[int]]:
     history: History = {
-        row.workbook_row: {day: current[row.workbook_row] for day in dates}
+        row.workbook_row: {
+            day: current[row.workbook_row].price_gpu_hour for day in dates
+        }
         for row in rows
     }
     curve_rows: set[int] = set()
@@ -387,7 +429,7 @@ def build_history(
         "Ornn": [row for row in rows if row.source_name == "Ornn"],
         "SiliconData": [row for row in rows if row.source_name == "SiliconData"],
         "Nebius": [
-            row for row in rows if row.source_name == "Nebius" and row.region != "N/A"
+            row for row in rows if row.source_name == "Nebius" and row.region
         ],
         "GetDeploying": [row for row in rows if row.source_name == "GetDeploying"],
     }
@@ -418,28 +460,36 @@ def write_history_csv(
     rows: list[SourceRow],
     dates: list[date],
     history: History,
+    current: CurrentPrices,
+    curve_rows: set[int],
+    run_date: str,
 ) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", newline="", encoding="utf-8-sig") as handle:
         writer = csv.writer(handle, lineterminator="\n")
         writer.writerow(OUTPUT_HEADERS)
         for day in dates:
-            dtstatdate = day.strftime("%Y%m%d")
             for row in sorted(rows, key=lambda item: item.workbook_row):
+                normalized = history[row.workbook_row][day]
+                if row.workbook_row in curve_rows:
+                    raw_price = normalized
+                    gpu_count = 1
+                    availability = "AVAILABLE"
+                else:
+                    point = current[row.workbook_row]
+                    raw_price = point.raw_price
+                    gpu_count = point.gpu_count
+                    availability = point.availability
                 writer.writerow(
-                    [
-                        dtstatdate,
-                        row.source_name,
-                        row.supplier_type,
-                        row.gpu_model_code,
-                        row.price_type,
-                        row.region,
-                        row.cloud_type,
-                        "" if row.term is None else str(row.term),
-                        row.url,
-                        str(history[row.workbook_row][day]),
-                        DATA_SOURCE,
-                    ]
+                    record_row(
+                        day.isoformat(),
+                        run_date,
+                        row,
+                        raw_price=raw_price,
+                        price_gpu_hour=normalized,
+                        gpu_count=gpu_count,
+                        availability=availability,
+                    )
                 )
 
 
@@ -465,10 +515,15 @@ def build_parser() -> argparse.ArgumentParser:
         default=datetime.now(LOS_ANGELES).strftime("%Y%m%d"),
     )
     parser.add_argument(
+        "--run-date",
+        default=datetime.now(LOS_ANGELES).strftime("%Y%m%d"),
+        help="Date this backfill is recorded in YYYYMMDD format.",
+    )
+    parser.add_argument(
         "--current-csv",
         type=Path,
         help=(
-            "Current seven-column price CSV. Defaults to "
+            "Current price CSV in the revised table schema. Defaults to "
             "output/gpu_prices_<end-date>.csv."
         ),
     )
@@ -512,7 +567,15 @@ def main(argv: list[str] | None = None) -> int:
             current,
             HttpClient(allow_read_proxy=args.allow_read_proxy),
         )
-        write_history_csv(output, rows, dates, history)
+        write_history_csv(
+            output,
+            rows,
+            dates,
+            history,
+            current,
+            curve_rows,
+            args.run_date,
+        )
         sql_output = write_sql(output, args.sql_output)
     except Exception as exc:
         print(f"Backfill failed: {type(exc).__name__}: {exc}", file=sys.stderr)
