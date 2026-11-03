@@ -103,7 +103,7 @@ def load_current_prices(
             record["publisher_name"].strip(),
             record["provider_id"].strip(),
             record["supplier_type"].strip(),
-            record["gpu_id"].strip(),
+            record["gpu_model_code"].strip(),
             record["billing_type"].strip(),
             record["term_months"].strip(),
             record["region_or_hq_country"].strip(),
@@ -151,11 +151,14 @@ def load_prior_history(
         return {}
     with path.open(newline="", encoding="utf-8-sig") as handle:
         records = list(csv.DictReader(handle))
-    if records and list(records[0]) != OUTPUT_HEADERS:
+    legacy_headers = [column for column in OUTPUT_HEADERS if column != "gpu_model_code"]
+    actual_headers = list(records[0]) if records else OUTPUT_HEADERS
+    if actual_headers not in (OUTPUT_HEADERS, legacy_headers):
         raise ValueError(
-            f"Unexpected prior-history columns: {list(records[0])}; "
+            f"Unexpected prior-history columns: {actual_headers}; "
             f"expected {OUTPUT_HEADERS}"
         )
+    model_column = "gpu_model_code" if "gpu_model_code" in actual_headers else "gpu_id"
     row_by_key = {row_key(row): row for row in rows}
     wanted = set(dates)
     result: History = defaultdict(dict)
@@ -164,7 +167,7 @@ def load_prior_history(
             record["publisher_name"].strip(),
             record["provider_id"].strip(),
             record["supplier_type"].strip(),
-            record["gpu_id"].strip(),
+            record[model_column].strip(),
             record["billing_type"].strip(),
             record["term_months"].strip(),
             record["region_or_hq_country"].strip(),

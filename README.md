@@ -37,7 +37,7 @@ on which the record was collected; both default to the current
 
 Each run writes:
 
-- `gpu_prices_YYYYMMDD.csv`: the 26 database columns from `表结构设计`.
+- `gpu_prices_YYYYMMDD.csv`: the 27 database columns from `表结构设计`.
 - `gpu_prices_YYYYMMDD.xlsx`: the same rows as an Excel table.
 - `gpu_prices_YYYYMMDD_audit.csv`: source row, status, source URL, effective time,
   raw value, and collection note.
