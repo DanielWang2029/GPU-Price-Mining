@@ -13,6 +13,7 @@ from gpu_prices.backfill import (
     ccir_history,
     getdeploying_history,
     load_current_prices,
+    load_prior_history,
     write_history_csv,
 )
 from gpu_prices.models import SourceRow
@@ -85,6 +86,54 @@ nvidia-b300,2026-10-05,ON_DEMAND,,1,10,8.7,8.99,5,10
         self.assertEqual(result[22][date(2026, 10, 1)], Decimal("8.63"))
         self.assertEqual(result[22][date(2026, 10, 4)], Decimal("8.63"))
         self.assertEqual(result[22][date(2026, 10, 5)], Decimal("8.99"))
+
+    def test_prior_history_accepts_legacy_gpu_id_model_column(self) -> None:
+        source = SourceRow(
+            workbook_row=7,
+            source_name="CoreWeave",
+            supplier_type="NeoCloud",
+            gpu_model_code="GB200",
+            price_type="On-Demand",
+            region="North America",
+            url="https://www.coreweave.com/pricing",
+        )
+        legacy_headers = [
+            column for column in OUTPUT_HEADERS if column != "gpu_model_code"
+        ]
+        record = {column: "" for column in legacy_headers}
+        record.update(
+            {
+                "price_date": "2026-10-01",
+                "run_date": "2026-10-30",
+                "source_label": "price_mining",
+                "publisher_name": "CoreWeave",
+                "provider_id": "coreweave",
+                "supplier_type": "NeoCloud",
+                "gpu_id": "GB200",
+                "gpu_count": "4",
+                "billing_type": "ON_DEMAND",
+                "provider_hq_region": "North America",
+                "raw_price": "42.00",
+                "price_gpu_hour": "10.50",
+                "availability": "AVAILABLE",
+                "source_url": source.url,
+            }
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "legacy.csv"
+            with path.open("w", encoding="utf-8", newline="") as handle:
+                writer = csv.DictWriter(handle, fieldnames=legacy_headers)
+                writer.writeheader()
+                writer.writerow(record)
+            history = load_prior_history(
+                path,
+                [source],
+                [date(2026, 10, 1)],
+            )
+        self.assertEqual(
+            history[7][date(2026, 10, 1)],
+            Decimal("10.50"),
+        )
 
     def test_current_prices_and_history_csv_preserve_schema(self) -> None:
         source = SourceRow(
@@ -159,6 +208,8 @@ nvidia-b300,2026-10-05,ON_DEMAND,,1,10,8.7,8.99,5,10
             self.assertEqual(records[1]["availability"], "AVAILABLE")
             self.assertEqual(records[1]["supplier_type"], "NeoCloud")
             self.assertEqual(records[1]["source_label"], "price_mining")
+            self.assertEqual(records[1]["gpu_id"], "")
+            self.assertEqual(records[1]["gpu_model_code"], "GB200")
             self.assertNotIn("N/A", records[1].values())
             self.assertNotIn(b"\r\n", output_path.read_bytes())
 
