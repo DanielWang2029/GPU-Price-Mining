@@ -511,7 +511,19 @@ def build_history(
         "CCIR": ccir_history,
     }
     for source_name, source_rows in groups.items():
-        values = collectors[source_name](source_rows, dates, client)
+        fetch_dates = [
+            day
+            for day in dates
+            if any(
+                day not in (prior or {}).get(row.workbook_row, {})
+                for row in source_rows
+            )
+        ]
+        values = (
+            collectors[source_name](source_rows, fetch_dates, client)
+            if fetch_dates
+            else {}
+        )
         for row in source_rows:
             row_values = values.get(row.workbook_row, {})
             for day, value in (prior or {}).get(row.workbook_row, {}).items():
