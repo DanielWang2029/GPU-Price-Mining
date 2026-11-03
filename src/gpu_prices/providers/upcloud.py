@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import os
 import re
 import time
@@ -9,11 +10,13 @@ from decimal import Decimal
 from bs4 import BeautifulSoup
 
 from gpu_prices.http import FetchError, HttpClient
-from gpu_prices.models import Observation, SourceRow, ok
+from gpu_prices.models import Observation, SourceRow, money_2, ok
 from gpu_prices.providers.common import parse_price, run_provider_cli, text
 
 PAGE_URL = "https://upcloud.com/global/products/gpu-servers/?currency=USD"
 API_URL = "https://api.upcloud.com/1.3/price"
+WORDPRESS_URL = "https://upcloud.com/wp-json/wp/v2/pages/53197?_fields=content"
+EUR_TO_USD = Decimal("1.15")
 MIRROR_URL_TEMPLATE = "https://getdeploying.com/gpus/nvidia-{model}"
 PLAN_NAMES = {
     ("B200", "On-Demand"): "GPU-24xCPU-240GB-1xB200",
@@ -25,7 +28,11 @@ PLAN_NAMES = {
 
 def parse_public_page(content: str) -> dict[tuple[str, str], tuple[object, str]]:
     result: dict[tuple[str, str], tuple[object, str]] = {}
-    if "<html" in content[:1000].lower() or "<!doctype" in content[:1000].lower():
+    if (
+        "<html" in content[:1000].lower()
+        or "<!doctype" in content[:1000].lower()
+        or "<table" in content.lower()
+    ):
         soup = BeautifulSoup(content, "html.parser")
         for model in ("B200", "B300"):
             section = soup.select_one(f"#nvidia-{model.lower()}-tab")
@@ -110,6 +117,27 @@ def fetch_getdeploying_mirror(
     raise last_error or ValueError(f"UpCloud mirror remained unavailable for {model}")
 
 
+def fetch_wordpress_usd_prices(
+    client: HttpClient,
+) -> tuple[dict[tuple[str, str], tuple[object, str]], str]:
+    content, source_url = client.read_proxy_text(WORDPRESS_URL)
+    marker = "Markdown Content:"
+    if marker not in content:
+        raise ValueError("UpCloud WordPress proxy omitted JSON")
+    payload = json.loads(content.split(marker, 1)[1].strip())
+    euro_prices = parse_public_page(payload["content"]["rendered"])
+    return (
+        {
+            key: (
+                money_2(Decimal(str(value)) * EUR_TO_USD),
+                f"{raw} × {EUR_TO_USD} EUR/USD",
+            )
+            for key, (value, raw) in euro_prices.items()
+        },
+        source_url,
+    )
+
+
 def fetch_api_prices(
     client: HttpClient, token: str
 ) -> dict[tuple[str, str], tuple[object, str]]:
@@ -155,15 +183,29 @@ def collect(
             prices = parse_public_page(content)
             source_note = "Published global USD one-GPU server-hour price."
         except ValueError:
-            prices = {}
-            for model in ("B200", "B300"):
-                mirror_prices, mirror_source = fetch_getdeploying_mirror(client, model)
-                prices.update(mirror_prices)
-                mirror_sources[model] = mirror_source
-            source_note = (
-                "Published UpCloud USD server-hour price mirrored by GetDeploying; "
-                "the UpCloud public page no longer server-renders these tabs."
-            )
+            try:
+                prices, wordpress_source = fetch_wordpress_usd_prices(client)
+                mirror_sources = {
+                    "B200": wordpress_source,
+                    "B300": wordpress_source,
+                }
+                source_note = (
+                    "Public UpCloud EUR price table converted with UpCloud's "
+                    "published global 1.15 USD/EUR pricing factor."
+                )
+            except (ValueError, json.JSONDecodeError):
+                prices = {}
+                for model in ("B200", "B300"):
+                    mirror_prices, mirror_source = fetch_getdeploying_mirror(
+                        client, model
+                    )
+                    prices.update(mirror_prices)
+                    mirror_sources[model] = mirror_source
+                source_note = (
+                    "Published UpCloud USD server-hour price mirrored by "
+                    "GetDeploying; the UpCloud public page no longer "
+                    "server-renders these tabs."
+                )
     if proxied:
         source_note += " Direct access was blocked; public read proxy used."
 

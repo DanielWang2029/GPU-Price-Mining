@@ -37,7 +37,7 @@ on which the record was collected; both default to the current
 
 Each run writes:
 
-- `gpu_prices_YYYYMMDD.csv`: the 26 database columns from `表结构设计`.
+- `gpu_prices_YYYYMMDD.csv`: the 27 database columns from `表结构设计`.
 - `gpu_prices_YYYYMMDD.xlsx`: the same rows as an Excel table.
 - `gpu_prices_YYYYMMDD_audit.csv`: source row, status, source URL, effective time,
   raw value, and collection note.
@@ -89,6 +89,8 @@ reserved enrichment and note columns blank.
 | Cyfuture.ai | INR B300 rates converted with the current Frankfurter USD/INR reference rate. |
 | Latitude.sh | Embedded B300 plan data, retaining monthly/yearly eight-GPU node totals and normalizing them per GPU-hour. |
 | AWS | Capacity Block and current us-east-1 Linux Spot instance totals with per-GPU normalization (8 GPUs for B200/B300 and 72 for GB200). |
+| Hyperstack | Server-rendered on-demand/reservation rates plus the official live stock mirror for availability. |
+| CCIR | Embedded zone-level spot curves; rates are already quoted per GPU-hour. |
 
 ### Anti-bot fallback
 
@@ -112,16 +114,18 @@ the proxy. The same setting can be enabled with
 ```bash
 python3 -m gpu_prices.backfill \
   --start-date 20261001 \
-  --end-date 20261029 \
-  --run-date 20261030 \
-  --current-csv output/gpu_prices_20261029.csv \
+  --end-date 20261103 \
+  --run-date 20261103 \
+  --current-csv output/gpu_prices_20261103.csv \
+  --prior-history output/gpu_prices_history_20261001_20261103.csv \
   --allow-read-proxy
 ```
 
 The output defaults to
-`output/gpu_prices_history_20261001_20261029.csv`. The command also writes
-`sql/t_gpu_daily_prices.sql`, containing the unconstrained PostgreSQL table
-definition and direct values for every historical row. Historical sources are:
+`output/gpu_prices_history_20261001_20261103.csv`. Historical sources are:
+
+When extending beyond a source's rolling retention window, pass the latest
+existing history file with `--prior-history`.
 
 - Kalshi's realized history plus its currently published forward curve,
   evaluated daily at 20:00 UTC.
@@ -132,6 +136,9 @@ definition and direct values for every historical row. Historical sources are:
 - GetDeploying's weekly chart dataset, carried forward through each week. Its
   generic Reserve value is the offering-count-weighted median used by the
   online chart.
+- CCIR's embedded daily zone curves, associated with the following day's
+  9:00 PM Los Angeles collection cutoff. Dates before a selected zone existed
+  remain `UNAVAILABLE` with blank prices.
 
 All other rows have no published curve and therefore carry the end-date price
 back across the requested range. The backfill fails rather than inventing a

@@ -16,13 +16,12 @@ from zoneinfo import ZoneInfo
 
 from gpu_prices.http import HttpClient
 from gpu_prices.models import SourceRow
-from gpu_prices.providers import kalshi, nebius, silicondata
+from gpu_prices.providers import ccir, kalshi, nebius, silicondata
 from gpu_prices.providers.getdeploying import (
     DATASET_URL_TEMPLATE,
     chart_money_2,
     select_reservation_chart_row,
 )
-from gpu_prices.sql_export import write_sql
 from gpu_prices.workbook import (
     OUTPUT_HEADERS,
     billing_type,
@@ -104,7 +103,7 @@ def load_current_prices(
             record["publisher_name"].strip(),
             record["provider_id"].strip(),
             record["supplier_type"].strip(),
-            record["gpu_id"].strip(),
+            record["gpu_model_code"].strip(),
             record["billing_type"].strip(),
             record["term_months"].strip(),
             record["region_or_hq_country"].strip(),
@@ -141,6 +140,49 @@ def load_current_prices(
             f"Current-price CSV has {len(by_key)} rows; workbook has {len(rows)}"
         )
     return result
+
+
+def load_prior_history(
+    path: Path | None,
+    rows: list[SourceRow],
+    dates: list[date],
+) -> History:
+    if path is None or not path.exists():
+        return {}
+    with path.open(newline="", encoding="utf-8-sig") as handle:
+        records = list(csv.DictReader(handle))
+    legacy_headers = [column for column in OUTPUT_HEADERS if column != "gpu_model_code"]
+    actual_headers = list(records[0]) if records else OUTPUT_HEADERS
+    if actual_headers not in (OUTPUT_HEADERS, legacy_headers):
+        raise ValueError(
+            f"Unexpected prior-history columns: {actual_headers}; "
+            f"expected {OUTPUT_HEADERS}"
+        )
+    model_column = "gpu_model_code" if "gpu_model_code" in actual_headers else "gpu_id"
+    row_by_key = {row_key(row): row for row in rows}
+    wanted = set(dates)
+    result: History = defaultdict(dict)
+    for record in records:
+        key: RowKey = (
+            record["publisher_name"].strip(),
+            record["provider_id"].strip(),
+            record["supplier_type"].strip(),
+            record[model_column].strip(),
+            record["billing_type"].strip(),
+            record["term_months"].strip(),
+            record["region_or_hq_country"].strip(),
+            record["provider_hq_region"].strip(),
+            record["source_url"].strip(),
+        )
+        row = row_by_key.get(key)
+        if row is None:
+            continue
+        price_date = date.fromisoformat(record["price_date"])
+        if price_date not in wanted:
+            continue
+        value = record["price_gpu_hour"].strip()
+        result[row.workbook_row][price_date] = Decimal(value) if value else None
+    return dict(result)
 
 
 def kalshi_history(
@@ -411,11 +453,42 @@ def getdeploying_history(
     return result
 
 
+def ccir_history(
+    rows: list[SourceRow],
+    dates: list[date],
+    client: HttpClient,
+) -> History:
+    payload = ccir.parse_payload(client.get_text(ccir.URL))
+    asof = date.fromisoformat(str(payload["asof"]))
+    required_asof = dates[-1] - timedelta(days=1)
+    if asof < required_asof:
+        raise ValueError(
+            f"CCIR is published through {asof}, expected at least {required_asof}"
+        )
+    series = ccir.series_by_zone(payload)
+    result: History = {}
+    for row in rows:
+        zone_id = ccir.ZONES[(row.gpu_model_code, row.region)]
+        points = series.get(zone_id)
+        if points is None:
+            raise ValueError(f"CCIR omitted zone {zone_id}")
+        result[row.workbook_row] = {
+            day: (
+                chart_money_2(points[day - timedelta(days=1)])
+                if day - timedelta(days=1) in points
+                else None
+            )
+            for day in dates
+        }
+    return result
+
+
 def build_history(
     rows: list[SourceRow],
     dates: list[date],
     current: CurrentPrices,
     client: HttpClient,
+    prior: History | None = None,
 ) -> tuple[History, set[int]]:
     history: History = {
         row.workbook_row: {
@@ -428,10 +501,9 @@ def build_history(
         "Kalshi": [row for row in rows if row.source_name == "Kalshi"],
         "Ornn": [row for row in rows if row.source_name == "Ornn"],
         "SiliconData": [row for row in rows if row.source_name == "SiliconData"],
-        "Nebius": [
-            row for row in rows if row.source_name == "Nebius" and row.region
-        ],
+        "Nebius": [row for row in rows if row.source_name == "Nebius" and row.region],
         "GetDeploying": [row for row in rows if row.source_name == "GetDeploying"],
+        "CCIR": [row for row in rows if row.source_name == "CCIR"],
     }
     collectors = {
         "Kalshi": kalshi_history,
@@ -439,11 +511,28 @@ def build_history(
         "SiliconData": silicondata_history,
         "Nebius": nebius_history,
         "GetDeploying": getdeploying_history,
+        "CCIR": ccir_history,
     }
     for source_name, source_rows in groups.items():
-        values = collectors[source_name](source_rows, dates, client)
+        fetch_dates = [
+            day
+            for day in dates
+            if any(
+                day not in (prior or {}).get(row.workbook_row, {})
+                for row in source_rows
+            )
+        ]
+        values = (
+            collectors[source_name](source_rows, fetch_dates, client)
+            if fetch_dates
+            else {}
+        )
         for row in source_rows:
             row_values = values.get(row.workbook_row, {})
+            for day, value in (prior or {}).get(row.workbook_row, {}).items():
+                row_values.setdefault(day, value)
+            if dates[-1] not in row_values:
+                row_values[dates[-1]] = current[row.workbook_row].price_gpu_hour
             missing = [day for day in dates if day not in row_values]
             if missing:
                 raise ValueError(
@@ -474,7 +563,9 @@ def write_history_csv(
                 if row.workbook_row in curve_rows:
                     raw_price = normalized
                     gpu_count = 1
-                    availability = "AVAILABLE"
+                    availability = (
+                        "AVAILABLE" if normalized is not None else "UNAVAILABLE"
+                    )
                 else:
                     point = current[row.workbook_row]
                     raw_price = point.raw_price
@@ -536,10 +627,12 @@ def build_parser() -> argparse.ArgumentParser:
         ),
     )
     parser.add_argument(
-        "--sql-output",
+        "--prior-history",
         type=Path,
-        default=Path("sql/t_gpu_daily_prices.sql"),
-        help="Create-table and direct-value population SQL output path.",
+        help=(
+            "Optional earlier history CSV used when a rolling source no longer "
+            "retains the beginning of the requested range."
+        ),
     )
     parser.add_argument(
         "--allow-read-proxy",
@@ -561,11 +654,13 @@ def main(argv: list[str] | None = None) -> int:
             f"output/gpu_prices_history_{args.start_date}_{args.end_date}.csv"
         )
         current = load_current_prices(current_csv, rows, end)
+        prior = load_prior_history(args.prior_history, rows, dates)
         history, curve_rows = build_history(
             rows,
             dates,
             current,
             HttpClient(allow_read_proxy=args.allow_read_proxy),
+            prior,
         )
         write_history_csv(
             output,
@@ -576,7 +671,6 @@ def main(argv: list[str] | None = None) -> int:
             curve_rows,
             args.run_date,
         )
-        sql_output = write_sql(output, args.sql_output)
     except Exception as exc:
         print(f"Backfill failed: {type(exc).__name__}: {exc}", file=sys.stderr)
         return 1
@@ -590,7 +684,6 @@ def main(argv: list[str] | None = None) -> int:
         f"{len(rows) - len(curve_rows)} static rows used end-date prices"
     )
     print(output)
-    print(sql_output)
     print(
         "Note: Kalshi does not publish archived curve vintages; historical dates "
         "are evaluated on its currently published curve."

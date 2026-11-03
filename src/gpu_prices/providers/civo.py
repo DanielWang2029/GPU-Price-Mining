@@ -74,9 +74,7 @@ def collect(
     for row in rows:
         if row.price_type == "Reserve" and row.term != 36:
             raise ValueError(f"Civo reserve term must be 36, got {row.term}")
-        value, raw_price, raw, gpu_count = prices[
-            (row.gpu_model_code, row.price_type)
-        ]
+        value, raw_price, raw, gpu_count = prices[(row.gpu_model_code, row.price_type)]
         observations.append(
             ok(
                 row,

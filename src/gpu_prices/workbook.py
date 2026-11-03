@@ -38,6 +38,7 @@ OUTPUT_HEADERS = [
     "provider_id",
     "supplier_type",
     "gpu_id",
+    "gpu_model_code",
     "gpu_count",
     "gpu_spec",
     "vram_per_gpu_gb",
@@ -266,6 +267,7 @@ def record_row(
         row.source_name,
         provider_id(row.source_name),
         row.supplier_type,
+        "",
         row.gpu_model_code,
         gpu_count,
         "",
@@ -331,16 +333,14 @@ def write_outputs(
     sheet.append(OUTPUT_HEADERS)
     for observation in ordered:
         row = data_row(price_date, run_date, observation)
-        row[8] = observation.gpu_count
-        row[18] = (
+        row[9] = observation.gpu_count
+        row[19] = (
             float(observation.row.term) if observation.row.term is not None else None
         )
-        row[21] = (
-            float(observation.raw_price)
-            if observation.raw_price is not None
-            else None
-        )
         row[22] = (
+            float(observation.raw_price) if observation.raw_price is not None else None
+        )
+        row[23] = (
             float(observation.price_gpu_hour)
             if observation.price_gpu_hour is not None
             else None
@@ -358,6 +358,7 @@ def write_outputs(
         18,
         16,
         12,
+        18,
         12,
         14,
         18,
