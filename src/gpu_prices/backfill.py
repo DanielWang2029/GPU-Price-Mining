@@ -16,13 +16,12 @@ from zoneinfo import ZoneInfo
 
 from gpu_prices.http import HttpClient
 from gpu_prices.models import SourceRow
-from gpu_prices.providers import kalshi, nebius, silicondata
+from gpu_prices.providers import ccir, kalshi, nebius, silicondata
 from gpu_prices.providers.getdeploying import (
     DATASET_URL_TEMPLATE,
     chart_money_2,
     select_reservation_chart_row,
 )
-from gpu_prices.sql_export import write_sql
 from gpu_prices.workbook import (
     OUTPUT_HEADERS,
     billing_type,
@@ -411,6 +410,36 @@ def getdeploying_history(
     return result
 
 
+def ccir_history(
+    rows: list[SourceRow],
+    dates: list[date],
+    client: HttpClient,
+) -> History:
+    payload = ccir.parse_payload(client.get_text(ccir.URL))
+    asof = date.fromisoformat(str(payload["asof"]))
+    required_asof = dates[-1] - timedelta(days=1)
+    if asof < required_asof:
+        raise ValueError(
+            f"CCIR is published through {asof}, expected at least {required_asof}"
+        )
+    series = ccir.series_by_zone(payload)
+    result: History = {}
+    for row in rows:
+        zone_id = ccir.ZONES[(row.gpu_model_code, row.region)]
+        points = series.get(zone_id)
+        if points is None:
+            raise ValueError(f"CCIR omitted zone {zone_id}")
+        result[row.workbook_row] = {
+            day: (
+                chart_money_2(points[day - timedelta(days=1)])
+                if day - timedelta(days=1) in points
+                else None
+            )
+            for day in dates
+        }
+    return result
+
+
 def build_history(
     rows: list[SourceRow],
     dates: list[date],
@@ -428,10 +457,9 @@ def build_history(
         "Kalshi": [row for row in rows if row.source_name == "Kalshi"],
         "Ornn": [row for row in rows if row.source_name == "Ornn"],
         "SiliconData": [row for row in rows if row.source_name == "SiliconData"],
-        "Nebius": [
-            row for row in rows if row.source_name == "Nebius" and row.region
-        ],
+        "Nebius": [row for row in rows if row.source_name == "Nebius" and row.region],
         "GetDeploying": [row for row in rows if row.source_name == "GetDeploying"],
+        "CCIR": [row for row in rows if row.source_name == "CCIR"],
     }
     collectors = {
         "Kalshi": kalshi_history,
@@ -439,6 +467,7 @@ def build_history(
         "SiliconData": silicondata_history,
         "Nebius": nebius_history,
         "GetDeploying": getdeploying_history,
+        "CCIR": ccir_history,
     }
     for source_name, source_rows in groups.items():
         values = collectors[source_name](source_rows, dates, client)
@@ -474,7 +503,9 @@ def write_history_csv(
                 if row.workbook_row in curve_rows:
                     raw_price = normalized
                     gpu_count = 1
-                    availability = "AVAILABLE"
+                    availability = (
+                        "AVAILABLE" if normalized is not None else "UNAVAILABLE"
+                    )
                 else:
                     point = current[row.workbook_row]
                     raw_price = point.raw_price
@@ -536,12 +567,6 @@ def build_parser() -> argparse.ArgumentParser:
         ),
     )
     parser.add_argument(
-        "--sql-output",
-        type=Path,
-        default=Path("sql/t_gpu_daily_prices.sql"),
-        help="Create-table and direct-value population SQL output path.",
-    )
-    parser.add_argument(
         "--allow-read-proxy",
         action="store_true",
         default=_env_flag("GPU_PRICES_ALLOW_READ_PROXY"),
@@ -576,7 +601,6 @@ def main(argv: list[str] | None = None) -> int:
             curve_rows,
             args.run_date,
         )
-        sql_output = write_sql(output, args.sql_output)
     except Exception as exc:
         print(f"Backfill failed: {type(exc).__name__}: {exc}", file=sys.stderr)
         return 1
@@ -590,7 +614,6 @@ def main(argv: list[str] | None = None) -> int:
         f"{len(rows) - len(curve_rows)} static rows used end-date prices"
     )
     print(output)
-    print(sql_output)
     print(
         "Note: Kalshi does not publish archived curve vintages; historical dates "
         "are evaluated on its currently published curve."

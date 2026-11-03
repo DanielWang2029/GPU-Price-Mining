@@ -336,9 +336,7 @@ def write_outputs(
             float(observation.row.term) if observation.row.term is not None else None
         )
         row[21] = (
-            float(observation.raw_price)
-            if observation.raw_price is not None
-            else None
+            float(observation.raw_price) if observation.raw_price is not None else None
         )
         row[22] = (
             float(observation.price_gpu_hour)

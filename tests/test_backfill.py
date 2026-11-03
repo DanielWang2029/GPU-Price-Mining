@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import csv
+import json
 import tempfile
 import unittest
 from datetime import date
@@ -9,12 +10,12 @@ from pathlib import Path
 
 from gpu_prices.backfill import (
     calendar_dates,
+    ccir_history,
     getdeploying_history,
     load_current_prices,
     write_history_csv,
 )
 from gpu_prices.models import SourceRow
-from gpu_prices.sql_export import render_sql
 from gpu_prices.workbook import OUTPUT_HEADERS
 
 
@@ -33,6 +34,36 @@ class BackfillTests(unittest.TestCase):
             values,
             [date(2026, 10, 1), date(2026, 10, 2), date(2026, 10, 3)],
         )
+
+    def test_ccir_uses_previous_effective_day_and_preserves_gaps(self) -> None:
+        source = SourceRow(
+            workbook_row=124,
+            source_name="CCIR",
+            supplier_type="Index",
+            gpu_model_code="B300",
+            price_type="Spot",
+            region="North America",
+            url="https://ccir.io/discovery",
+        )
+        payload = {
+            "asof": "2026-10-02",
+            "rows": [
+                {
+                    "id": "b300-northern-virginia-z6",
+                    "start": "2026-09-30",
+                    "p": [[0, 1.234], [2, 2.345]],
+                }
+            ],
+        }
+        client = TextClient(
+            f'<script id="disc-data" type="application/json">'
+            f"{json.dumps(payload)}</script>"
+        )
+        dates = calendar_dates(date(2026, 10, 1), date(2026, 10, 3))
+        values = ccir_history([source], dates, client)[124]
+        self.assertEqual(values[date(2026, 10, 1)], Decimal("1.23"))
+        self.assertIsNone(values[date(2026, 10, 2)])
+        self.assertEqual(values[date(2026, 10, 3)], Decimal("2.35"))
 
     def test_getdeploying_forward_fills_weekly_chart_anchors(self) -> None:
         rows = [
@@ -129,11 +160,6 @@ nvidia-b300,2026-10-05,ON_DEMAND,,1,10,8.7,8.99,5,10
             self.assertEqual(records[1]["source_label"], "price_mining")
             self.assertNotIn("N/A", records[1].values())
             self.assertNotIn(b"\r\n", output_path.read_bytes())
-            sql = render_sql(output_path)
-            self.assertIn("CREATE TABLE public.t_gpu_daily_prices", sql)
-            self.assertIn("raw_price DOUBLE PRECISION", sql)
-            self.assertIn("'CoreWeave','coreweave','NeoCloud','GB200',4", sql)
-            self.assertNotIn("COPY ", sql)
 
 
 if __name__ == "__main__":

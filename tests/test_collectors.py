@@ -31,9 +31,9 @@ ROOT = Path(__file__).resolve().parents[1]
 class WorkbookTests(unittest.TestCase):
     def test_source_workbook_has_one_normalized_row_per_request(self) -> None:
         rows = load_source_rows(ROOT / "算力价格爬虫数据整理.xlsx")
-        self.assertEqual(len(rows), 117)
-        self.assertEqual(len({row.workbook_row for row in rows}), 117)
-        self.assertEqual(len({row.source_name for row in rows}), 25)
+        self.assertEqual(len(rows), 131)
+        self.assertEqual(len({row.workbook_row for row in rows}), 131)
+        self.assertEqual(len({row.source_name for row in rows}), 27)
         identities = {
             (
                 row.source_name,
@@ -48,6 +48,8 @@ class WorkbookTests(unittest.TestCase):
         self.assertIn(("Together.ai", "H200", "Reserve", Decimal("3")), identities)
         self.assertIn(("Together.ai", "H200", "Reserve", Decimal("6")), identities)
         self.assertIn(("TheAI Cloud", "B300", "Reserve", Decimal("24")), identities)
+        self.assertIn(("Hyperstack", "B300", "On-Demand", None), identities)
+        self.assertIn(("CCIR", "H200", "Spot", None), identities)
         self.assertTrue(
             all(
                 value == value.strip()
@@ -109,9 +111,7 @@ class ParserTests(unittest.TestCase):
           </div>
         </div>
         """
-        normalized, raw, count, _ = parse_coreweave_prices(html)[
-            "nvidia-gb200-nvl72"
-        ]
+        normalized, raw, count, _ = parse_coreweave_prices(html)["nvidia-gb200-nvl72"]
         self.assertEqual(normalized, Decimal("10.50"))
         self.assertEqual(raw, Decimal("42.00"))
         self.assertEqual(count, 4)

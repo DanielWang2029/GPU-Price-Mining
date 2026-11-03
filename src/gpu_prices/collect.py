@@ -15,6 +15,7 @@ from gpu_prices.providers import (
     astra_intellectus,
     aws,
     bentaus,
+    ccir,
     civo,
     coreweave,
     cyfuture_ai,
@@ -25,6 +26,7 @@ from gpu_prices.providers import (
     getdeploying,
     gpu_ai,
     hyperbolic,
+    hyperstack,
     impossible_cloud,
     kalshi,
     latitude_sh,
@@ -69,6 +71,8 @@ REGISTRY: dict[str, Collector] = {
     "Cyfuture.ai": cyfuture_ai.collect,
     "Latitude.sh": latitude_sh.collect,
     "AWS": aws.collect,
+    "Hyperstack": hyperstack.collect,
+    "CCIR": ccir.collect,
 }
 
 

@@ -52,9 +52,7 @@ def collect(
     observations: list[Observation] = []
     for row in rows:
         if row.term is None:
-            raise ValueError(
-                f"Impossible Cloud term is blank for {row.gpu_model_code}"
-            )
+            raise ValueError(f"Impossible Cloud term is blank for {row.gpu_model_code}")
         candidates = [
             offer
             for offer in offers.get(row.gpu_model_code, [])

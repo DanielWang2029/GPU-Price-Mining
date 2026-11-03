@@ -8,10 +8,17 @@ from gpu_prices.providers.aws import (
     parse_spot_prices,
 )
 from gpu_prices.providers.bentaus import parse_ranges
+from gpu_prices.providers.ccir import parse_payload, series_by_zone
 from gpu_prices.providers.civo import parse_prices as parse_civo_prices
 from gpu_prices.providers.cyfuture_ai import parse_b300_row
 from gpu_prices.providers.digitalocean import (
     parse_prices as parse_digitalocean_prices,
+)
+from gpu_prices.providers.hyperstack import (
+    parse_prices as parse_hyperstack_prices,
+)
+from gpu_prices.providers.hyperstack import (
+    parse_stock,
 )
 from gpu_prices.providers.impossible_cloud import parse_offers
 from gpu_prices.providers.latitude_sh import parse_plan
@@ -194,6 +201,65 @@ class NewProviderParserTests(unittest.TestCase):
         self.assertEqual(str(spot["B200"][0]), "10.4631625")
         self.assertEqual(str(spot["B300"][1]), "77.3746")
         self.assertEqual(spot["B300"][2], 8)
+
+    def test_hyperstack_parses_prices_and_stock(self) -> None:
+        html = """
+        <div id="cloud-pricing">
+          <div class="page-price_card">
+            <div class="page-price_card_top_content"><h3>On-Demand GPU Pricing</h3></div>
+            <div class="page-price_card_row_item">
+              <span>NVIDIA B300</span><span>288</span><span>28</span>
+              <span>240</span><span>$7.40</span>
+            </div>
+          </div>
+          <div class="page-price_card">
+            <div class="page-price_card_top_content"><h3>Reservation Pricing</h3></div>
+            <div class="page-price_card_row_item">
+              <span>NVIDIA B200</span><span>$5.10</span>
+            </div>
+          </div>
+        </div>
+        """
+        prices = parse_hyperstack_prices(html)
+        self.assertEqual(str(prices[("B300", "On-Demand")][0]), "7.40")
+        self.assertEqual(str(prices[("B200", "Reserve")][0]), "5.10")
+        stock = parse_stock(
+            {
+                "stocks": [
+                    {
+                        "region": "CANADA-1",
+                        "models": [
+                            {"model": "B300-SXM", "available": "0"},
+                            {"model": "B200-SXM", "available": "2"},
+                            {"model": "H200-141G-SXM5", "available": "0"},
+                        ],
+                    }
+                ]
+            }
+        )
+        self.assertFalse(stock["B300"])
+        self.assertTrue(stock["B200"])
+
+    def test_ccir_decodes_zone_history(self) -> None:
+        payload = {
+            "asof": "2026-11-02",
+            "rows": [
+                {
+                    "id": "b300-northern-virginia-z6",
+                    "start": "2026-11-01",
+                    "p": [[0, 10.0588], [1, 10.1484]],
+                }
+            ],
+        }
+        parsed = parse_payload(
+            '<script id="disc-data" type="application/json">'
+            f"{json.dumps(payload)}</script>"
+        )
+        series = series_by_zone(parsed)["b300-northern-virginia-z6"]
+        self.assertEqual(
+            str(series[next(iter(series))]),
+            "10.0588",
+        )
 
 
 if __name__ == "__main__":
