@@ -5,7 +5,7 @@ from datetime import datetime
 from bs4 import BeautifulSoup
 
 from gpu_prices.http import HttpClient
-from gpu_prices.models import Observation, SourceRow, money_2, ok
+from gpu_prices.models import Observation, SourceRow, money_2, ok, unavailable
 from gpu_prices.providers.common import parse_price, run_provider_cli, text
 
 URL = "https://www.impossiblecloud.com/baremetal"
@@ -59,10 +59,18 @@ def collect(
             if offer["region"] == row.region and offer["term"] == int(row.term)
         ]
         if not candidates:
-            raise ValueError(
-                f"Impossible Cloud omitted {row.gpu_model_code} in {row.region} "
-                f"for {row.term} months"
+            observations.append(
+                unavailable(
+                    row,
+                    fetched_at=now,
+                    source_url=URL,
+                    note=(
+                        f"No current {row.gpu_model_code} offer in {row.region} "
+                        f"for {row.term} months."
+                    ),
+                )
             )
+            continue
         offer = candidates[0]
         observations.append(
             ok(
