@@ -1,5 +1,13 @@
 INSERT INTO public.compute_insight_dim_provider (provider_id,provider_name,website,region_or_hq_country,provider_hq_region,supplier_type,tier_confidence,updated_at)
-SELECT v.*
+SELECT
+    v.provider_id,
+    v.provider_name,
+    v.website,
+    v.region_or_hq_country,
+    v.provider_hq_region,
+    v.supplier_type,
+    v.tier_confidence,
+    v.updated_at::timestamp without time zone
 FROM (VALUES
     ('astra-intellectus','Astra Intellectus','https://astra-intellectus.com','MY','Asia-Pacific','GPU Cloud','review','2026-11-03 00:00:00'),
     ('ccir','CCIR','https://ccir.io','US','North America','Serverless','review','2026-11-03 00:00:00'),
