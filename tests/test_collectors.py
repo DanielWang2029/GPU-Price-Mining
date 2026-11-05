@@ -94,14 +94,14 @@ class WorkbookTests(unittest.TestCase):
             run_date="2026-11-03",
             source_label="price_mining",
             provider="coreweave",
-            gpu_id="",
+            gpu_id=None,
             billing="ON_DEMAND",
-            term_month="",
+            term_month=None,
             raw_price="42.00",
             price_gpu_hour="10.50",
             availability="AVAILABLE",
         )
-        self.assertEqual(value, "a3d6fc3b33bf50f189ae81d7b0031fad")
+        self.assertEqual(value, "9baf5981a3d7ad2c845f759685b45132")
 
 
 class ParserTests(unittest.TestCase):

@@ -240,11 +240,11 @@ def make_record_id(
     run_date: str,
     source_label: str,
     provider: str,
-    gpu_id: str,
-    billing: str,
-    term_month: str,
-    raw_price: str,
-    price_gpu_hour: str,
+    gpu_id: str | None,
+    billing: str | None,
+    term_month: str | None,
+    raw_price: str | None,
+    price_gpu_hour: str | None,
     availability: str,
 ) -> str:
     values = [
@@ -259,7 +259,8 @@ def make_record_id(
         price_gpu_hour,
         availability,
     ]
-    return hashlib.md5(":".join(values).encode("utf-8")).hexdigest()
+    payload = ":".join(value for value in values if value is not None)
+    return hashlib.md5(payload.encode("utf-8")).hexdigest()
 
 
 def data_row(
@@ -301,11 +302,11 @@ def record_row(
         run_date=normalized_run_date,
         source_label=DATA_SOURCE,
         provider=provider,
-        gpu_id=gpu_id,
-        billing=billing,
-        term_month=term,
-        raw_price=raw_text,
-        price_gpu_hour=normalized_text,
+        gpu_id=None,
+        billing=billing or None,
+        term_month=term or None,
+        raw_price=raw_text or None,
+        price_gpu_hour=normalized_text or None,
         availability=availability,
     )
     return [
