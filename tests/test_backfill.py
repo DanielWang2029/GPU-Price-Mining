@@ -208,6 +208,7 @@ nvidia-b300,2026-10-05,ON_DEMAND,,1,10,8.7,8.99,5,10
             self.assertEqual(records[1]["availability"], "AVAILABLE")
             self.assertEqual(records[1]["supplier_type"], "NeoCloud")
             self.assertEqual(records[1]["source_label"], "price_mining")
+            self.assertEqual(len(records[1]["record_id"]), 32)
             self.assertEqual(records[1]["gpu_id"], "")
             self.assertEqual(records[1]["gpu_model_code"], "GB200")
             self.assertNotIn("N/A", records[1].values())
