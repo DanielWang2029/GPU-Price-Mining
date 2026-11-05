@@ -564,7 +564,15 @@ def render_provider_insert(providers: list[Provider]) -> str:
     )
     columns = ",".join(DIM_PROVIDER_COLUMNS)
     return f"""INSERT INTO {DIM_PROVIDER_TABLE} ({columns})
-SELECT v.*
+SELECT
+    v.provider_id,
+    v.provider_name,
+    v.website,
+    v.region_or_hq_country,
+    v.provider_hq_region,
+    v.supplier_type,
+    v.tier_confidence,
+    v.updated_at::timestamp without time zone
 FROM (VALUES
 {values}
 ) AS v ({columns})

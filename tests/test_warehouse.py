@@ -9,6 +9,7 @@ from gpu_prices.warehouse import (
     aggregate_price_series,
     aggregate_provider_series,
     reconcile_detail,
+    render_provider_insert,
 )
 
 
@@ -116,6 +117,24 @@ class WarehouseTests(unittest.TestCase):
         self.assertEqual(north_america["p75_price"], "7")
         self.assertEqual(north_america["min_price"], "4")
         self.assertEqual(north_america["term_months"], "")
+
+    def test_provider_insert_casts_updated_at_to_timestamp(self) -> None:
+        provider = Provider(
+            "example",
+            "Example",
+            "https://example.com",
+            "US",
+            "North America",
+            "GPU Cloud",
+            "review",
+            "2026-11-03 00:00:00",
+            False,
+        )
+        sql = render_provider_insert([provider])
+        self.assertIn(
+            "v.updated_at::timestamp without time zone",
+            sql,
+        )
 
 
 if __name__ == "__main__":
