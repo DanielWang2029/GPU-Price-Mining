@@ -63,7 +63,8 @@ reserved enrichment and note columns blank.
 `record_id` is the lowercase MD5 hex digest of the colon-separated
 `price_date`, `run_date`, `source_label`, `provider_id`, `gpu_id`,
 `billing_type`, `term_months`, `raw_price`, `price_gpu_hour`, and
-`availability` output values.
+`availability` output values. Null/blank database fields are skipped to match
+PostgreSQL `CONCAT_WS` semantics.
 
 ## Source behavior
 
@@ -152,6 +153,28 @@ value if any curve-based source omits a requested date.
 Kalshi does not expose archived point-in-time forward-curve snapshots. Its past
 dates can be evaluated on the curve published today, but the exact curve that
 users saw on a prior day cannot be reconstructed retroactively.
+
+## Warehouse loads
+
+`gpu_prices.warehouse` reconciles the historical output against `tables.xlsx`,
+applies canonical provider IDs and provider dimension metadata, calculates
+daily provider medians and market percentiles, and emits direct-value SQL:
+
+```bash
+python3 -m gpu_prices.warehouse \
+  --history-csv output/gpu_prices_history_20261001_20261103.csv \
+  --tables-workbook tables.xlsx
+```
+
+The workbook schemas route raw rows to
+`compute_insight_gpu_price_detail_daily`, provider medians to
+`compute_insight_gpu_provider_series_daily`, and p25/p50/p75/min aggregates to
+`compute_insight_gpu_price_series_daily`. Blank provider geography is filled
+from `compute_insight_dim_provider`; existing provider IDs and classifications
+take precedence over price-mining values.
+
+Generated SQL is stored under `sql/warehouse/`, reconciled CSVs and the provider
+merge/insert report under `output/warehouse/`.
 
 ## Airflow
 

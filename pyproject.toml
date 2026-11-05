@@ -17,6 +17,7 @@ dependencies = [
 [project.scripts]
 gpu-prices = "gpu_prices.collect:main"
 gpu-prices-backfill = "gpu_prices.backfill:main"
+gpu-prices-warehouse = "gpu_prices.warehouse:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
