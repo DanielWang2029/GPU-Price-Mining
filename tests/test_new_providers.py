@@ -2,7 +2,10 @@ from __future__ import annotations
 
 import json
 import unittest
+from datetime import datetime, timezone
+from decimal import Decimal
 
+from gpu_prices.models import SourceRow
 from gpu_prices.providers.aws import (
     parse_capacity_prices,
     parse_spot_prices,
@@ -21,7 +24,12 @@ from gpu_prices.providers.hyperstack import (
     parse_stock,
 )
 from gpu_prices.providers.impossible_cloud import parse_offers
-from gpu_prices.providers.latitude_sh import parse_plan
+from gpu_prices.providers.latitude_sh import (
+    collect as collect_latitude,
+)
+from gpu_prices.providers.latitude_sh import (
+    parse_plan,
+)
 
 
 class NewProviderParserTests(unittest.TestCase):
@@ -139,9 +147,32 @@ class NewProviderParserTests(unittest.TestCase):
                 }
             ]
         }
-        plan = parse_plan(f'<script>"plansData":{json.dumps(payload)}</script>')
+        html = f'<script>"plansData":{json.dumps(payload)}</script>'
+        plan = parse_plan(html)
         self.assertEqual(plan["slug"], "g4-b300-large")
         self.assertEqual(plan["specs"]["gpu"]["count"], 8)
+
+        class Client:
+            def get_text(self, _url: str) -> str:
+                return html
+
+        row = SourceRow(
+            workbook_row=112,
+            source_name="Latitude.sh",
+            gpu_model_code="B300",
+            price_type="Reserve",
+            region="",
+            term=Decimal("1"),
+            url="https://www.latitude.sh/pricing",
+        )
+        observation = collect_latitude(
+            [row],
+            Client(),
+            datetime.now(timezone.utc),
+        )[0]
+        self.assertEqual(observation.raw_price, Decimal("8.00"))
+        self.assertEqual(observation.price_gpu_hour, Decimal("8.00"))
+        self.assertEqual(observation.gpu_count, 8)
 
     def test_aws_parses_capacity_and_spot_rates(self) -> None:
         html = """

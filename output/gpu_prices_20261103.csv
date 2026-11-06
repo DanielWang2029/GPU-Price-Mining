@@ -1,132 +1,132 @@
 ﻿price_date,run_date,source_label,record_id,publisher_name,provider_id,supplier_type,gpu_id,gpu_model_code,gpu_count,gpu_spec,vram_per_gpu_gb,vram_total_gb,cpu_cores,system_ram_gb,disk_storage_gb,interconnect_bandwidth_gbps,gpu_mem_bandwidth_gbps,billing_type,term_months,region_or_hq_country,provider_hq_region,raw_price,price_gpu_hour,availability,price_note,source_url
-2026-11-03,2026-11-03,price_mining,770271a27c970ac8b64f549d8c8222e5,Kalshi,kalshi,Index,,B200,1,,,,,,,,,,,,,8.69,8.69,AVAILABLE,,https://kalshi.com/markets/kxb200ws/b200-weekly/kxb200ws-26jul17?utm_campaign=kalshi-announces-compute-forward-curves-becoming-the-exchange-for-the-ai-economy&utm_medium=referral&utm_source=news.kalshi.com
-2026-11-03,2026-11-03,price_mining,de36fb358b514a36191b6db0a8a51da8,Kalshi,kalshi,Index,,H200,1,,,,,,,,,,,,,5.69,5.69,AVAILABLE,,https://kalshi.com/markets/kxh200ws/weekly-h200/kxh200ws-26jul17?utm_campaign=kalshi-announces-compute-forward-curves-becoming-the-exchange-for-the-ai-economy&utm_medium=referral&utm_source=news.kalshi.com
-2026-11-03,2026-11-03,price_mining,4fb57989132dc80a8576743df4875fae,Kalshi,kalshi,Index,,A100,1,,,,,,,,,,,,,1.07,1.07,AVAILABLE,,https://kalshi.com/markets/kxa100ws/a100-weekly/kxa100ws-26jul17?utm_campaign=kalshi-announces-compute-forward-curves-becoming-the-exchange-for-the-ai-economy&utm_medium=referral&utm_source=news.kalshi.com
-2026-11-03,2026-11-03,price_mining,6de2c23bf71313ce6d4fa9cc5cf6b315,Ornn,ornn,Index,,B200,1,,,,,,,,,,,,,9.41,9.41,AVAILABLE,,https://data.ornn.com/
-2026-11-03,2026-11-03,price_mining,ed00b5fc3d81682d099d677b4f6e40a8,Ornn,ornn,Index,,H200,1,,,,,,,,,,,,,7.12,7.12,AVAILABLE,,https://data.ornn.com/
-2026-11-03,2026-11-03,price_mining,a3d6fc3b33bf50f189ae81d7b0031fad,CoreWeave,coreweave,NeoCloud,,GB200,4,,,,,,,,,ON_DEMAND,,,North America,42.00,10.50,AVAILABLE,,https://www.coreweave.com/pricing
-2026-11-03,2026-11-03,price_mining,029b887074f84128e8ace827f0aaa629,CoreWeave,coreweave,NeoCloud,,B200,8,,,,,,,,,ON_DEMAND,,,North America,68.80,8.60,AVAILABLE,,https://www.coreweave.com/pricing
-2026-11-03,2026-11-03,price_mining,e2b9dfcb71439c356537d60c1c739e0a,CoreWeave,coreweave,NeoCloud,,A100,8,,,,,,,,,ON_DEMAND,,,North America,21.60,2.70,AVAILABLE,,https://www.coreweave.com/pricing
-2026-11-03,2026-11-03,price_mining,80568cd843023e89bdb5cfab89c7db54,SiliconData,silicondata,NeoCloud,,B300,1,,,,,,,,,,,,,7.55,7.55,AVAILABLE,,https://www.silicondata.com/products/silicon-index/b300
-2026-11-03,2026-11-03,price_mining,a4674c7107925c2ea2549266b29f8933,SiliconData,silicondata,NeoCloud,,B200,1,,,,,,,,,,,,,6.54,6.54,AVAILABLE,,https://www.silicondata.com/products/silicon-index/b200
-2026-11-03,2026-11-03,price_mining,dd8bf729384ee9ce0e582da6d920469a,SiliconData,silicondata,NeoCloud,,H200,1,,,,,,,,,,,,,3.52,3.52,AVAILABLE,,https://www.silicondata.com/products/silicon-index/h200
-2026-11-03,2026-11-03,price_mining,25ed40ec397701f2e65d1dd8bf9ed744,Nebius,nebius,NeoCloud,,B300,1,,,,,,,,,ON_DEMAND,,,,9.50,9.50,AVAILABLE,,https://nebius.com/prices
-2026-11-03,2026-11-03,price_mining,7c6f689a63eabd5b036dc94c8f6d1859,Nebius,nebius,NeoCloud,,B200,1,,,,,,,,,ON_DEMAND,,,,8.50,8.50,AVAILABLE,,https://nebius.com/prices
-2026-11-03,2026-11-03,price_mining,c7af84bcc7775396df47c9bbf037c875,Nebius,nebius,NeoCloud,,H200,1,,,,,,,,,ON_DEMAND,,,,5.40,5.40,AVAILABLE,,https://nebius.com/prices
-2026-11-03,2026-11-03,price_mining,7e88525c12705d192bc4a5d5024f024e,Nebius,nebius,Index,,B300,1,,,,,,,,,SPOT,,,North America,5.5,5.50,AVAILABLE,,https://nebius.com/spot-prices?historyGpus=B300&historyRange=1d&period=1d
-2026-11-03,2026-11-03,price_mining,5272232b752515ae16fe419465e7fd4c,Nebius,nebius,Index,,B300,1,,,,,,,,,SPOT,,,Europe,9.5,9.50,AVAILABLE,,https://nebius.com/spot-prices?historyGpus=B300&historyRange=1d&period=1d
-2026-11-03,2026-11-03,price_mining,a06ff04b87bee54cc6dbfd578f3417cb,Nebius,nebius,Index,,B200,1,,,,,,,,,SPOT,,,North America,8.1,8.10,AVAILABLE,,https://nebius.com/spot-prices?historyRange=1d&period=1d&historyGpus=B200
-2026-11-03,2026-11-03,price_mining,7a54ad8364e1cf14591c2b740b0392d4,Nebius,nebius,Index,,B200,1,,,,,,,,,SPOT,,,Middle East,5.7,5.70,AVAILABLE,,https://nebius.com/spot-prices?historyRange=1d&period=1d&historyGpus=B200
-2026-11-03,2026-11-03,price_mining,6c539bbe39e9779e55c7485baca9c93b,Nebius,nebius,Index,,H200,1,,,,,,,,,SPOT,,,Europe,3.25,3.25,AVAILABLE,,https://nebius.com/spot-prices?historyRange=1d&period=1d&historyGpus=H200
-2026-11-03,2026-11-03,price_mining,212019e70e1549a3e6c074ebbb67b7ea,GetDeploying,getdeploying,Index,,B300,1,,,,,,,,,ON_DEMAND,,,,9.41,9.41,AVAILABLE,,https://getdeploying.com/gpus/nvidia-b300
-2026-11-03,2026-11-03,price_mining,406a4d5f9dfefc4f08624d2490487948,GetDeploying,getdeploying,Index,,B300,1,,,,,,,,,RESERVATION,,,,5.38,5.38,AVAILABLE,,https://getdeploying.com/gpus/nvidia-b300
-2026-11-03,2026-11-03,price_mining,5384edd99771ad2c3707891f2824801f,GetDeploying,getdeploying,Index,,B300,1,,,,,,,,,SPOT,,,,5.26,5.26,AVAILABLE,,https://getdeploying.com/gpus/nvidia-b300
-2026-11-03,2026-11-03,price_mining,7e9c52eef55cdb0be3df6983c45e06b0,GetDeploying,getdeploying,Index,,B200,1,,,,,,,,,ON_DEMAND,,,,7.99,7.99,AVAILABLE,,https://getdeploying.com/gpus/nvidia-b200
-2026-11-03,2026-11-03,price_mining,8c53a27e53d12a053652d82731c2ba8d,GetDeploying,getdeploying,Index,,B200,1,,,,,,,,,RESERVATION,,,,7.19,7.19,AVAILABLE,,https://getdeploying.com/gpus/nvidia-b200
-2026-11-03,2026-11-03,price_mining,19e56d4ab7d4875f44da795ae118e360,GetDeploying,getdeploying,Index,,B200,1,,,,,,,,,SPOT,,,,4.48,4.48,AVAILABLE,,https://getdeploying.com/gpus/nvidia-b200
-2026-11-03,2026-11-03,price_mining,1c9c8b905520eaab6eb9859c05b439f6,GetDeploying,getdeploying,Index,,H200,1,,,,,,,,,ON_DEMAND,,,,4.88,4.88,AVAILABLE,,https://getdeploying.com/gpus/nvidia-h200
-2026-11-03,2026-11-03,price_mining,e4e8688a5189e2da1e0a522d83f38ce2,GetDeploying,getdeploying,Index,,H200,1,,,,,,,,,RESERVATION,,,,3.93,3.93,AVAILABLE,,https://getdeploying.com/gpus/nvidia-h200
-2026-11-03,2026-11-03,price_mining,d95edff4817edbb266eeba11de43f325,GetDeploying,getdeploying,Index,,H200,1,,,,,,,,,SPOT,,,,3.26,3.26,AVAILABLE,,https://getdeploying.com/gpus/nvidia-h200
-2026-11-03,2026-11-03,price_mining,046c849822027b689f4bb897bd8e7609,GetDeploying,getdeploying,Index,,A100,1,,,,,,,,,ON_DEMAND,,,,1.90,1.90,AVAILABLE,,https://getdeploying.com/gpus/nvidia-a100
-2026-11-03,2026-11-03,price_mining,717bfc1a8217f321a2d86711598ba3e0,GetDeploying,getdeploying,Index,,A100,1,,,,,,,,,RESERVATION,,,,1.49,1.49,AVAILABLE,,https://getdeploying.com/gpus/nvidia-a100
-2026-11-03,2026-11-03,price_mining,42b7cb74a124be04946ed7c57d62db3a,GetDeploying,getdeploying,Index,,A100,1,,,,,,,,,SPOT,,,,1.20,1.20,AVAILABLE,,https://getdeploying.com/gpus/nvidia-a100
-2026-11-03,2026-11-03,price_mining,e9d1ff3777070b94e17e051be6eab303,RunPod,runpod,NeoCloud,,B300,1,,,,,,,,,ON_DEMAND,,,,8.99,8.99,AVAILABLE,,https://www.runpod.io/pricing
-2026-11-03,2026-11-03,price_mining,251589062cc9ce43d546714b5b19569a,RunPod,runpod,NeoCloud,,H200,1,,,,,,,,,ON_DEMAND,,,,5.29,5.29,AVAILABLE,,https://www.runpod.io/pricing
-2026-11-03,2026-11-03,price_mining,23c5c5d4affe2cd4a514d006d84b5b12,RunPod,runpod,NeoCloud,,B200,1,,,,,,,,,ON_DEMAND,,,,7.99,7.99,AVAILABLE,,https://www.runpod.io/pricing
-2026-11-03,2026-11-03,price_mining,5376e35d6a7740b47698b7fb494878a9,RunPod,runpod,NeoCloud,,A100,1,,,,,,,,,ON_DEMAND,,,,1.79,1.79,AVAILABLE,,https://www.runpod.io/pricing
-2026-11-03,2026-11-03,price_mining,0901ab65dee0f5fc619eb2b4cec80413,Together.ai,togetherai,NeoCloud,,H200,1,,,,,,,,,ON_DEMAND,,,,5.99,5.99,AVAILABLE,,https://www.together.ai/pricing
-2026-11-03,2026-11-03,price_mining,935487143531850afe63a7a2e4d0db7f,Together.ai,togetherai,NeoCloud,,H200,1,,,,,,,,,RESERVATION,6,,,3.99,3.99,AVAILABLE,,https://www.together.ai/pricing
-2026-11-03,2026-11-03,price_mining,8fcfb65a40057b8ec079aa7a063dfdeb,Together.ai,togetherai,NeoCloud,,H200,1,,,,,,,,,RESERVATION,3,,,4.15,4.15,AVAILABLE,,https://www.together.ai/pricing
-2026-11-03,2026-11-03,price_mining,eae56adb916cfdd5f84c7b8e619b52af,Together.ai,togetherai,NeoCloud,,H200,1,,,,,,,,,RESERVATION,1,,,4.99,4.99,AVAILABLE,,https://www.together.ai/pricing
-2026-11-03,2026-11-03,price_mining,4abafa8e967c67d4c95b214b8818ae9d,Together.ai,togetherai,NeoCloud,,H200,1,,,,,,,,,SPOT,,,,2.99,2.99,AVAILABLE,,https://www.together.ai/pricing
-2026-11-03,2026-11-03,price_mining,5241b323331c894513d30598334a634d,Together.ai,togetherai,NeoCloud,,B200,1,,,,,,,,,ON_DEMAND,,,,8.19,8.19,AVAILABLE,,https://www.together.ai/pricing
-2026-11-03,2026-11-03,price_mining,0e9738081f8d3694a145c4e03b85d729,Together.ai,togetherai,NeoCloud,,B200,1,,,,,,,,,RESERVATION,6,,,6.79,6.79,AVAILABLE,,https://www.together.ai/pricing
-2026-11-03,2026-11-03,price_mining,0af25a55dba35fce87e22531321eaa11,Together.ai,togetherai,NeoCloud,,B200,1,,,,,,,,,RESERVATION,3,,,7.79,7.79,AVAILABLE,,https://www.together.ai/pricing
-2026-11-03,2026-11-03,price_mining,c91435878149e250b00f3f24da54da0f,Together.ai,togetherai,NeoCloud,,B200,1,,,,,,,,,RESERVATION,1,,,7.99,7.99,AVAILABLE,,https://www.together.ai/pricing
-2026-11-03,2026-11-03,price_mining,a34417bf73ef38e69330eb76e39ee211,Together.ai,togetherai,NeoCloud,,B200,1,,,,,,,,,SPOT,,,,4.09,4.09,AVAILABLE,,https://www.together.ai/pricing
-2026-11-03,2026-11-03,price_mining,ed6d48146ecd2382e832dd4ca037b453,Together.ai,togetherai,NeoCloud,,B300,1,,,,,,,,,ON_DEMAND,,,,9.99,9.99,AVAILABLE,,https://www.together.ai/pricing
-2026-11-03,2026-11-03,price_mining,a060e6157ce336e65faca20615dc6d75,Together.ai,togetherai,NeoCloud,,B300,1,,,,,,,,,SPOT,,,,4.99,4.99,AVAILABLE,,https://www.together.ai/pricing
-2026-11-03,2026-11-03,price_mining,9bb6abfa3304a88c9fda2e3f260663e5,Daytona,daytona,NeoCloud,,B300,1,,,,,,,,,ON_DEMAND,,,,7.10,7.10,AVAILABLE,,https://www.daytona.io/pricing
-2026-11-03,2026-11-03,price_mining,581815fcff877fee6db8797563392fbe,Daytona,daytona,NeoCloud,,B300,1,,,,,,,,,SPOT,,,,4.08,4.08,AVAILABLE,,https://www.daytona.io/pricing
-2026-11-03,2026-11-03,price_mining,044d37314f5d6019c7f20211ff1e37c3,Daytona,daytona,NeoCloud,,B200,1,,,,,,,,,ON_DEMAND,,,,6.25,6.25,AVAILABLE,,https://www.daytona.io/pricing
-2026-11-03,2026-11-03,price_mining,9e6851c6075632dbbf0cd1e0cb60fc50,Daytona,daytona,NeoCloud,,B200,1,,,,,,,,,SPOT,,,,3.59,3.59,AVAILABLE,,https://www.daytona.io/pricing
-2026-11-03,2026-11-03,price_mining,91cfe13f6b045ea0ffc4c5181d545557,Daytona,daytona,NeoCloud,,H200,1,,,,,,,,,ON_DEMAND,,,,4.54,4.54,AVAILABLE,,https://www.daytona.io/pricing
-2026-11-03,2026-11-03,price_mining,cc066e0d4e6f8ace3331bdc4c1ef7d24,Daytona,daytona,NeoCloud,,H200,1,,,,,,,,,SPOT,,,,2.61,2.61,AVAILABLE,,https://www.daytona.io/pricing
-2026-11-03,2026-11-03,price_mining,916e021aa480cf995c54e73b59c48643,UpCloud,upcloud,NeoCloud,,B300,1,,,,,,,,,ON_DEMAND,,,,7.99,7.99,AVAILABLE,,https://upcloud.com/pricing/
-2026-11-03,2026-11-03,price_mining,c13a17236c041ee0a3fb286d27580725,UpCloud,upcloud,NeoCloud,,B300,1,,,,,,,,,SPOT,,,,5.99,5.99,AVAILABLE,,https://upcloud.com/pricing/
-2026-11-03,2026-11-03,price_mining,f29130dfb5a11f0ff7753e4554e17dea,UpCloud,upcloud,NeoCloud,,B200,1,,,,,,,,,ON_DEMAND,,,,6.05,6.05,AVAILABLE,,https://upcloud.com/pricing/
-2026-11-03,2026-11-03,price_mining,aece9d3b1f144661df44504347e6fd4a,UpCloud,upcloud,NeoCloud,,B200,1,,,,,,,,,SPOT,,,,4.23,4.23,AVAILABLE,,https://upcloud.com/pricing/
-2026-11-03,2026-11-03,price_mining,9190b7632273ebdab38fad30e42f172f,Gpu.ai,gpuai,NeoCloud,,B300,1,,,,,,,,,ON_DEMAND,,,,,,UNAVAILABLE,,https://gpu.ai/pricing
-2026-11-03,2026-11-03,price_mining,9190b7632273ebdab38fad30e42f172f,Gpu.ai,gpuai,NeoCloud,,B200,1,,,,,,,,,ON_DEMAND,,,,,,UNAVAILABLE,,https://gpu.ai/pricing
-2026-11-03,2026-11-03,price_mining,b389836ef350f0fa0618c5ad94d40128,Gpu.ai,gpuai,NeoCloud,,H200,1,,,,,,,,,ON_DEMAND,,,,5.29,5.29,AVAILABLE,,https://gpu.ai/pricing
-2026-11-03,2026-11-03,price_mining,dcc0b1c1d6c5d557a6dc1f0299ff2968,Gpu.ai,gpuai,NeoCloud,,A100,1,,,,,,,,,ON_DEMAND,,,,1.23,1.23,AVAILABLE,,https://gpu.ai/pricing
-2026-11-03,2026-11-03,price_mining,2bf4a71f2ae4a724cd29e0d58bb6d46b,Spheron,spheron,NeoCloud,,B300,1,,,,,,,,,ON_DEMAND,,,,12.415000000000001,12.42,AVAILABLE,,https://www.spheron.ai/gpu-rental/b300/
-2026-11-03,2026-11-03,price_mining,f7d81648d6b44a30377fa1f8365b427a,Spheron,spheron,NeoCloud,,B300,1,,,,,,,,,SPOT,,,,7.4655000000000005,7.47,AVAILABLE,,https://www.spheron.ai/gpu-rental/b300/
-2026-11-03,2026-11-03,price_mining,1db68131e3f108951ec9c1dc5fe64a00,Spheron,spheron,NeoCloud,,B200,1,,,,,,,,,ON_DEMAND,,,,11.115000000000002,11.12,AVAILABLE,,https://www.spheron.ai/gpu-rental/b200/
-2026-11-03,2026-11-03,price_mining,e490c66f2d47b718a64e0df26a6adfda,Spheron,spheron,NeoCloud,,B200,8,,,,,,,,,SPOT,,,,44.8562,5.61,AVAILABLE,,https://www.spheron.ai/gpu-rental/b200/
-2026-11-03,2026-11-03,price_mining,e1af945eda12b5ec651c67b4c51104ec,Spheron,spheron,NeoCloud,,H200,8,,,,,,,,,ON_DEMAND,,,,44.0976,5.51,AVAILABLE,,https://www.spheron.ai/gpu-rental/h200/
-2026-11-03,2026-11-03,price_mining,6022248aebca7a9caea6c801be1673a0,Spheron,spheron,NeoCloud,,H200,1,,,,,,,,,SPOT,,,,4.428,4.43,AVAILABLE,,https://www.spheron.ai/gpu-rental/h200/
-2026-11-03,2026-11-03,price_mining,3b5dc8d72ecb182cfabfa7cc5aa0c327,Spheron,spheron,NeoCloud,,A100,1,,,,,,,,,ON_DEMAND,,,,1.476,1.48,AVAILABLE,,https://www.spheron.ai/gpu-rental/a100/
-2026-11-03,2026-11-03,price_mining,e4d74b9d58adcaa505c923a2c3b36720,Spheron,spheron,NeoCloud,,A100,2,,,,,,,,,SPOT,,,,2.3834,1.19,AVAILABLE,,https://www.spheron.ai/gpu-rental/a100/
-2026-11-03,2026-11-03,price_mining,d32ace3b8852755a97572dea5db3a985,Hyperbolic,hyperbolic,NeoCloud,,B200,1,,,,,,,,,ON_DEMAND,,,,5.99,5.99,AVAILABLE,,https://www.hyperbolic.ai/marketplace
-2026-11-03,2026-11-03,price_mining,bc7020edbeec56b03f21f6ee1b371c08,Hyperbolic,hyperbolic,NeoCloud,,H200,1,,,,,,,,,ON_DEMAND,,,,3.99,3.99,AVAILABLE,,https://www.hyperbolic.ai/marketplace
-2026-11-03,2026-11-03,price_mining,c04540bac9e4e3790a6f9bd6690b7f15,DeepInfra,deepinfra,NeoCloud,,B300,1,,,,,,,,,ON_DEMAND,,,,5.89,5.89,AVAILABLE,,https://deepinfra.com/pricing
-2026-11-03,2026-11-03,price_mining,892de1898c5cf6ab5669d842d3d28504,DeepInfra,deepinfra,NeoCloud,,B200,1,,,,,,,,,ON_DEMAND,,,,4.89,4.89,AVAILABLE,,https://deepinfra.com/pricing
-2026-11-03,2026-11-03,price_mining,fca3ab6b66972dd63496cbf43231cd29,DeepInfra,deepinfra,NeoCloud,,H200,1,,,,,,,,,ON_DEMAND,,,,3.49,3.49,AVAILABLE,,https://deepinfra.com/pricing
-2026-11-03,2026-11-03,price_mining,38d16809e6b0347bc5af0f7ba167e6d1,DeepInfra,deepinfra,NeoCloud,,A100,1,,,,,,,,,ON_DEMAND,,,,1.49,1.49,AVAILABLE,,https://deepinfra.com/pricing
-2026-11-03,2026-11-03,price_mining,2dc339c044149af07e15b601e40badc0,Fireworks.ai,fireworksai,NeoCloud,,GB300,1,,,,,,,,,ON_DEMAND,,,,20.00,20.00,AVAILABLE,,https://fireworks.ai/pricing
-2026-11-03,2026-11-03,price_mining,c26a751e0e69c9d70fccd95cce0dd85f,Fireworks.ai,fireworksai,NeoCloud,,B300,1,,,,,,,,,ON_DEMAND,,,,15.00,15.00,AVAILABLE,,https://fireworks.ai/pricing
-2026-11-03,2026-11-03,price_mining,4f9bb15391c02972875d98f01b9956a3,Fireworks.ai,fireworksai,NeoCloud,,B200,1,,,,,,,,,ON_DEMAND,,,,13.00,13.00,AVAILABLE,,https://fireworks.ai/pricing
-2026-11-03,2026-11-03,price_mining,b281f2c288cbde6a8654f7a2e033e528,Fireworks.ai,fireworksai,NeoCloud,,H200,1,,,,,,,,,ON_DEMAND,,,,8.00,8.00,AVAILABLE,,https://fireworks.ai/pricing
-2026-11-03,2026-11-03,price_mining,c7e5e6172f89697189dd4098b30c992d,Astra Intellectus,astraintellectus,NeoCloud,,GB300,1,,,,,,,,,RESERVATION,36,,,6.25,6.25,AVAILABLE,,https://astra-intellectus.com/gpu-rental/
-2026-11-03,2026-11-03,price_mining,9bf281ebf694c6d9cf0e90bfda06447e,Astra Intellectus,astraintellectus,NeoCloud,,B300,1,,,,,,,,,RESERVATION,36,,,5.45,5.45,AVAILABLE,,https://astra-intellectus.com/gpu-rental/
-2026-11-03,2026-11-03,price_mining,c141785aa58ce6f1311d0e8c49d2e6f3,Verda,verda,NeoCloud,,GB300,1,,,,,,,,,ON_DEMAND,,,,13.18,13.18,AVAILABLE,,https://verda.com/pricing
-2026-11-03,2026-11-03,price_mining,0f9f03dc2fac65d66d24230a3aefcf91,Verda,verda,NeoCloud,,GB300,1,,,,,,,,,SPOT,,,,6.590,6.590,AVAILABLE,,https://verda.com/pricing
-2026-11-03,2026-11-03,price_mining,b4b1fb911f614b6329b50b3a15fd0ab7,Verda,verda,NeoCloud,,B300,1,,,,,,,,,ON_DEMAND,,,,11.46,11.46,AVAILABLE,,https://verda.com/pricing
-2026-11-03,2026-11-03,price_mining,edccd37171be9f372db1fe0b216a8b30,Verda,verda,NeoCloud,,B300,1,,,,,,,,,SPOT,,,,5.730,5.730,AVAILABLE,,https://verda.com/pricing
-2026-11-03,2026-11-03,price_mining,bda9cb3c7e74da8768a0912ce8145f7f,Verda,verda,NeoCloud,,B200,1,,,,,,,,,ON_DEMAND,,,,8.958,8.958,AVAILABLE,,https://verda.com/pricing
-2026-11-03,2026-11-03,price_mining,3a22d943f56c5cb8c172cd0e68f6d3ca,Verda,verda,NeoCloud,,B200,1,,,,,,,,,SPOT,,,,4.479,4.479,AVAILABLE,,https://verda.com/pricing
-2026-11-03,2026-11-03,price_mining,defd01eba7f3aaeb0bb4707e5a654b7e,Verda,verda,NeoCloud,,H200,1,,,,,,,,,ON_DEMAND,,,,6.313,6.313,AVAILABLE,,https://verda.com/pricing
-2026-11-03,2026-11-03,price_mining,2fe55fe1ff7aef89f689cb63dcf2eead,Verda,verda,NeoCloud,,H200,1,,,,,,,,,SPOT,,,,3.157,3.157,AVAILABLE,,https://verda.com/pricing
-2026-11-03,2026-11-03,price_mining,cd20528f1f4904653e1547e41a00fbd1,Verda,verda,NeoCloud,,A100,1,,,,,,,,,ON_DEMAND,,,,2.270,2.270,AVAILABLE,,https://verda.com/pricing
-2026-11-03,2026-11-03,price_mining,49b87eb69b7069ba03295a7f7a549fa1,Verda,verda,NeoCloud,,A100,1,,,,,,,,,SPOT,,,,1.135,1.135,AVAILABLE,,https://verda.com/pricing
-2026-11-03,2026-11-03,price_mining,49aa41998bcb2054a76a8dbeb7817e2d,Impossible Cloud,impossiblecloud,NeoCloud,,B300,1,,,,,,,,,RESERVATION,36,,North America,6.315789474,6.32,AVAILABLE,,https://www.impossiblecloud.com/baremetal?ref=https%3A%2F%2Fwww.impossiblecloud.com%2Fen-us%2Fpricing
-2026-11-03,2026-11-03,price_mining,9a3b0f91c0f8941ec031828c6b62b86c,Impossible Cloud,impossiblecloud,NeoCloud,,B200,1,,,,,,,,,RESERVATION,60,,Europe,,,UNAVAILABLE,,https://www.impossiblecloud.com/baremetal?ref=https%3A%2F%2Fwww.impossiblecloud.com%2Fen-us%2Fpricing
-2026-11-03,2026-11-03,price_mining,f2d80cf2448fcb647f7757db780ace12,Impossible Cloud,impossiblecloud,NeoCloud,,H200,1,,,,,,,,,RESERVATION,24,,North America,3.157894737,3.16,AVAILABLE,,https://www.impossiblecloud.com/baremetal?ref=https%3A%2F%2Fwww.impossiblecloud.com%2Fen-us%2Fpricing
-2026-11-03,2026-11-03,price_mining,0ba4fc196f47b09c21c74fd428d1d9d8,TheAI Cloud,theaicloud,NeoCloud,,B300,1,,,,,,,,,RESERVATION,24,,,,,UNAVAILABLE,,https://cloud.theai.com/pricing
-2026-11-03,2026-11-03,price_mining,0f55affbd81f5040767859d45b9e8086,TheAI Cloud,theaicloud,NeoCloud,,B300,1,,,,,,,,,RESERVATION,36,,,4.7,4.7,AVAILABLE,,https://cloud.theai.com/pricing
-2026-11-03,2026-11-03,price_mining,4a75dcb693192cc12c892fa6b770da5e,Digital Ocean,digitalocean,NeoCloud,,B300,1,,,,,,,,,RESERVATION,12,,,7.94,7.94,AVAILABLE,,https://www.digitalocean.com/pricing/gpu-droplets
-2026-11-03,2026-11-03,price_mining,449fec0b1bb999a1e94d28a1d3c67a24,Digital Ocean,digitalocean,NeoCloud,,H200,1,,,,,,,,,RESERVATION,12,,,3.40,3.40,AVAILABLE,,https://www.digitalocean.com/pricing/gpu-droplets
-2026-11-03,2026-11-03,price_mining,3d2cc2e46b15b26749cb7c18dc81af14,Digital Ocean,digitalocean,NeoCloud,,B300,1,,,,,,,,,SPOT,,,,6.17,6.17,AVAILABLE,,https://www.digitalocean.com/pricing/gpu-droplets
-2026-11-03,2026-11-03,price_mining,0974935ffa4d3a5242ac705ae28e4539,Digital Ocean,digitalocean,NeoCloud,,H200,1,,,,,,,,,ON_DEMAND,,,,4.47,4.47,AVAILABLE,,https://www.digitalocean.com/pricing/gpu-droplets
-2026-11-03,2026-11-03,price_mining,ab59acebd7e1944223dc505988dfdcaf,Bentaus,bentaus,NeoCloud,,B300,1,,,,,,,,,ON_DEMAND,,,,6.50,6.50,AVAILABLE,,https://www.bentaus.com/nvidia-b300#pricing
-2026-11-03,2026-11-03,price_mining,6bbf733ff506dd1880988cedb3231783,Bentaus,bentaus,NeoCloud,,B300,1,,,,,,,,,RESERVATION,,,,4.35,4.35,AVAILABLE,,https://www.bentaus.com/nvidia-b300#pricing
-2026-11-03,2026-11-03,price_mining,f44443548f9785fe905192d034757662,Civo,civo,NeoCloud,,H200,1,,,,,,,,,ON_DEMAND,,,,3.49,3.49,AVAILABLE,,https://www.civo.com/pricing
-2026-11-03,2026-11-03,price_mining,a5e8b4118db6a38b81a3796861ee2e6b,Civo,civo,NeoCloud,,H200,1,,,,,,,,,RESERVATION,36,,,2.99,2.99,AVAILABLE,,https://www.civo.com/pricing
-2026-11-03,2026-11-03,price_mining,68cec057d84f7898f5fd1e2950bff8a7,Civo,civo,NeoCloud,,B200,8,,,,,,,,,RESERVATION,36,,,30.32,3.79,AVAILABLE,,https://www.civo.com/pricing
-2026-11-03,2026-11-03,price_mining,a1621ade00f7cf5a507a32534e4e192d,Civo,civo,NeoCloud,,B300,8,,,,,,,,,ON_DEMAND,,,,59.92,7.49,AVAILABLE,,https://www.civo.com/pricing
-2026-11-03,2026-11-03,price_mining,eb68ed0f492be8f08a6bb1669deb01b3,Civo,civo,NeoCloud,,B300,8,,,,,,,,,RESERVATION,36,,,43.92,5.49,AVAILABLE,,https://www.civo.com/pricing
-2026-11-03,2026-11-03,price_mining,710159db2e55a108f43edda88d177537,Cyfuture.ai,cyfutureai,NeoCloud,,B300,1,,,,,,,,,RESERVATION,1,,,6.00,0.06,AVAILABLE,,https://cyfuture.ai/pricing
-2026-11-03,2026-11-03,price_mining,3e44c36f172a7dc0fa5b7b7a92625aa8,Cyfuture.ai,cyfutureai,NeoCloud,,B300,1,,,,,,,,,RESERVATION,6,,,5.75,0.06,AVAILABLE,,https://cyfuture.ai/pricing
-2026-11-03,2026-11-03,price_mining,253f8139a726dd96f9fd5c5250b35c84,Cyfuture.ai,cyfutureai,NeoCloud,,B300,1,,,,,,,,,RESERVATION,12,,,5.51,0.06,AVAILABLE,,https://cyfuture.ai/pricing
-2026-11-03,2026-11-03,price_mining,b740506fd0bb276f2a331a0abb2c6b96,Latitude.sh,latitudesh,NeoCloud,,B300,8,,,,,,,,,RESERVATION,1,,,46720,8.00,AVAILABLE,,https://www.latitude.sh/pricing
-2026-11-03,2026-11-03,price_mining,74be563d41f0902057f92cd0719f2059,Latitude.sh,latitudesh,NeoCloud,,B300,8,,,,,,,,,RESERVATION,12,,,392448,5.60,AVAILABLE,,https://www.latitude.sh/pricing
-2026-11-03,2026-11-03,price_mining,f95db1dfac64ac1a993f4140eaa41720,AWS,aws,Hyperscaler,,B300,8,,,,,,,,,RESERVATION,,,North America,129.168,16.146,AVAILABLE,,https://aws.amazon.com/ec2/capacityblocks/pricing/
-2026-11-03,2026-11-03,price_mining,ba3a7b98e0255e5f6c39250c6714e233,AWS,aws,Hyperscaler,,B200,8,,,,,,,,,RESERVATION,,,North America,113.666,14.208,AVAILABLE,,https://aws.amazon.com/ec2/capacityblocks/pricing/
-2026-11-03,2026-11-03,price_mining,dfd2a29edc4dbfb58f2389210be0e5b0,AWS,aws,Hyperscaler,,GB200,72,,,,,,,,,RESERVATION,,,North America,761.904,10.582,AVAILABLE,,https://aws.amazon.com/ec2/capacityblocks/pricing/
-2026-11-03,2026-11-03,price_mining,990f72fe4e86b9a14a7c1758799949b4,AWS,aws,Hyperscaler,,B300,8,,,,,,,,,SPOT,,,North America,82.5254,10.315675,AVAILABLE,,https://website.spot.ec2.aws.a2z.com/spot.json
-2026-11-03,2026-11-03,price_mining,3258f82eea177c83e9a74f625fff5c12,AWS,aws,Hyperscaler,,B200,8,,,,,,,,,SPOT,,,North America,83.6268,10.45335,AVAILABLE,,https://website.spot.ec2.aws.a2z.com/spot.json
-2026-11-03,2026-11-03,price_mining,4d7a5ff721deafe4ba229bfdaa1c5c22,Hyperstack,hyperstack,NeoCloud,,B300,1,,,,,,,,,ON_DEMAND,,,,7.40,7.40,UNAVAILABLE,,https://www.hyperstack.cloud/gpu-pricing
-2026-11-03,2026-11-03,price_mining,e2bf57c9f049cc3d163dda61daa69de4,Hyperstack,hyperstack,NeoCloud,,B200,1,,,,,,,,,ON_DEMAND,,,,6.00,6.00,UNAVAILABLE,,https://www.hyperstack.cloud/gpu-pricing
-2026-11-03,2026-11-03,price_mining,f09ce5f82855cad40fce96bead33e774,Hyperstack,hyperstack,NeoCloud,,H200,1,,,,,,,,,ON_DEMAND,,,,3.99,3.99,UNAVAILABLE,,https://www.hyperstack.cloud/gpu-pricing
-2026-11-03,2026-11-03,price_mining,1aa68edc67321318aa24d020b4310c8d,Hyperstack,hyperstack,NeoCloud,,B200,1,,,,,,,,,RESERVATION,,,,5.10,5.10,AVAILABLE,,https://www.hyperstack.cloud/gpu-pricing
-2026-11-03,2026-11-03,price_mining,1bae10f8bf485d5c1cf26d3ee360883c,Hyperstack,hyperstack,NeoCloud,,H200,1,,,,,,,,,RESERVATION,,,,2.79,2.79,AVAILABLE,,https://www.hyperstack.cloud/gpu-pricing
-2026-11-03,2026-11-03,price_mining,f091453fa92b051536cd63098a817ff5,CCIR,ccir,Index,,B300,1,,,,,,,,,SPOT,,,North America,10.1484,10.15,AVAILABLE,,https://ccir.io/discovery#charts&zone=b300-northern-virginia-z6
-2026-11-03,2026-11-03,price_mining,0626737e4e7ead4831d0bc80a148a3ec,CCIR,ccir,Index,,B300,1,,,,,,,,,SPOT,,,Europe,5.2892,5.29,AVAILABLE,,https://ccir.io/discovery#charts&zone=b300-london-z4
-2026-11-03,2026-11-03,price_mining,38fffc96ab2f6beff31ad30a0e68e6f6,CCIR,ccir,Index,,B300,1,,,,,,,,,SPOT,,,Asia-Pacific,9.3763,9.38,AVAILABLE,,https://ccir.io/discovery#charts&zone=b300-seoul-z3
-2026-11-03,2026-11-03,price_mining,81f8637a711951e74209fdc6de070800,CCIR,ccir,Index,,B200,1,,,,,,,,,SPOT,,,North America,10.4616,10.46,AVAILABLE,,https://ccir.io/discovery#charts&zone=b200-northern-virginia-z6
-2026-11-03,2026-11-03,price_mining,c31ad13f3502399ec67215fd528c9448,CCIR,ccir,Index,,B200,1,,,,,,,,,SPOT,,,Europe,5.6209,5.62,AVAILABLE,,https://ccir.io/discovery#charts&zone=b200-paris-z1
-2026-11-03,2026-11-03,price_mining,e56870507aa9ba8124d4ce7f047f9905,CCIR,ccir,Index,,B200,1,,,,,,,,,SPOT,,,Asia-Pacific,6.8689,6.87,AVAILABLE,,https://ccir.io/discovery#charts&zone=b200-mumbai-z2
-2026-11-03,2026-11-03,price_mining,26f7eaa2db2aba41c05715ba09bf031a,CCIR,ccir,Index,,H200,1,,,,,,,,,SPOT,,,North America,4.8403,4.84,AVAILABLE,,https://ccir.io/discovery#charts&zone=h200-upgraded-northern-virginia-z2
-2026-11-03,2026-11-03,price_mining,cd482e323e40c15581f09b690bb3923f,CCIR,ccir,Index,,H200,1,,,,,,,,,SPOT,,,Europe,2.2966,2.30,AVAILABLE,,https://ccir.io/discovery#charts&zone=h200-standard-london-z2
-2026-11-03,2026-11-03,price_mining,3bc9c9c6c0cb07a6ac6c6dc874d51bdf,CCIR,ccir,Index,,H200,1,,,,,,,,,SPOT,,,Asia-Pacific,3.5679,3.57,AVAILABLE,,https://ccir.io/discovery#charts&zone=h200-upgraded-seoul-z1
+2026-11-03,2026-11-03,price_mining,d03fea8a524cb7ce78162a23ec3cd730,Kalshi,kalshi,Index,,B200,1,,,,,,,,,,,,,8.69,8.69,AVAILABLE,,https://kalshi.com/markets/kxb200ws/b200-weekly/kxb200ws-26jul17?utm_campaign=kalshi-announces-compute-forward-curves-becoming-the-exchange-for-the-ai-economy&utm_medium=referral&utm_source=news.kalshi.com
+2026-11-03,2026-11-03,price_mining,7c736e7a2ca25d652ad1ee7adf3b438c,Kalshi,kalshi,Index,,H200,1,,,,,,,,,,,,,5.69,5.69,AVAILABLE,,https://kalshi.com/markets/kxh200ws/weekly-h200/kxh200ws-26jul17?utm_campaign=kalshi-announces-compute-forward-curves-becoming-the-exchange-for-the-ai-economy&utm_medium=referral&utm_source=news.kalshi.com
+2026-11-03,2026-11-03,price_mining,399306a7f060d019cf47e7d12532f7d2,Kalshi,kalshi,Index,,A100,1,,,,,,,,,,,,,1.07,1.07,AVAILABLE,,https://kalshi.com/markets/kxa100ws/a100-weekly/kxa100ws-26jul17?utm_campaign=kalshi-announces-compute-forward-curves-becoming-the-exchange-for-the-ai-economy&utm_medium=referral&utm_source=news.kalshi.com
+2026-11-03,2026-11-03,price_mining,c79175c20e1aabc2a3cea7b2ad7b3319,Ornn,ornn,Index,,B200,1,,,,,,,,,,,,,9.41,9.41,AVAILABLE,,https://data.ornn.com/
+2026-11-03,2026-11-03,price_mining,91da385ddc02fccce3b9fae199fddaf4,Ornn,ornn,Index,,H200,1,,,,,,,,,,,,,7.12,7.12,AVAILABLE,,https://data.ornn.com/
+2026-11-03,2026-11-03,price_mining,952f8c4f76e118bf499ade9c3ed7a727,CoreWeave,coreweave,NeoCloud,,GB200,4,,,,,,,,,ON_DEMAND,,,North America,42.00,10.50,AVAILABLE,,https://www.coreweave.com/pricing
+2026-11-03,2026-11-03,price_mining,68b50f350b2438b4292a034f5f49ebb4,CoreWeave,coreweave,NeoCloud,,B200,8,,,,,,,,,ON_DEMAND,,,North America,68.80,8.60,AVAILABLE,,https://www.coreweave.com/pricing
+2026-11-03,2026-11-03,price_mining,b4245a31957e5116c5f8dee61311841e,CoreWeave,coreweave,NeoCloud,,A100,8,,,,,,,,,ON_DEMAND,,,North America,21.60,2.70,AVAILABLE,,https://www.coreweave.com/pricing
+2026-11-03,2026-11-03,price_mining,38b89f8d7c085df774666c3eea2e31ff,SiliconData,silicondata,NeoCloud,,B300,1,,,,,,,,,,,,,7.55,7.55,AVAILABLE,,https://www.silicondata.com/products/silicon-index/b300
+2026-11-03,2026-11-03,price_mining,8230812b81e6afc286f49bd64ff9b62d,SiliconData,silicondata,NeoCloud,,B200,1,,,,,,,,,,,,,6.54,6.54,AVAILABLE,,https://www.silicondata.com/products/silicon-index/b200
+2026-11-03,2026-11-03,price_mining,cf2ea0ba168268b76aa02d551d35a6b2,SiliconData,silicondata,NeoCloud,,H200,1,,,,,,,,,,,,,3.52,3.52,AVAILABLE,,https://www.silicondata.com/products/silicon-index/h200
+2026-11-03,2026-11-03,price_mining,e98d05a98ea2e3e64e990d6d5aaf2eeb,Nebius,nebius,NeoCloud,,B300,1,,,,,,,,,ON_DEMAND,,,,9.50,9.50,AVAILABLE,,https://nebius.com/prices
+2026-11-03,2026-11-03,price_mining,4233a750d70a6b80eaba0f3551e62e86,Nebius,nebius,NeoCloud,,B200,1,,,,,,,,,ON_DEMAND,,,,8.50,8.50,AVAILABLE,,https://nebius.com/prices
+2026-11-03,2026-11-03,price_mining,bc6f91838a0b774e0f292bb12734ff84,Nebius,nebius,NeoCloud,,H200,1,,,,,,,,,ON_DEMAND,,,,5.40,5.40,AVAILABLE,,https://nebius.com/prices
+2026-11-03,2026-11-03,price_mining,89397262c56588878eb8061bb2032ede,Nebius,nebius,Index,,B300,1,,,,,,,,,SPOT,,,North America,5.5,5.50,AVAILABLE,,https://nebius.com/spot-prices?historyGpus=B300&historyRange=1d&period=1d
+2026-11-03,2026-11-03,price_mining,dfa0b0dcc8e9e7cf5b6e59ace03b7da8,Nebius,nebius,Index,,B300,1,,,,,,,,,SPOT,,,Europe,9.5,9.50,AVAILABLE,,https://nebius.com/spot-prices?historyGpus=B300&historyRange=1d&period=1d
+2026-11-03,2026-11-03,price_mining,05edf091df1e055631bee307a6333729,Nebius,nebius,Index,,B200,1,,,,,,,,,SPOT,,,North America,8.1,8.10,AVAILABLE,,https://nebius.com/spot-prices?historyRange=1d&period=1d&historyGpus=B200
+2026-11-03,2026-11-03,price_mining,a89a1ea075ecbcde5dd5ce67d4621460,Nebius,nebius,Index,,B200,1,,,,,,,,,SPOT,,,Middle East,5.7,5.70,AVAILABLE,,https://nebius.com/spot-prices?historyRange=1d&period=1d&historyGpus=B200
+2026-11-03,2026-11-03,price_mining,a6278842c91daab974d48d5b8e8f7c4a,Nebius,nebius,Index,,H200,1,,,,,,,,,SPOT,,,Europe,3.25,3.25,AVAILABLE,,https://nebius.com/spot-prices?historyRange=1d&period=1d&historyGpus=H200
+2026-11-03,2026-11-03,price_mining,f6328852b605e4f6a1a0aa61c4f29fa4,GetDeploying,getdeploying,Index,,B300,1,,,,,,,,,ON_DEMAND,,,,9.41,9.41,AVAILABLE,,https://getdeploying.com/gpus/nvidia-b300
+2026-11-03,2026-11-03,price_mining,f661a29844e66b7017fee524e8849ca4,GetDeploying,getdeploying,Index,,B300,1,,,,,,,,,RESERVATION,,,,5.38,5.38,AVAILABLE,,https://getdeploying.com/gpus/nvidia-b300
+2026-11-03,2026-11-03,price_mining,70a8c4422b312634739950b200f84fc7,GetDeploying,getdeploying,Index,,B300,1,,,,,,,,,SPOT,,,,5.26,5.26,AVAILABLE,,https://getdeploying.com/gpus/nvidia-b300
+2026-11-03,2026-11-03,price_mining,67c64b6f4b726e0f2da3ba63a5bae412,GetDeploying,getdeploying,Index,,B200,1,,,,,,,,,ON_DEMAND,,,,7.99,7.99,AVAILABLE,,https://getdeploying.com/gpus/nvidia-b200
+2026-11-03,2026-11-03,price_mining,f728df511a70bfc09ee5cd22d119e258,GetDeploying,getdeploying,Index,,B200,1,,,,,,,,,RESERVATION,,,,7.19,7.19,AVAILABLE,,https://getdeploying.com/gpus/nvidia-b200
+2026-11-03,2026-11-03,price_mining,7fc43d6ed15dccb19ca53f3cf1b40031,GetDeploying,getdeploying,Index,,B200,1,,,,,,,,,SPOT,,,,4.48,4.48,AVAILABLE,,https://getdeploying.com/gpus/nvidia-b200
+2026-11-03,2026-11-03,price_mining,d13c5c49feffd965f79ad5bb520bd58b,GetDeploying,getdeploying,Index,,H200,1,,,,,,,,,ON_DEMAND,,,,4.88,4.88,AVAILABLE,,https://getdeploying.com/gpus/nvidia-h200
+2026-11-03,2026-11-03,price_mining,221b4d2f972dc0defde7751094bba934,GetDeploying,getdeploying,Index,,H200,1,,,,,,,,,RESERVATION,,,,3.93,3.93,AVAILABLE,,https://getdeploying.com/gpus/nvidia-h200
+2026-11-03,2026-11-03,price_mining,1652ad00a6ba6ec1eeb8a40a8f37f6ef,GetDeploying,getdeploying,Index,,H200,1,,,,,,,,,SPOT,,,,3.26,3.26,AVAILABLE,,https://getdeploying.com/gpus/nvidia-h200
+2026-11-03,2026-11-03,price_mining,3833435c0013fb51e48e11d7889a0de4,GetDeploying,getdeploying,Index,,A100,1,,,,,,,,,ON_DEMAND,,,,1.90,1.90,AVAILABLE,,https://getdeploying.com/gpus/nvidia-a100
+2026-11-03,2026-11-03,price_mining,5c2351283e0dde6df8937d7612e773a8,GetDeploying,getdeploying,Index,,A100,1,,,,,,,,,RESERVATION,,,,1.49,1.49,AVAILABLE,,https://getdeploying.com/gpus/nvidia-a100
+2026-11-03,2026-11-03,price_mining,1556babd0b9505d8f8ce5e92486deeb9,GetDeploying,getdeploying,Index,,A100,1,,,,,,,,,SPOT,,,,1.20,1.20,AVAILABLE,,https://getdeploying.com/gpus/nvidia-a100
+2026-11-03,2026-11-03,price_mining,d5466e78a654a36a0c6e0295199ca903,RunPod,runpod,NeoCloud,,B300,1,,,,,,,,,ON_DEMAND,,,,8.99,8.99,AVAILABLE,,https://www.runpod.io/pricing
+2026-11-03,2026-11-03,price_mining,df71e691530dda40f6518c8ef8c9adb5,RunPod,runpod,NeoCloud,,H200,1,,,,,,,,,ON_DEMAND,,,,5.29,5.29,AVAILABLE,,https://www.runpod.io/pricing
+2026-11-03,2026-11-03,price_mining,fc08cc028d78ed7aac42033b3be346f5,RunPod,runpod,NeoCloud,,B200,1,,,,,,,,,ON_DEMAND,,,,7.99,7.99,AVAILABLE,,https://www.runpod.io/pricing
+2026-11-03,2026-11-03,price_mining,6533c3c0c86ed1d395efb3663b17d02a,RunPod,runpod,NeoCloud,,A100,1,,,,,,,,,ON_DEMAND,,,,1.79,1.79,AVAILABLE,,https://www.runpod.io/pricing
+2026-11-03,2026-11-03,price_mining,4e13812b3c98d4d0c368e49a827ff48e,Together.ai,togetherai,NeoCloud,,H200,1,,,,,,,,,ON_DEMAND,,,,5.99,5.99,AVAILABLE,,https://www.together.ai/pricing
+2026-11-03,2026-11-03,price_mining,60ae159d2426019212ff5af623979287,Together.ai,togetherai,NeoCloud,,H200,1,,,,,,,,,RESERVATION,6,,,3.99,3.99,AVAILABLE,,https://www.together.ai/pricing
+2026-11-03,2026-11-03,price_mining,b96cb18c9c9b3583321daf800ef6d62b,Together.ai,togetherai,NeoCloud,,H200,1,,,,,,,,,RESERVATION,3,,,4.15,4.15,AVAILABLE,,https://www.together.ai/pricing
+2026-11-03,2026-11-03,price_mining,b33682237643835d75832389983debb6,Together.ai,togetherai,NeoCloud,,H200,1,,,,,,,,,RESERVATION,1,,,4.99,4.99,AVAILABLE,,https://www.together.ai/pricing
+2026-11-03,2026-11-03,price_mining,ec4d6611ef7806fcc0240988222c280b,Together.ai,togetherai,NeoCloud,,H200,1,,,,,,,,,SPOT,,,,2.99,2.99,AVAILABLE,,https://www.together.ai/pricing
+2026-11-03,2026-11-03,price_mining,97efc4fde4d25d9201c7395e972346a3,Together.ai,togetherai,NeoCloud,,B200,1,,,,,,,,,ON_DEMAND,,,,8.19,8.19,AVAILABLE,,https://www.together.ai/pricing
+2026-11-03,2026-11-03,price_mining,461ee86be3feb577e6ea6e221aa075d1,Together.ai,togetherai,NeoCloud,,B200,1,,,,,,,,,RESERVATION,6,,,6.79,6.79,AVAILABLE,,https://www.together.ai/pricing
+2026-11-03,2026-11-03,price_mining,18a06201d900ad5f60451992549a390e,Together.ai,togetherai,NeoCloud,,B200,1,,,,,,,,,RESERVATION,3,,,7.79,7.79,AVAILABLE,,https://www.together.ai/pricing
+2026-11-03,2026-11-03,price_mining,984e36b197d8e3527537a7fb8be96d8e,Together.ai,togetherai,NeoCloud,,B200,1,,,,,,,,,RESERVATION,1,,,7.99,7.99,AVAILABLE,,https://www.together.ai/pricing
+2026-11-03,2026-11-03,price_mining,86337104a3283ec809de289e61a188f6,Together.ai,togetherai,NeoCloud,,B200,1,,,,,,,,,SPOT,,,,4.09,4.09,AVAILABLE,,https://www.together.ai/pricing
+2026-11-03,2026-11-03,price_mining,3707bca0fd828092c4ddec0e98ff62d7,Together.ai,togetherai,NeoCloud,,B300,1,,,,,,,,,ON_DEMAND,,,,9.99,9.99,AVAILABLE,,https://www.together.ai/pricing
+2026-11-03,2026-11-03,price_mining,b3b05d2e728b7a39215eb5a9b52d44f3,Together.ai,togetherai,NeoCloud,,B300,1,,,,,,,,,SPOT,,,,4.99,4.99,AVAILABLE,,https://www.together.ai/pricing
+2026-11-03,2026-11-03,price_mining,3625fac83b00b863d09bf13c22ab3a34,Daytona,daytona,NeoCloud,,B300,1,,,,,,,,,ON_DEMAND,,,,7.10,7.10,AVAILABLE,,https://www.daytona.io/pricing
+2026-11-03,2026-11-03,price_mining,e02ad4a1e633646df1f685f6e5fc6e1d,Daytona,daytona,NeoCloud,,B300,1,,,,,,,,,SPOT,,,,4.08,4.08,AVAILABLE,,https://www.daytona.io/pricing
+2026-11-03,2026-11-03,price_mining,4d7d409a3eb41b5492794059e04e9cf7,Daytona,daytona,NeoCloud,,B200,1,,,,,,,,,ON_DEMAND,,,,6.25,6.25,AVAILABLE,,https://www.daytona.io/pricing
+2026-11-03,2026-11-03,price_mining,3259b50abe8d1ca100e0e07c95c4740b,Daytona,daytona,NeoCloud,,B200,1,,,,,,,,,SPOT,,,,3.59,3.59,AVAILABLE,,https://www.daytona.io/pricing
+2026-11-03,2026-11-03,price_mining,ab7a29eee057327ef962a6e8cb91abef,Daytona,daytona,NeoCloud,,H200,1,,,,,,,,,ON_DEMAND,,,,4.54,4.54,AVAILABLE,,https://www.daytona.io/pricing
+2026-11-03,2026-11-03,price_mining,981814f91f28be736f2c8b599206ce47,Daytona,daytona,NeoCloud,,H200,1,,,,,,,,,SPOT,,,,2.61,2.61,AVAILABLE,,https://www.daytona.io/pricing
+2026-11-03,2026-11-03,price_mining,f4ad6314e6b766b5b33a933ba5b57c1e,UpCloud,upcloud,NeoCloud,,B300,1,,,,,,,,,ON_DEMAND,,,,7.99,7.99,AVAILABLE,,https://upcloud.com/pricing/
+2026-11-03,2026-11-03,price_mining,0be72155addb5b5965625f18e8dc6b9a,UpCloud,upcloud,NeoCloud,,B300,1,,,,,,,,,SPOT,,,,5.99,5.99,AVAILABLE,,https://upcloud.com/pricing/
+2026-11-03,2026-11-03,price_mining,522274f867f8e268b9d214ccf9d69535,UpCloud,upcloud,NeoCloud,,B200,1,,,,,,,,,ON_DEMAND,,,,6.05,6.05,AVAILABLE,,https://upcloud.com/pricing/
+2026-11-03,2026-11-03,price_mining,07f15e4869c89debcd42e0901dcefdcf,UpCloud,upcloud,NeoCloud,,B200,1,,,,,,,,,SPOT,,,,4.23,4.23,AVAILABLE,,https://upcloud.com/pricing/
+2026-11-03,2026-11-03,price_mining,fdb5713d46c6e914544eac9de92b83c8,Gpu.ai,gpuai,NeoCloud,,B300,1,,,,,,,,,ON_DEMAND,,,,,,UNAVAILABLE,,https://gpu.ai/pricing
+2026-11-03,2026-11-03,price_mining,fdb5713d46c6e914544eac9de92b83c8,Gpu.ai,gpuai,NeoCloud,,B200,1,,,,,,,,,ON_DEMAND,,,,,,UNAVAILABLE,,https://gpu.ai/pricing
+2026-11-03,2026-11-03,price_mining,508b7c377069efe93891e5be7415426a,Gpu.ai,gpuai,NeoCloud,,H200,1,,,,,,,,,ON_DEMAND,,,,5.29,5.29,AVAILABLE,,https://gpu.ai/pricing
+2026-11-03,2026-11-03,price_mining,f10d9a2dd599ec86476003973deb47e5,Gpu.ai,gpuai,NeoCloud,,A100,1,,,,,,,,,ON_DEMAND,,,,1.23,1.23,AVAILABLE,,https://gpu.ai/pricing
+2026-11-03,2026-11-03,price_mining,35888d941c7ec126bb6c7b95779efb20,Spheron,spheron,NeoCloud,,B300,1,,,,,,,,,ON_DEMAND,,,,12.415000000000001,12.42,AVAILABLE,,https://www.spheron.ai/gpu-rental/b300/
+2026-11-03,2026-11-03,price_mining,766ed3c95fd23be2035908fade14313c,Spheron,spheron,NeoCloud,,B300,1,,,,,,,,,SPOT,,,,7.4655000000000005,7.47,AVAILABLE,,https://www.spheron.ai/gpu-rental/b300/
+2026-11-03,2026-11-03,price_mining,635ff0f3ae7097c6812a2f423aeed883,Spheron,spheron,NeoCloud,,B200,1,,,,,,,,,ON_DEMAND,,,,11.115000000000002,11.12,AVAILABLE,,https://www.spheron.ai/gpu-rental/b200/
+2026-11-03,2026-11-03,price_mining,5c4a98ef8edc81017475910ff280c17b,Spheron,spheron,NeoCloud,,B200,8,,,,,,,,,SPOT,,,,44.8562,5.61,AVAILABLE,,https://www.spheron.ai/gpu-rental/b200/
+2026-11-03,2026-11-03,price_mining,87b33df94c76aa8e1680702d2e271c5d,Spheron,spheron,NeoCloud,,H200,8,,,,,,,,,ON_DEMAND,,,,44.0976,5.51,AVAILABLE,,https://www.spheron.ai/gpu-rental/h200/
+2026-11-03,2026-11-03,price_mining,ac9bb6be95d6520a54500aa6e030bf35,Spheron,spheron,NeoCloud,,H200,1,,,,,,,,,SPOT,,,,4.428,4.43,AVAILABLE,,https://www.spheron.ai/gpu-rental/h200/
+2026-11-03,2026-11-03,price_mining,73c3bcab458533a0b340db7f75d931bc,Spheron,spheron,NeoCloud,,A100,1,,,,,,,,,ON_DEMAND,,,,1.476,1.48,AVAILABLE,,https://www.spheron.ai/gpu-rental/a100/
+2026-11-03,2026-11-03,price_mining,cdc3aadc16a8a7ccf3cd19c5378eafa6,Spheron,spheron,NeoCloud,,A100,2,,,,,,,,,SPOT,,,,2.3834,1.19,AVAILABLE,,https://www.spheron.ai/gpu-rental/a100/
+2026-11-03,2026-11-03,price_mining,45d52c4607355245f637c76ae36c3548,Hyperbolic,hyperbolic,NeoCloud,,B200,1,,,,,,,,,ON_DEMAND,,,,5.99,5.99,AVAILABLE,,https://www.hyperbolic.ai/marketplace
+2026-11-03,2026-11-03,price_mining,3f5d849d0e91ac0ecc890a31ba870dad,Hyperbolic,hyperbolic,NeoCloud,,H200,1,,,,,,,,,ON_DEMAND,,,,3.99,3.99,AVAILABLE,,https://www.hyperbolic.ai/marketplace
+2026-11-03,2026-11-03,price_mining,09ab958d2dcb52bbd67ff5b0a5b505c5,DeepInfra,deepinfra,NeoCloud,,B300,1,,,,,,,,,ON_DEMAND,,,,5.89,5.89,AVAILABLE,,https://deepinfra.com/pricing
+2026-11-03,2026-11-03,price_mining,c99f1706d15bde83c09a31a8f17684bc,DeepInfra,deepinfra,NeoCloud,,B200,1,,,,,,,,,ON_DEMAND,,,,4.89,4.89,AVAILABLE,,https://deepinfra.com/pricing
+2026-11-03,2026-11-03,price_mining,8a63d1c836b895656b0c1b568802a6ed,DeepInfra,deepinfra,NeoCloud,,H200,1,,,,,,,,,ON_DEMAND,,,,3.49,3.49,AVAILABLE,,https://deepinfra.com/pricing
+2026-11-03,2026-11-03,price_mining,8e3a8cfd74da68184549672c91890df7,DeepInfra,deepinfra,NeoCloud,,A100,1,,,,,,,,,ON_DEMAND,,,,1.49,1.49,AVAILABLE,,https://deepinfra.com/pricing
+2026-11-03,2026-11-03,price_mining,1144f938fb5587875137e320d8f0d1b1,Fireworks.ai,fireworksai,NeoCloud,,GB300,1,,,,,,,,,ON_DEMAND,,,,20.00,20.00,AVAILABLE,,https://fireworks.ai/pricing
+2026-11-03,2026-11-03,price_mining,99055707e25200e7c1e69d4ac357d182,Fireworks.ai,fireworksai,NeoCloud,,B300,1,,,,,,,,,ON_DEMAND,,,,15.00,15.00,AVAILABLE,,https://fireworks.ai/pricing
+2026-11-03,2026-11-03,price_mining,a60eb608175c6b475c4c671087e91031,Fireworks.ai,fireworksai,NeoCloud,,B200,1,,,,,,,,,ON_DEMAND,,,,13.00,13.00,AVAILABLE,,https://fireworks.ai/pricing
+2026-11-03,2026-11-03,price_mining,b110eeb372952d0020de7e951adf19fd,Fireworks.ai,fireworksai,NeoCloud,,H200,1,,,,,,,,,ON_DEMAND,,,,8.00,8.00,AVAILABLE,,https://fireworks.ai/pricing
+2026-11-03,2026-11-03,price_mining,786e7a6d403294acce4ae705c1596c7e,Astra Intellectus,astraintellectus,NeoCloud,,GB300,1,,,,,,,,,RESERVATION,36,,,6.25,6.25,AVAILABLE,,https://astra-intellectus.com/gpu-rental/
+2026-11-03,2026-11-03,price_mining,66e93c48ea504585c8b916cb821c6b5c,Astra Intellectus,astraintellectus,NeoCloud,,B300,1,,,,,,,,,RESERVATION,36,,,5.45,5.45,AVAILABLE,,https://astra-intellectus.com/gpu-rental/
+2026-11-03,2026-11-03,price_mining,bb89f2dac15e3d13306fc9282cc30c9f,Verda,verda,NeoCloud,,GB300,1,,,,,,,,,ON_DEMAND,,,,13.18,13.18,AVAILABLE,,https://verda.com/pricing
+2026-11-03,2026-11-03,price_mining,884498ecd74b0df8b7386be1538ed057,Verda,verda,NeoCloud,,GB300,1,,,,,,,,,SPOT,,,,6.590,6.590,AVAILABLE,,https://verda.com/pricing
+2026-11-03,2026-11-03,price_mining,d862058c96fb4642757089e111c0aa75,Verda,verda,NeoCloud,,B300,1,,,,,,,,,ON_DEMAND,,,,11.46,11.46,AVAILABLE,,https://verda.com/pricing
+2026-11-03,2026-11-03,price_mining,64d24752d3eb6db4eb7ee47f181e8dea,Verda,verda,NeoCloud,,B300,1,,,,,,,,,SPOT,,,,5.730,5.730,AVAILABLE,,https://verda.com/pricing
+2026-11-03,2026-11-03,price_mining,c29832b548e30af46be545bfdf8dbfb6,Verda,verda,NeoCloud,,B200,1,,,,,,,,,ON_DEMAND,,,,8.958,8.958,AVAILABLE,,https://verda.com/pricing
+2026-11-03,2026-11-03,price_mining,e9647fef47890edd7fe60a8c5700aa2a,Verda,verda,NeoCloud,,B200,1,,,,,,,,,SPOT,,,,4.479,4.479,AVAILABLE,,https://verda.com/pricing
+2026-11-03,2026-11-03,price_mining,55b32e0a8ed9631d97df34acefdaeba1,Verda,verda,NeoCloud,,H200,1,,,,,,,,,ON_DEMAND,,,,6.313,6.313,AVAILABLE,,https://verda.com/pricing
+2026-11-03,2026-11-03,price_mining,fd96d84c2b44547e38842c30c8601d6e,Verda,verda,NeoCloud,,H200,1,,,,,,,,,SPOT,,,,3.157,3.157,AVAILABLE,,https://verda.com/pricing
+2026-11-03,2026-11-03,price_mining,bad8dd877a80130fb05901987bee3d51,Verda,verda,NeoCloud,,A100,1,,,,,,,,,ON_DEMAND,,,,2.270,2.270,AVAILABLE,,https://verda.com/pricing
+2026-11-03,2026-11-03,price_mining,2170714e6243abc26128d0b59fe8f457,Verda,verda,NeoCloud,,A100,1,,,,,,,,,SPOT,,,,1.135,1.135,AVAILABLE,,https://verda.com/pricing
+2026-11-03,2026-11-03,price_mining,41fea213ed649d4289318882b48afc8a,Impossible Cloud,impossiblecloud,NeoCloud,,B300,1,,,,,,,,,RESERVATION,36,,North America,6.315789474,6.32,AVAILABLE,,https://www.impossiblecloud.com/baremetal?ref=https%3A%2F%2Fwww.impossiblecloud.com%2Fen-us%2Fpricing
+2026-11-03,2026-11-03,price_mining,923c8ced6b79498a021075a331cad275,Impossible Cloud,impossiblecloud,NeoCloud,,B200,1,,,,,,,,,RESERVATION,60,,Europe,,,UNAVAILABLE,,https://www.impossiblecloud.com/baremetal?ref=https%3A%2F%2Fwww.impossiblecloud.com%2Fen-us%2Fpricing
+2026-11-03,2026-11-03,price_mining,f7c5236ca1101de1c23794376888354a,Impossible Cloud,impossiblecloud,NeoCloud,,H200,1,,,,,,,,,RESERVATION,24,,North America,3.157894737,3.16,AVAILABLE,,https://www.impossiblecloud.com/baremetal?ref=https%3A%2F%2Fwww.impossiblecloud.com%2Fen-us%2Fpricing
+2026-11-03,2026-11-03,price_mining,b03967b53db55aafac06598178af8d50,TheAI Cloud,theaicloud,NeoCloud,,B300,1,,,,,,,,,RESERVATION,24,,,,,UNAVAILABLE,,https://cloud.theai.com/pricing
+2026-11-03,2026-11-03,price_mining,84e68b0e615696aa380e6942f806a9d4,TheAI Cloud,theaicloud,NeoCloud,,B300,1,,,,,,,,,RESERVATION,36,,,4.7,4.7,AVAILABLE,,https://cloud.theai.com/pricing
+2026-11-03,2026-11-03,price_mining,464a1cb1502af025c924a930aca00a98,Digital Ocean,digitalocean,NeoCloud,,B300,1,,,,,,,,,RESERVATION,12,,,7.94,7.94,AVAILABLE,,https://www.digitalocean.com/pricing/gpu-droplets
+2026-11-03,2026-11-03,price_mining,2438068b678ed555dd1c9a304669e02e,Digital Ocean,digitalocean,NeoCloud,,H200,1,,,,,,,,,RESERVATION,12,,,3.40,3.40,AVAILABLE,,https://www.digitalocean.com/pricing/gpu-droplets
+2026-11-03,2026-11-03,price_mining,ec1c22e941446aac3229b81358f2c1a2,Digital Ocean,digitalocean,NeoCloud,,B300,1,,,,,,,,,SPOT,,,,6.17,6.17,AVAILABLE,,https://www.digitalocean.com/pricing/gpu-droplets
+2026-11-03,2026-11-03,price_mining,95924a79d1319e8f6899f4501744230d,Digital Ocean,digitalocean,NeoCloud,,H200,1,,,,,,,,,ON_DEMAND,,,,4.47,4.47,AVAILABLE,,https://www.digitalocean.com/pricing/gpu-droplets
+2026-11-03,2026-11-03,price_mining,14a47466e59804ccbb5c9c90bea2b77f,Bentaus,bentaus,NeoCloud,,B300,1,,,,,,,,,ON_DEMAND,,,,6.50,6.50,AVAILABLE,,https://www.bentaus.com/nvidia-b300#pricing
+2026-11-03,2026-11-03,price_mining,a66cfc2cfaf2a187d0eac9a3b85c0b7f,Bentaus,bentaus,NeoCloud,,B300,1,,,,,,,,,RESERVATION,,,,4.35,4.35,AVAILABLE,,https://www.bentaus.com/nvidia-b300#pricing
+2026-11-03,2026-11-03,price_mining,3d35abbe2499026ecff0fa426818b5f6,Civo,civo,NeoCloud,,H200,1,,,,,,,,,ON_DEMAND,,,,3.49,3.49,AVAILABLE,,https://www.civo.com/pricing
+2026-11-03,2026-11-03,price_mining,0df588bac65e1bcf99f5e356aa0db10b,Civo,civo,NeoCloud,,H200,1,,,,,,,,,RESERVATION,36,,,2.99,2.99,AVAILABLE,,https://www.civo.com/pricing
+2026-11-03,2026-11-03,price_mining,dfdf9a5d16491b577e169921a85b82b4,Civo,civo,NeoCloud,,B200,8,,,,,,,,,RESERVATION,36,,,30.32,3.79,AVAILABLE,,https://www.civo.com/pricing
+2026-11-03,2026-11-03,price_mining,0711a26106b1e3bc69df53a9e3e81ce2,Civo,civo,NeoCloud,,B300,8,,,,,,,,,ON_DEMAND,,,,59.92,7.49,AVAILABLE,,https://www.civo.com/pricing
+2026-11-03,2026-11-03,price_mining,4e0f30df8894704b83cf8690726ed9c2,Civo,civo,NeoCloud,,B300,8,,,,,,,,,RESERVATION,36,,,43.92,5.49,AVAILABLE,,https://www.civo.com/pricing
+2026-11-03,2026-11-03,price_mining,71cd8614ceebf37fe37d5f805e6001c4,Cyfuture.ai,cyfutureai,NeoCloud,,B300,1,,,,,,,,,RESERVATION,1,,,6.00,0.06,AVAILABLE,,https://cyfuture.ai/pricing
+2026-11-03,2026-11-03,price_mining,c94fc80ab6f3365868592535b3913579,Cyfuture.ai,cyfutureai,NeoCloud,,B300,1,,,,,,,,,RESERVATION,6,,,5.75,0.06,AVAILABLE,,https://cyfuture.ai/pricing
+2026-11-03,2026-11-03,price_mining,bcc3ce877b86817019a5fb3b47b7b1e4,Cyfuture.ai,cyfutureai,NeoCloud,,B300,1,,,,,,,,,RESERVATION,12,,,5.51,0.06,AVAILABLE,,https://cyfuture.ai/pricing
+2026-11-03,2026-11-03,price_mining,af2150e9755549fe0597e490004a2955,Latitude.sh,latitudesh,NeoCloud,,B300,8,,,,,,,,,RESERVATION,1,,,8.00,8.00,AVAILABLE,,https://www.latitude.sh/pricing
+2026-11-03,2026-11-03,price_mining,cd5ced562b1f72b75dc8542ce760bfe9,Latitude.sh,latitudesh,NeoCloud,,B300,8,,,,,,,,,RESERVATION,12,,,5.60,5.60,AVAILABLE,,https://www.latitude.sh/pricing
+2026-11-03,2026-11-03,price_mining,180f6b83f33ca18fb8fcd1cc7c3793cf,AWS,aws,Hyperscaler,,B300,8,,,,,,,,,RESERVATION,,,North America,129.168,16.146,AVAILABLE,,https://aws.amazon.com/ec2/capacityblocks/pricing/
+2026-11-03,2026-11-03,price_mining,a7d0c3589367e7e8e095d02d37faa6d7,AWS,aws,Hyperscaler,,B200,8,,,,,,,,,RESERVATION,,,North America,113.666,14.208,AVAILABLE,,https://aws.amazon.com/ec2/capacityblocks/pricing/
+2026-11-03,2026-11-03,price_mining,a7db2f736bd2be8557a46a50253ee08f,AWS,aws,Hyperscaler,,GB200,72,,,,,,,,,RESERVATION,,,North America,761.904,10.582,AVAILABLE,,https://aws.amazon.com/ec2/capacityblocks/pricing/
+2026-11-03,2026-11-03,price_mining,8e4eca3429770f14401fcd29205d0c10,AWS,aws,Hyperscaler,,B300,8,,,,,,,,,SPOT,,,North America,82.5254,10.315675,AVAILABLE,,https://website.spot.ec2.aws.a2z.com/spot.json
+2026-11-03,2026-11-03,price_mining,312d736291cb3e4ccb5d80104c6ae968,AWS,aws,Hyperscaler,,B200,8,,,,,,,,,SPOT,,,North America,83.6268,10.45335,AVAILABLE,,https://website.spot.ec2.aws.a2z.com/spot.json
+2026-11-03,2026-11-03,price_mining,c5fa406d1db999387648c6ccc2a0d27d,Hyperstack,hyperstack,NeoCloud,,B300,1,,,,,,,,,ON_DEMAND,,,,7.40,7.40,UNAVAILABLE,,https://www.hyperstack.cloud/gpu-pricing
+2026-11-03,2026-11-03,price_mining,c17699db567d13257204ab6601e83b3d,Hyperstack,hyperstack,NeoCloud,,B200,1,,,,,,,,,ON_DEMAND,,,,6.00,6.00,UNAVAILABLE,,https://www.hyperstack.cloud/gpu-pricing
+2026-11-03,2026-11-03,price_mining,23ee3775a92b99299166622c93a4f9b5,Hyperstack,hyperstack,NeoCloud,,H200,1,,,,,,,,,ON_DEMAND,,,,3.99,3.99,UNAVAILABLE,,https://www.hyperstack.cloud/gpu-pricing
+2026-11-03,2026-11-03,price_mining,271cbd9d037b9439e0a5466735decd5f,Hyperstack,hyperstack,NeoCloud,,B200,1,,,,,,,,,RESERVATION,,,,5.10,5.10,AVAILABLE,,https://www.hyperstack.cloud/gpu-pricing
+2026-11-03,2026-11-03,price_mining,e05c1b621b4da2f9eece46d1566a950e,Hyperstack,hyperstack,NeoCloud,,H200,1,,,,,,,,,RESERVATION,,,,2.79,2.79,AVAILABLE,,https://www.hyperstack.cloud/gpu-pricing
+2026-11-03,2026-11-03,price_mining,730fdfca5d6c8f22fb81e28b99dceeec,CCIR,ccir,Index,,B300,1,,,,,,,,,SPOT,,,North America,10.1484,10.15,AVAILABLE,,https://ccir.io/discovery#charts&zone=b300-northern-virginia-z6
+2026-11-03,2026-11-03,price_mining,dd10b7dc1e83e64f6f29382fa6ef971b,CCIR,ccir,Index,,B300,1,,,,,,,,,SPOT,,,Europe,5.2892,5.29,AVAILABLE,,https://ccir.io/discovery#charts&zone=b300-london-z4
+2026-11-03,2026-11-03,price_mining,c4903d20bfc6940c08ec442637b8c646,CCIR,ccir,Index,,B300,1,,,,,,,,,SPOT,,,Asia-Pacific,9.3763,9.38,AVAILABLE,,https://ccir.io/discovery#charts&zone=b300-seoul-z3
+2026-11-03,2026-11-03,price_mining,cb30c980e91cfb87ab66d6164141a0c1,CCIR,ccir,Index,,B200,1,,,,,,,,,SPOT,,,North America,10.4616,10.46,AVAILABLE,,https://ccir.io/discovery#charts&zone=b200-northern-virginia-z6
+2026-11-03,2026-11-03,price_mining,030faa2a33ea69a419a6db945a31aee8,CCIR,ccir,Index,,B200,1,,,,,,,,,SPOT,,,Europe,5.6209,5.62,AVAILABLE,,https://ccir.io/discovery#charts&zone=b200-paris-z1
+2026-11-03,2026-11-03,price_mining,747dab9f50ee5cbe81b97f7acd57f03b,CCIR,ccir,Index,,B200,1,,,,,,,,,SPOT,,,Asia-Pacific,6.8689,6.87,AVAILABLE,,https://ccir.io/discovery#charts&zone=b200-mumbai-z2
+2026-11-03,2026-11-03,price_mining,e9ed5973be012ca3b473425a7641350a,CCIR,ccir,Index,,H200,1,,,,,,,,,SPOT,,,North America,4.8403,4.84,AVAILABLE,,https://ccir.io/discovery#charts&zone=h200-upgraded-northern-virginia-z2
+2026-11-03,2026-11-03,price_mining,1a6dd062adce2a98fc1f6951abf685de,CCIR,ccir,Index,,H200,1,,,,,,,,,SPOT,,,Europe,2.2966,2.30,AVAILABLE,,https://ccir.io/discovery#charts&zone=h200-standard-london-z2
+2026-11-03,2026-11-03,price_mining,33ac4b368efcef07593e334fd816825f,CCIR,ccir,Index,,H200,1,,,,,,,,,SPOT,,,Asia-Pacific,3.5679,3.57,AVAILABLE,,https://ccir.io/discovery#charts&zone=h200-upgraded-seoul-z1
