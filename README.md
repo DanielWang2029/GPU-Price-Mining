@@ -172,7 +172,8 @@ The workbook schemas route raw rows to
 `compute_insight_gpu_provider_series_daily`, and p25/p50/p75/min aggregates to
 `compute_insight_gpu_price_series_daily`. Blank provider geography is filled
 from `compute_insight_dim_provider`; existing provider IDs and classifications
-take precedence over price-mining values.
+take precedence over price-mining values. Reconciled detail rows also populate
+`gpu_id` from `compute_insight_dim_gpu` before recomputing their record IDs.
 
 Generated SQL is stored under `sql/warehouse/`, reconciled CSVs and the provider
 merge/insert report under `output/warehouse/`.
