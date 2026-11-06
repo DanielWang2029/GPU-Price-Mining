@@ -53,7 +53,7 @@ class WarehouseTests(unittest.TestCase):
             "disk_storage_gb": "",
             "interconnect_bandwidth_gbps": "",
             "gpu_mem_bandwidth_gbps": "",
-            "billing_type": "RESERVATION",
+            "billing_type": "",
             "term_months": "1",
             "region_or_hq_country": "",
             "provider_hq_region": "",
@@ -75,6 +75,7 @@ class WarehouseTests(unittest.TestCase):
         self.assertEqual(output[0]["supplier_type"], "GPU Cloud")
         self.assertEqual(output[0]["region_or_hq_country"], "IN")
         self.assertEqual(output[0]["provider_hq_region"], "Asia-Pacific")
+        self.assertEqual(output[0]["billing_type"], "SPOT")
         self.assertEqual(output[0]["gpu_id"], "nvidia-b300")
         self.assertEqual(len(output[0]["record_id"]), 32)
         self.assertEqual(output[1]["gpu_id"], "nvidia-h200")

@@ -341,6 +341,8 @@ def reconcile_detail(
             merged[(publisher, old_id, canonical_id)] = None
         row["provider_id"] = canonical_id
         row["publisher_name"] = provider.provider_name
+        if not row["billing_type"]:
+            row["billing_type"] = "SPOT"
         row["supplier_type"] = provider.supplier_type
         if not row["region_or_hq_country"]:
             row["region_or_hq_country"] = provider.country
@@ -628,6 +630,8 @@ def write_report(
             "schema (the request had the raw/aggregate table names reversed).",
             "- Existing dim_provider IDs, names, supplier types, and missing HQ "
             "geography are applied before aggregation.",
+            "- Blank index-series billing types are normalized to `SPOT`, the "
+            "non-null warehouse category for market/index rates.",
             "- Provider medians group by date, GPU model, provider, billing type, "
             "and term.",
             "- Price percentiles group by date, GPU model, billing type, supplier "
