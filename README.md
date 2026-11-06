@@ -61,10 +61,11 @@ than being replaced with `N/A`. Every generated row sets `source_label` to
 reserved enrichment and note columns blank.
 
 `record_id` is the lowercase MD5 hex digest of the colon-separated
-`price_date`, `run_date`, `source_label`, `provider_id`, `gpu_id`,
-`billing_type`, `term_months`, `raw_price`, `price_gpu_hour`, and
-`availability` output values. Null/blank database fields are skipped to match
-PostgreSQL `CONCAT_WS` semantics.
+`price_date`, `run_date`, `source_label`, `provider_id`,
+`region_or_hq_country`, `provider_hq_region`, `gpu_id`, `billing_type`,
+`term_months`, `raw_price`, `price_gpu_hour`, and `availability` output
+values. Null/blank database fields are skipped to match PostgreSQL
+`CONCAT_WS` semantics.
 
 ## Source behavior
 
@@ -93,7 +94,7 @@ PostgreSQL `CONCAT_WS` semantics.
 | Bentaus | Lower bound of the advertised B300 per-GPU price range. |
 | Civo | GPU tables with raw multi-GPU node prices, GPU counts, and normalized per-GPU prices. |
 | Cyfuture.ai | INR B300 rates converted with the current Frankfurter USD/INR reference rate. |
-| Latitude.sh | Embedded B300 plan data, retaining monthly/yearly eight-GPU node totals and normalizing them per GPU-hour. |
+| Latitude.sh | Embedded B300 plan data normalized from monthly/yearly eight-GPU node totals; both stored prices use the resulting GPU-hour price. |
 | AWS | Capacity Block and current us-east-1 Linux Spot instance totals with per-GPU normalization (8 GPUs for B200/B300 and 72 for GB200). |
 | Hyperstack | Server-rendered on-demand/reservation rates plus the official live stock mirror for availability. |
 | CCIR | Embedded zone-level spot curves; rates are already quoted per GPU-hour. |

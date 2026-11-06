@@ -46,18 +46,23 @@ def collect(
             raise ValueError(f"Unsupported Latitude term {row.term}")
         term = int(row.term)
         source_price = prices["month"] if term == 1 else prices["year"]
+        gpu_hour_price = money_2(rates[term])
         observations.append(
             ok(
                 row,
-                money_2(rates[term]),
+                gpu_hour_price,
                 fetched_at=now,
                 source_url=URL,
-                raw_price=source_price,
+                raw_price=gpu_hour_price,
                 gpu_count=gpu_count,
-                raw_value=str(source_price),
+                raw_value=(
+                    f"listed node total {source_price}; stored raw price "
+                    f"{gpu_hour_price} per requested convention"
+                ),
                 note=(
                     "US listed node price normalized by 730 hours/month and eight GPUs. "
-                    "Workbook term 1 maps Monthly; term 12 maps Paid yearly."
+                    "Workbook term 1 maps Monthly; term 12 maps Paid yearly. "
+                    "raw_price intentionally equals price_gpu_hour."
                 ),
             )
         )

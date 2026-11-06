@@ -351,6 +351,8 @@ def reconcile_detail(
             run_date=row["run_date"],
             source_label=row["source_label"],
             provider=row["provider_id"],
+            region_or_hq_country=(row["region_or_hq_country"] or None),
+            provider_hq_region=row["provider_hq_region"] or None,
             gpu_id=row["gpu_id"] or None,
             billing=row["billing_type"] or None,
             term_month=row["term_months"] or None,

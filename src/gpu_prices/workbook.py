@@ -240,6 +240,8 @@ def make_record_id(
     run_date: str,
     source_label: str,
     provider: str,
+    region_or_hq_country: str | None,
+    provider_hq_region: str | None,
     gpu_id: str | None,
     billing: str | None,
     term_month: str | None,
@@ -252,6 +254,8 @@ def make_record_id(
         run_date,
         source_label,
         provider,
+        region_or_hq_country,
+        provider_hq_region,
         gpu_id,
         billing,
         term_month,
@@ -297,11 +301,15 @@ def record_row(
     raw_text = _decimal_text(raw_price)
     normalized_text = _decimal_text(price_gpu_hour)
     gpu_id = ""
+    country = ""
+    provider_region = row.region
     record_id = make_record_id(
         price_date=normalized_price_date,
         run_date=normalized_run_date,
         source_label=DATA_SOURCE,
         provider=provider,
+        region_or_hq_country=country or None,
+        provider_hq_region=provider_region or None,
         gpu_id=None,
         billing=billing or None,
         term_month=term or None,
@@ -330,8 +338,8 @@ def record_row(
         "",
         billing,
         term,
-        "",
-        row.region,
+        country,
+        provider_region,
         raw_text,
         normalized_text,
         availability,
