@@ -346,6 +346,12 @@ def reconcile_detail(
             row["region_or_hq_country"] = provider.country
         if not row["provider_hq_region"]:
             row["provider_hq_region"] = provider.region
+        try:
+            row["gpu_id"] = GPU_IDS[row["gpu_model_code"]]
+        except KeyError as exc:
+            raise ValueError(
+                f"No GPU dimension mapping for {row['gpu_model_code']!r}"
+            ) from exc
         row["record_id"] = make_record_id(
             price_date=row["price_date"],
             run_date=row["run_date"],

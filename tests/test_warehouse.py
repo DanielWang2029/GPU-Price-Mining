@@ -63,7 +63,8 @@ class WarehouseTests(unittest.TestCase):
             "price_note": "",
             "source_url": "https://cyfuture.ai/pricing",
         }
-        output, inserted, merged = reconcile_detail([row], existing)
+        second = {**row, "gpu_model_code": "H200"}
+        output, inserted, merged = reconcile_detail([row, second], existing)
         self.assertEqual(inserted, [])
         self.assertEqual(
             merged,
@@ -74,7 +75,10 @@ class WarehouseTests(unittest.TestCase):
         self.assertEqual(output[0]["supplier_type"], "GPU Cloud")
         self.assertEqual(output[0]["region_or_hq_country"], "IN")
         self.assertEqual(output[0]["provider_hq_region"], "Asia-Pacific")
+        self.assertEqual(output[0]["gpu_id"], "nvidia-b300")
         self.assertEqual(len(output[0]["record_id"]), 32)
+        self.assertEqual(output[1]["gpu_id"], "nvidia-h200")
+        self.assertNotEqual(output[0]["record_id"], output[1]["record_id"])
 
     def test_daily_aggregations(self) -> None:
         base = {
