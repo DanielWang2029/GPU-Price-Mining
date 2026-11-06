@@ -87,7 +87,7 @@ class WarehouseTests(unittest.TestCase):
             "run_date": "2026-11-03",
             "gpu_model_code": "B300",
             "billing_type": "ON_DEMAND",
-            "term_months": "",
+            "term_months": "12",
             "provider_id": "one",
             "supplier_type": "GPU Cloud",
             "provider_hq_region": "North America",
@@ -103,6 +103,12 @@ class WarehouseTests(unittest.TestCase):
                 "provider_hq_region": "Europe",
                 "source_url": "https://two.example",
                 "price_gpu_hour": "10",
+            },
+            {
+                **base,
+                "provider_id": "ignored-no-term",
+                "term_months": "",
+                "price_gpu_hour": "1",
             },
         ]
         provider = aggregate_provider_series(rows)
@@ -121,7 +127,7 @@ class WarehouseTests(unittest.TestCase):
         self.assertEqual(north_america["p25_price"], "5")
         self.assertEqual(north_america["p75_price"], "7")
         self.assertEqual(north_america["min_price"], "4")
-        self.assertEqual(north_america["term_months"], "")
+        self.assertEqual(north_america["term_months"], "12")
 
     def test_provider_insert_casts_updated_at_to_timestamp(self) -> None:
         provider = Provider(

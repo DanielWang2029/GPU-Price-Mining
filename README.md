@@ -176,6 +176,8 @@ take precedence over price-mining values. Reconciled detail rows also populate
 `gpu_id` from `compute_insight_dim_gpu` before recomputing their record IDs.
 Blank billing types from index sources are normalized to `SPOT` for the
 warehouse tables' non-null billing category.
+Both aggregate tables include only priced records with nonblank
+`term_months`, and percentile groups retain that term.
 
 Generated SQL is stored under `sql/warehouse/`, reconciled CSVs and the provider
 merge/insert report under `output/warehouse/`.
