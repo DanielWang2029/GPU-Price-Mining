@@ -32,4 +32,4 @@
 - Detail rows: 4,454.
 - Provider-series rows: 4,046.
 - Price-series rows: 2,822.
-- Duplicate record IDs under the requested MD5 formula: 61.
+- Duplicate record IDs under the requested MD5 formula: 42.
