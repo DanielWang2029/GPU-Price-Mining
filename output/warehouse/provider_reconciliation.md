@@ -27,10 +27,11 @@
 - Raw price-mining rows are loaded into `compute_insight_gpu_price_detail_daily`; this follows the workbook schema (the request had the raw/aggregate table names reversed).
 - Existing dim_provider IDs, names, supplier types, and missing HQ geography are applied before aggregation.
 - Blank index-series billing types are normalized to `SPOT`, the non-null warehouse category for market/index rates.
+- Aggregate tables include only priced records with a nonblank term.
 - Provider medians group by date, GPU model, provider, billing type, and term.
-- Price percentiles group by date, GPU model, billing type, supplier type, and region; terms are intentionally aggregated and stored NULL.
+- Price percentiles group by date, GPU model, billing type, term, supplier type, and region.
 - Percentile fields use continuous p25/p50/p75; `min_price` is the minimum (p0), matching the target schema.
 - Detail rows: 4,454.
-- Provider-series rows: 4,046.
-- Price-series rows: 2,652.
+- Provider-series rows: 714.
+- Price-series rows: 714.
 - Duplicate record IDs under the requested MD5 formula: 0.

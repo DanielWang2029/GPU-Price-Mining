@@ -404,7 +404,7 @@ def aggregate_provider_series(
 ) -> list[dict[str, str]]:
     groups: dict[tuple[str, ...], list[dict[str, str]]] = defaultdict(list)
     for row in rows:
-        if not row["price_gpu_hour"]:
+        if not row["price_gpu_hour"] or not row["term_months"]:
             continue
         key = (
             row["price_date"],
@@ -445,12 +445,13 @@ def aggregate_price_series(
 ) -> list[dict[str, str]]:
     groups: dict[tuple[str, ...], list[dict[str, str]]] = defaultdict(list)
     for row in rows:
-        if not row["price_gpu_hour"]:
+        if not row["price_gpu_hour"] or not row["term_months"]:
             continue
         key = (
             row["price_date"],
             row["gpu_model_code"],
             row["billing_type"],
+            row["term_months"],
             row["supplier_type"],
             row["provider_hq_region"],
         )
@@ -458,7 +459,7 @@ def aggregate_price_series(
 
     output: list[dict[str, str]] = []
     for key, members in sorted(groups.items()):
-        price_date, model, billing, supplier_type, region = key
+        price_date, model, billing, term, supplier_type, region = key
         prices = [Decimal(row["price_gpu_hour"]) for row in members]
         output.append(
             {
@@ -467,7 +468,7 @@ def aggregate_price_series(
                 "gpu_id": GPU_IDS[model],
                 "gpu_model_code": model,
                 "billing_type": billing,
-                "term_months": "",
+                "term_months": term,
                 "supplier_type": supplier_type,
                 "region_group": region,
                 "median_price": _number(_percentile(prices, Decimal("0.5"))),
@@ -632,10 +633,11 @@ def write_report(
             "geography are applied before aggregation.",
             "- Blank index-series billing types are normalized to `SPOT`, the "
             "non-null warehouse category for market/index rates.",
+            "- Aggregate tables include only priced records with a nonblank term.",
             "- Provider medians group by date, GPU model, provider, billing type, "
             "and term.",
-            "- Price percentiles group by date, GPU model, billing type, supplier "
-            "type, and region; terms are intentionally aggregated and stored NULL.",
+            "- Price percentiles group by date, GPU model, billing type, term, "
+            "supplier type, and region.",
             "- Percentile fields use continuous p25/p50/p75; `min_price` is the "
             "minimum (p0), matching the target schema.",
             f"- Detail rows: {len(detail_rows):,}.",
