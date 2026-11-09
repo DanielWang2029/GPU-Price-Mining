@@ -19,6 +19,9 @@ class AirflowDagTests(unittest.TestCase):
         self.assertIn("max_active_runs=1", source)
         self.assertIn("data_interval_end.in_timezone", source)
         self.assertIn("--price-date", source)
+        self.assertIn("python3 -m gpu_prices.aggregate", source)
+        self.assertIn("GPU_PRICE_TABLES_WORKBOOK", source)
+        self.assertIn("collect_gpu_prices >> aggregate_gpu_prices", source)
         self.assertIn("--strict", source)
 
 
