@@ -9,7 +9,9 @@ from gpu_prices.warehouse import (
     aggregate_price_series,
     aggregate_provider_series,
     reconcile_detail,
+    render_incremental_aggregate_sql,
     render_provider_insert,
+    select_incremental_aggregate_rows,
 )
 
 
@@ -146,6 +148,53 @@ class WarehouseTests(unittest.TestCase):
             "v.updated_at::timestamp without time zone",
             sql,
         )
+
+    def test_incremental_aggregates_include_all_termless_history(self) -> None:
+        rows = [
+            {"price_date": "2026-10-01", "term_months": ""},
+            {"price_date": "2026-10-01", "term_months": "12"},
+            {"price_date": "2026-11-04", "term_months": ""},
+            {"price_date": "2026-11-04", "term_months": "12"},
+        ]
+        selected = select_incremental_aggregate_rows(
+            rows,
+            incremental_start="2026-11-04",
+        )
+        self.assertEqual(
+            [(row["price_date"], row["term_months"]) for row in selected],
+            [
+                ("2026-10-01", "N/A"),
+                ("2026-11-04", "N/A"),
+                ("2026-11-04", "12"),
+            ],
+        )
+
+        provider_row = {
+            "price_date": "2026-10-01",
+            "run_date": "2026-11-08",
+            "gpu_id": "nvidia-b300",
+            "gpu_model_code": "B300",
+            "billing_type": "SPOT",
+            "term_months": "N/A",
+            "provider_id": "example",
+            "median_price": "1",
+            "offering_count": "1",
+            "supplier_type": "Serverless",
+            "reference_url": "https://example.com",
+            "source_label": "price_mining",
+        }
+        sql = render_incremental_aggregate_sql(
+            table="public.example",
+            columns=list(provider_row),
+            rows=[provider_row],
+            full_start_date="2026-10-01",
+            incremental_start_date="2026-11-04",
+            end_date="2026-11-08",
+        )
+        self.assertIn("term_months = 'N/A'", sql)
+        self.assertIn("term_months <> 'N/A'", sql)
+        self.assertIn("'2026-10-01' AND '2026-11-08'", sql)
+        self.assertIn("'2026-11-04' AND '2026-11-08'", sql)
 
 
 if __name__ == "__main__":

@@ -482,6 +482,21 @@ def aggregate_price_series(
     return output
 
 
+def select_incremental_aggregate_rows(
+    rows: list[dict[str, str]],
+    *,
+    incremental_start: str,
+) -> list[dict[str, str]]:
+    selected: list[dict[str, str]] = []
+    for row in rows:
+        if row["term_months"]:
+            if row["price_date"] >= incremental_start:
+                selected.append(row)
+            continue
+        selected.append({**row, "term_months": "N/A"})
+    return selected
+
+
 def write_csv(
     path: Path,
     columns: list[str],
@@ -510,7 +525,6 @@ def _sql_value(column: str, value: str) -> str:
         "disk_storage_gb",
         "interconnect_bandwidth_gbps",
         "gpu_mem_bandwidth_gbps",
-        "term_months",
         "raw_price",
         "price_gpu_hour",
         "median_price",
@@ -539,6 +553,39 @@ def render_insert_sql(
         f"DELETE FROM {table} "
         f"WHERE source_label = 'price_mining' "
         f"AND price_date BETWEEN '{start_date}' AND '{end_date}';",
+    ]
+    for start in range(0, len(rows), 500):
+        batch = rows[start : start + 500]
+        values = ",\n".join(
+            "    ("
+            + ",".join(_sql_value(column, row[column]) for column in columns)
+            + ")"
+            for row in batch
+        )
+        chunks.append(f"INSERT INTO {table} ({column_sql}) VALUES\n{values};")
+    chunks.append("COMMIT;")
+    return "\n\n".join(chunks) + "\n"
+
+
+def render_incremental_aggregate_sql(
+    *,
+    table: str,
+    columns: list[str],
+    rows: list[dict[str, str]],
+    full_start_date: str,
+    incremental_start_date: str,
+    end_date: str,
+) -> str:
+    column_sql = ",".join(columns)
+    chunks: list[str] = [
+        "BEGIN;",
+        f"DELETE FROM {table} "
+        "WHERE source_label = 'price_mining' AND ("
+        f"(term_months = 'N/A' AND price_date BETWEEN "
+        f"'{full_start_date}' AND '{end_date}') OR "
+        f"(term_months <> 'N/A' AND price_date BETWEEN "
+        f"'{incremental_start_date}' AND '{end_date}')"
+        ");",
     ]
     for start in range(0, len(rows), 500):
         batch = rows[start : start + 500]
@@ -667,6 +714,20 @@ def build_parser() -> argparse.ArgumentParser:
         default=Path("tables.xlsx"),
     )
     parser.add_argument(
+        "--base-history-csv",
+        type=Path,
+        help=(
+            "Earlier history whose termless rows must be re-aggregated together "
+            "with the incremental history."
+        ),
+    )
+    parser.add_argument(
+        "--incremental-start-date",
+        help=(
+            "First incremental date in YYYY-MM-DD. Required with --base-history-csv."
+        ),
+    )
+    parser.add_argument(
         "--output-dir",
         type=Path,
         default=Path("output/warehouse"),
@@ -684,6 +745,59 @@ def main(argv: list[str] | None = None) -> int:
     history = load_history(args.history_csv)
     validate_gpu_dimension(args.tables_workbook)
     existing = load_provider_dimension(args.tables_workbook)
+
+    if args.base_history_csv:
+        if not args.incremental_start_date:
+            raise ValueError(
+                "--incremental-start-date is required with --base-history-csv"
+            )
+        base_history = load_history(args.base_history_csv)
+        combined = [*base_history, *history]
+        detail, _, _ = reconcile_detail(combined, existing)
+        aggregate_input = select_incremental_aggregate_rows(
+            detail,
+            incremental_start=args.incremental_start_date,
+        )
+        provider_series = aggregate_provider_series(aggregate_input)
+        price_series = aggregate_price_series(aggregate_input)
+        full_start_date = min(row["price_date"] for row in detail)
+        end_date = max(row["price_date"] for row in history)
+
+        provider_csv = args.output_dir / "compute_insight_gpu_provider_series_daily.csv"
+        price_csv = args.output_dir / "compute_insight_gpu_price_series_daily.csv"
+        write_csv(provider_csv, PROVIDER_SERIES_COLUMNS, provider_series)
+        write_csv(price_csv, PRICE_SERIES_COLUMNS, price_series)
+        args.sql_dir.mkdir(parents=True, exist_ok=True)
+        (
+            args.sql_dir / "03_insert_compute_insight_gpu_provider_series_daily.sql"
+        ).write_text(
+            render_incremental_aggregate_sql(
+                table=PROVIDER_SERIES_TABLE,
+                columns=PROVIDER_SERIES_COLUMNS,
+                rows=provider_series,
+                full_start_date=full_start_date,
+                incremental_start_date=args.incremental_start_date,
+                end_date=end_date,
+            ),
+            encoding="utf-8",
+        )
+        (
+            args.sql_dir / "04_insert_compute_insight_gpu_price_series_daily.sql"
+        ).write_text(
+            render_incremental_aggregate_sql(
+                table=PRICE_SERIES_TABLE,
+                columns=PRICE_SERIES_COLUMNS,
+                rows=price_series,
+                full_start_date=full_start_date,
+                incremental_start_date=args.incremental_start_date,
+                end_date=end_date,
+            ),
+            encoding="utf-8",
+        )
+        print(f"Provider-series rows: {len(provider_series):,}")
+        print(f"Price-series rows: {len(price_series):,}")
+        return 0
+
     detail, inserted, merged = reconcile_detail(history, existing)
     provider_series = aggregate_provider_series(detail)
     price_series = aggregate_price_series(detail)
