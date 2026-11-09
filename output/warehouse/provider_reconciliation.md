@@ -31,7 +31,7 @@
 - Provider medians group by date, GPU model, provider, billing type, and term.
 - Price percentiles group by date, GPU model, billing type, term, supplier type, and region.
 - Percentile fields use continuous p25/p50/p75; `min_price` is the minimum (p0), matching the target schema.
-- Detail rows: 4,454.
-- Provider-series rows: 714.
-- Price-series rows: 714.
+- Detail rows: 655.
+- Provider-series rows: 100.
+- Price-series rows: 100.
 - Duplicate record IDs under the requested MD5 formula: 0.

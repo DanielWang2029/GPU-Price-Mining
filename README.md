@@ -176,8 +176,17 @@ take precedence over price-mining values. Reconciled detail rows also populate
 `gpu_id` from `compute_insight_dim_gpu` before recomputing their record IDs.
 Blank billing types from index sources are normalized to `SPOT` for the
 warehouse tables' non-null billing category.
-Both aggregate tables include only priced records with nonblank
-`term_months`, and percentile groups retain that term.
+Normal aggregation includes priced records with nonblank `term_months`.
+Incremental aggregation can additionally recalculate all termless history with
+`term_months='N/A'` while limiting term-bearing rows to the incremental range:
+
+```bash
+python3 -m gpu_prices.warehouse \
+  --history-csv output/gpu_prices_history_20261104_20261108.csv \
+  --base-history-csv output/gpu_prices_history_20261001_20261103.csv \
+  --incremental-start-date 2026-11-04 \
+  --tables-workbook tables.xlsx
+```
 
 Generated SQL is stored under `sql/warehouse/`, reconciled CSVs and the provider
 merge/insert report under `output/warehouse/`.
