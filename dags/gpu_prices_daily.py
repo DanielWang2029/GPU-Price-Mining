@@ -19,6 +19,9 @@ WORKBOOK_PATH = Path(
     )
 )
 OUTPUT_DIR = Path(os.getenv("GPU_PRICE_OUTPUT_DIR", PROJECT_ROOT / "output"))
+TABLES_WORKBOOK_PATH = Path(
+    os.getenv("GPU_PRICE_TABLES_WORKBOOK", PROJECT_ROOT / "tables.xlsx")
+)
 
 
 with DAG(
@@ -42,6 +45,7 @@ with DAG(
     The price date is derived from the data interval end in the DAG timezone;
     the collector records its actual local execution date separately. Configure
     `GPU_PRICE_WORKBOOK`,
+    `GPU_PRICE_TABLES_WORKBOOK`,
     `GPU_PRICE_OUTPUT_DIR`, and `GPU_PRICES_ALLOW_READ_PROXY` in the scheduler
     and worker environment when their defaults are not appropriate.
     """,
@@ -70,3 +74,25 @@ with DAG(
         execution_timeout=timedelta(minutes=45),
         do_xcom_push=False,
     )
+
+    aggregate_gpu_prices = BashOperator(
+        task_id="aggregate_gpu_prices",
+        bash_command="""
+        set -euo pipefail
+        cd "$GPU_PRICE_PROJECT_ROOT"
+        python3 -m gpu_prices.aggregate \
+          --input-csv "$GPU_PRICE_OUTPUT_DIR/gpu_prices_{{ data_interval_end.in_timezone('America/Los_Angeles').strftime('%Y%m%d') }}.csv" \
+          --tables-workbook "$GPU_PRICE_TABLES_WORKBOOK" \
+          --output-dir "$GPU_PRICE_OUTPUT_DIR"
+        """,
+        env={
+            "GPU_PRICE_PROJECT_ROOT": str(PROJECT_ROOT),
+            "GPU_PRICE_TABLES_WORKBOOK": str(TABLES_WORKBOOK_PATH),
+            "GPU_PRICE_OUTPUT_DIR": str(OUTPUT_DIR),
+        },
+        append_env=True,
+        execution_timeout=timedelta(minutes=15),
+        do_xcom_push=False,
+    )
+
+    collect_gpu_prices >> aggregate_gpu_prices

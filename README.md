@@ -197,12 +197,19 @@ merge/insert report under `output/warehouse/`.
 `America/Los_Angeles`. The DAG uses the local data-interval end for `price_date`
 and records the task's actual local execution date separately as `run_date`.
 
+After collection succeeds, a downstream `gpu_prices.aggregate` task reconciles
+provider metadata, maps empty aggregate terms to `N/A`, and writes:
+
+- `compute_insight_gpu_provider_series_daily_YYYYMMDD.csv`
+- `compute_insight_gpu_price_series_daily_YYYYMMDD.csv`
+
 Install this project and place or symlink the DAG into the Airflow DAG folder.
 The scheduler and worker must see the same project, workbook, and output paths.
 These environment variables can override the repository defaults:
 
 - `GPU_PRICE_PROJECT_ROOT`: project checkout used as the task working directory.
 - `GPU_PRICE_WORKBOOK`: absolute path to the source workbook.
+- `GPU_PRICE_TABLES_WORKBOOK`: absolute path to `tables.xlsx`.
 - `GPU_PRICE_OUTPUT_DIR`: directory for the daily CSV, XLSX, and audit files.
 - `GPU_PRICES_ALLOW_READ_PROXY`: defaults to `true` in the DAG because three
   public sources commonly block datacenter IPs.
