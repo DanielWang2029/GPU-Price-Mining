@@ -117,7 +117,7 @@ GPU_IDS = {
 }
 
 PROVIDER_IDS = {
-    "Kalshi": "kalshi",
+    "Compute Desk": "compute-desk",
     "Ornn": "ornn",
     "CoreWeave": "coreweave",
     "SiliconData": "silicondata",
@@ -161,10 +161,10 @@ class Provider:
 
 
 NEW_PROVIDERS = {
-    "kalshi": Provider(
-        "kalshi",
-        "Kalshi",
-        "https://kalshi.com",
+    "compute-desk": Provider(
+        "compute-desk",
+        "Compute Desk",
+        "https://www.computedesk.com",
         "US",
         "North America",
         "Serverless",

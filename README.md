@@ -71,7 +71,7 @@ values. Null/blank database fields are skipped to match PostgreSQL
 
 | Supplier | Collection source and workbook interpretation |
 | --- | --- |
-| Kalshi | Public forward-curve JSON; evaluates the log-PCHIP chart curve at collection time. |
+| Compute Desk | Public US one-year reserved-equivalent B300/B200/H200 index feed with daily business-day history. |
 | Ornn | Settled global daily index API. |
 | CoreWeave | North America HTML table. Whole-instance totals and GPU counts are retained, then normalized per GPU. |
 | SiliconData | Structured Neo-Cloud index data embedded in each public product page. |
@@ -101,7 +101,7 @@ values. Null/blank database fields are skipped to match PostgreSQL
 
 ### Anti-bot fallback
 
-Kalshi, GetDeploying, UpCloud, and Cyfuture may reject datacenter IPs even though their data
+GetDeploying, UpCloud, and Cyfuture may reject datacenter IPs even though their data
 is public. Prefer running from an allowed network or using the suppliers'
 authenticated API where supported. For a one-off collection, the command can use
 a public read-only text proxy:
@@ -134,8 +134,8 @@ The output defaults to
 When extending beyond a source's rolling retention window, pass the latest
 existing history file with `--prior-history`.
 
-- Kalshi's realized history plus its currently published forward curve,
-  evaluated daily at 20:00 UTC.
+- Compute Desk's published business-day history, carrying the latest fixing
+  across weekends and publication holidays.
 - Ornn's settled daily index history.
 - Silicon Data's explicit daily chart points.
 - Nebius spot-price 15-minute history, sampled at the DAG's 9:00 PM
@@ -150,10 +150,6 @@ existing history file with `--prior-history`.
 All other rows have no published curve and therefore carry the end-date price
 back across the requested range. The backfill fails rather than inventing a
 value if any curve-based source omits a requested date.
-
-Kalshi does not expose archived point-in-time forward-curve snapshots. Its past
-dates can be evaluated on the curve published today, but the exact curve that
-users saw on a prior day cannot be reconstructed retroactively.
 
 ## Warehouse loads
 

@@ -11,6 +11,7 @@ from pathlib import Path
 from gpu_prices.backfill import (
     calendar_dates,
     ccir_history,
+    computedesk_history,
     getdeploying_history,
     load_current_prices,
     load_prior_history,
@@ -28,12 +29,50 @@ class TextClient:
         return self.content
 
 
+class JsonClient:
+    def __init__(self, payload: dict[str, object]):
+        self.payload = payload
+
+    def get_json(self, _url: str) -> dict[str, object]:
+        return self.payload
+
+
 class BackfillTests(unittest.TestCase):
     def test_calendar_range_is_inclusive(self) -> None:
         values = calendar_dates(date(2026, 10, 1), date(2026, 10, 3))
         self.assertEqual(
             values,
             [date(2026, 10, 1), date(2026, 10, 2), date(2026, 10, 3)],
+        )
+
+    def test_computedesk_carries_latest_business_day_across_weekend(self) -> None:
+        source = SourceRow(
+            workbook_row=2,
+            source_name="Compute Desk",
+            supplier_type="Index",
+            gpu_model_code="B300",
+            price_type="Reserve",
+            region="North America",
+            term=Decimal("12"),
+            url="https://www.computedesk.com/indexes-overview",
+        )
+        client = JsonClient(
+            {
+                "indices": [
+                    {
+                        "alias": "CDB300",
+                        "latest_date": "2026-11-06",
+                        "latest_value": 7.49,
+                        "history": [{"date": "2026-11-06", "value": 7.49}],
+                    }
+                ]
+            }
+        )
+        dates = calendar_dates(date(2026, 11, 6), date(2026, 11, 8))
+        values = computedesk_history([source], dates, client)[2]
+        self.assertEqual(
+            [values[day] for day in dates],
+            [Decimal("7.49"), Decimal("7.49"), Decimal("7.49")],
         )
 
     def test_ccir_uses_previous_effective_day_and_preserves_gaps(self) -> None:

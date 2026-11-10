@@ -17,6 +17,7 @@ from gpu_prices.providers import (
     bentaus,
     ccir,
     civo,
+    computedesk,
     coreweave,
     cyfuture_ai,
     daytona,
@@ -28,7 +29,6 @@ from gpu_prices.providers import (
     hyperbolic,
     hyperstack,
     impossible_cloud,
-    kalshi,
     latitude_sh,
     nebius,
     ornn,
@@ -46,7 +46,7 @@ from gpu_prices.workbook import iso_date, load_source_rows, write_outputs
 LOS_ANGELES = ZoneInfo("America/Los_Angeles")
 
 REGISTRY: dict[str, Collector] = {
-    "Kalshi": kalshi.collect,
+    "Compute Desk": computedesk.collect,
     "Ornn": ornn.collect,
     "CoreWeave": coreweave.collect,
     "SiliconData": silicondata.collect,
@@ -213,7 +213,7 @@ def build_parser() -> argparse.ArgumentParser:
         default=_env_flag("GPU_PRICES_ALLOW_READ_PROXY"),
         help=(
             "Allow a public text proxy fallback for sources that block the runner's "
-            "IP (Kalshi, GetDeploying, and UpCloud)."
+            "IP (GetDeploying, UpCloud, and Cyfuture)."
         ),
     )
     parser.add_argument(

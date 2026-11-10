@@ -14,7 +14,6 @@ from gpu_prices.providers.getdeploying import (
     select_reservation_chart_row,
 )
 from gpu_prices.providers.hyperbolic import parse_marketplace
-from gpu_prices.providers.kalshi import pchip
 from gpu_prices.providers.silicondata import (
     parse_index_history,
     parse_index_page,
@@ -55,6 +54,19 @@ class WorkbookTests(unittest.TestCase):
         self.assertIn(("TheAI Cloud", "B300", "Reserve", Decimal("24")), identities)
         self.assertIn(("Hyperstack", "B300", "On-Demand", None), identities)
         self.assertIn(("CCIR", "H200", "Spot", None), identities)
+        self.assertIn(
+            ("Compute Desk", "B300", "Reserve", Decimal("12")),
+            identities,
+        )
+        self.assertIn(
+            ("Compute Desk", "B200", "Reserve", Decimal("12")),
+            identities,
+        )
+        self.assertIn(
+            ("Compute Desk", "H200", "Reserve", Decimal("12")),
+            identities,
+        )
+        self.assertFalse(any(row.source_name == "Kalshi" for row in rows))
         self.assertTrue(
             all(
                 value == value.strip()
@@ -107,9 +119,6 @@ class WorkbookTests(unittest.TestCase):
 
 
 class ParserTests(unittest.TestCase):
-    def test_pchip_interpolates_a_line(self) -> None:
-        self.assertAlmostEqual(pchip([0.0, 1.0], [0.0, 1.0], 0.25), 0.25)
-
     def test_silicondata_reads_structured_index_payload(self) -> None:
         html = (
             '<script>{"rawValue":"7.02","change":"1.0% (7D)",'

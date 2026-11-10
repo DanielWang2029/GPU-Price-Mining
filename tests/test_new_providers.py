@@ -13,6 +13,7 @@ from gpu_prices.providers.aws import (
 from gpu_prices.providers.bentaus import parse_ranges
 from gpu_prices.providers.ccir import parse_payload, series_by_zone
 from gpu_prices.providers.civo import parse_prices as parse_civo_prices
+from gpu_prices.providers.computedesk import parse_indices
 from gpu_prices.providers.cyfuture_ai import parse_b300_row
 from gpu_prices.providers.digitalocean import (
     parse_prices as parse_digitalocean_prices,
@@ -291,6 +292,33 @@ class NewProviderParserTests(unittest.TestCase):
             str(series[next(iter(series))]),
             "10.0588",
         )
+
+    def test_computedesk_maps_public_index_aliases(self) -> None:
+        payload = {
+            "indices": [
+                {
+                    "alias": "CDB300",
+                    "latest_date": "2026-11-09",
+                    "latest_value": 7.44,
+                    "history": [{"date": "2026-11-09", "value": 7.44}],
+                },
+                {
+                    "alias": "CDB200",
+                    "latest_date": "2026-11-09",
+                    "latest_value": 5.64,
+                    "history": [{"date": "2026-11-09", "value": 5.64}],
+                },
+                {
+                    "alias": "CDH200",
+                    "latest_date": "2026-11-09",
+                    "latest_value": 3.47,
+                    "history": [{"date": "2026-11-09", "value": 3.47}],
+                },
+            ]
+        }
+        indices = parse_indices(payload)
+        self.assertEqual(set(indices), {"B300", "B200", "H200"})
+        self.assertEqual(indices["B300"]["latest_value"], 7.44)
 
 
 if __name__ == "__main__":
