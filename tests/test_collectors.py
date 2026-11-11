@@ -1,9 +1,15 @@
 from __future__ import annotations
 
+import csv
+import tempfile
 import unittest
+from datetime import datetime, timezone
 from decimal import Decimal
 from pathlib import Path
 
+from openpyxl import load_workbook
+
+from gpu_prices.models import SourceRow, ok
 from gpu_prices.providers.astra_intellectus import parse_visible_offers
 from gpu_prices.providers.coreweave import parse_prices as parse_coreweave_prices
 from gpu_prices.providers.daytona import parse_panels
@@ -14,7 +20,6 @@ from gpu_prices.providers.getdeploying import (
     select_reservation_chart_row,
 )
 from gpu_prices.providers.hyperbolic import parse_marketplace
-from gpu_prices.providers.kalshi import pchip
 from gpu_prices.providers.silicondata import (
     parse_index_history,
     parse_index_page,
@@ -27,7 +32,9 @@ from gpu_prices.workbook import (
     OUTPUT_HEADERS,
     load_source_rows,
     make_record_id,
+    normalize_term_months_value,
     provider_id,
+    write_outputs,
 )
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -55,6 +62,19 @@ class WorkbookTests(unittest.TestCase):
         self.assertIn(("TheAI Cloud", "B300", "Reserve", Decimal("24")), identities)
         self.assertIn(("Hyperstack", "B300", "On-Demand", None), identities)
         self.assertIn(("CCIR", "H200", "Spot", None), identities)
+        self.assertIn(
+            ("Compute Desk", "B300", "Reserve", Decimal("12")),
+            identities,
+        )
+        self.assertIn(
+            ("Compute Desk", "B200", "Reserve", Decimal("12")),
+            identities,
+        )
+        self.assertIn(
+            ("Compute Desk", "H200", "Reserve", Decimal("12")),
+            identities,
+        )
+        self.assertFalse(any(row.source_name == "Kalshi" for row in rows))
         self.assertTrue(
             all(
                 value == value.strip()
@@ -88,6 +108,49 @@ class WorkbookTests(unittest.TestCase):
         self.assertIn("gpu_id", OUTPUT_HEADERS)
         self.assertIn("gpu_model_code", OUTPUT_HEADERS)
 
+    def test_term_months_are_normalized_to_database_integers(self) -> None:
+        self.assertEqual(normalize_term_months_value("ON_DEMAND", ""), "0")
+        self.assertEqual(normalize_term_months_value("ON_DEMAND", "12"), "0")
+        self.assertEqual(normalize_term_months_value("SPOT", "N/A"), "0")
+        self.assertEqual(normalize_term_months_value("RESERVATION", None), "-1")
+        self.assertEqual(normalize_term_months_value("RESERVATION", "12.0"), "12")
+        with self.assertRaisesRegex(ValueError, "must be an integer"):
+            normalize_term_months_value("RESERVATION", "12.5")
+
+    def test_csv_and_workbook_outputs_use_the_same_normalized_term(self) -> None:
+        source = SourceRow(
+            workbook_row=2,
+            source_name="Example",
+            gpu_model_code="H200",
+            price_type="On-Demand",
+            region="US",
+            url="https://example.com",
+        )
+        observation = ok(
+            source,
+            Decimal("3.5"),
+            fetched_at=datetime(2026, 11, 8, tzinfo=timezone.utc),
+            source_url=source.url,
+        )
+        with tempfile.TemporaryDirectory() as temporary:
+            csv_path, xlsx_path, _ = write_outputs(
+                [observation],
+                price_date="2026-11-08",
+                run_date="2026-11-08",
+                output_dir=Path(temporary),
+            )
+            with csv_path.open(encoding="utf-8-sig", newline="") as handle:
+                csv_row = next(csv.DictReader(handle))
+            worksheet = load_workbook(xlsx_path, data_only=True)["每日价格"]
+            headers = [cell.value for cell in worksheet[1]]
+            xlsx_row = {
+                header: worksheet.cell(2, index + 1).value
+                for index, header in enumerate(headers)
+            }
+        self.assertEqual(csv_row["term_months"], "0")
+        self.assertEqual(xlsx_row["term_months"], 0)
+        self.assertEqual(csv_row["record_id"], xlsx_row["record_id"])
+
     def test_record_id_matches_concat_ws_field_order(self) -> None:
         value = make_record_id(
             price_date="2026-11-03",
@@ -107,9 +170,6 @@ class WorkbookTests(unittest.TestCase):
 
 
 class ParserTests(unittest.TestCase):
-    def test_pchip_interpolates_a_line(self) -> None:
-        self.assertAlmostEqual(pchip([0.0, 1.0], [0.0, 1.0], 0.25), 0.25)
-
     def test_silicondata_reads_structured_index_payload(self) -> None:
         html = (
             '<script>{"rawValue":"7.02","change":"1.0% (7D)",'

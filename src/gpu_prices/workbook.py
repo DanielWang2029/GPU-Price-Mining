@@ -222,6 +222,31 @@ def billing_type(value: str) -> str:
         raise ValueError(f"Unsupported price type {value!r}") from exc
 
 
+def normalized_term_months(
+    price_type: str,
+    term: Decimal | None,
+) -> str:
+    return normalize_term_months_value(billing_type(price_type), term)
+
+
+def normalize_term_months_value(
+    billing: str,
+    term: Decimal | str | None,
+) -> str:
+    if billing.strip().upper() != "RESERVATION":
+        return "0"
+    cleaned = "" if term is None else str(term).strip()
+    if not cleaned or cleaned.upper() == "N/A":
+        return "-1"
+    try:
+        value = Decimal(cleaned)
+    except Exception as exc:
+        raise ValueError(f"Invalid term month value {term!r}") from exc
+    if value != value.to_integral_value():
+        raise ValueError(f"Term month must be an integer, got {term!r}")
+    return str(int(value))
+
+
 def iso_date(value: str) -> str:
     if re.fullmatch(r"\d{8}", value):
         return datetime.strptime(value, "%Y%m%d").date().isoformat()
@@ -297,7 +322,7 @@ def record_row(
     normalized_run_date = iso_date(run_date)
     provider = provider_id(row.source_name)
     billing = billing_type(row.price_type)
-    term = "" if row.term is None else str(row.term)
+    term = normalized_term_months(row.price_type, row.term)
     raw_text = _decimal_text(raw_price)
     normalized_text = _decimal_text(price_gpu_hour)
     gpu_id = ""
@@ -392,9 +417,7 @@ def write_outputs(
     for observation in ordered:
         row = data_row(price_date, run_date, observation)
         row[9] = observation.gpu_count
-        row[19] = (
-            float(observation.row.term) if observation.row.term is not None else None
-        )
+        row[19] = int(row[19])
         row[22] = (
             float(observation.raw_price) if observation.raw_price is not None else None
         )

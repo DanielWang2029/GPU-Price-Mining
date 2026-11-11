@@ -4,6 +4,8 @@ import unittest
 from decimal import Decimal
 
 from gpu_prices.warehouse import (
+    NEW_PROVIDERS,
+    PROVIDER_IDS,
     Provider,
     _percentile,
     aggregate_price_series,
@@ -16,6 +18,10 @@ from gpu_prices.warehouse import (
 
 
 class WarehouseTests(unittest.TestCase):
+    def test_retired_kalshi_provider_remains_available_for_history(self) -> None:
+        self.assertEqual(PROVIDER_IDS["Kalshi"], "kalshi")
+        self.assertEqual(NEW_PROVIDERS["kalshi"].provider_name, "Kalshi")
+
     def test_percentile_continuous_interpolation(self) -> None:
         values = [Decimal("1"), Decimal("2"), Decimal("5"), Decimal("10")]
         self.assertEqual(_percentile(values, Decimal("0.25")), Decimal("1.75"))
@@ -149,12 +155,33 @@ class WarehouseTests(unittest.TestCase):
             sql,
         )
 
-    def test_incremental_aggregates_include_all_termless_history(self) -> None:
+    def test_incremental_aggregates_normalize_terms_in_incremental_range(self) -> None:
         rows = [
-            {"price_date": "2026-10-01", "term_months": ""},
-            {"price_date": "2026-10-01", "term_months": "12"},
-            {"price_date": "2026-11-04", "term_months": ""},
-            {"price_date": "2026-11-04", "term_months": "12"},
+            {
+                "price_date": "2026-10-01",
+                "billing_type": "SPOT",
+                "term_months": "",
+            },
+            {
+                "price_date": "2026-10-01",
+                "billing_type": "RESERVATION",
+                "term_months": "12",
+            },
+            {
+                "price_date": "2026-11-04",
+                "billing_type": "SPOT",
+                "term_months": "",
+            },
+            {
+                "price_date": "2026-11-04",
+                "billing_type": "RESERVATION",
+                "term_months": "",
+            },
+            {
+                "price_date": "2026-11-04",
+                "billing_type": "RESERVATION",
+                "term_months": "12.0",
+            },
         ]
         selected = select_incremental_aggregate_rows(
             rows,
@@ -163,8 +190,8 @@ class WarehouseTests(unittest.TestCase):
         self.assertEqual(
             [(row["price_date"], row["term_months"]) for row in selected],
             [
-                ("2026-10-01", "N/A"),
-                ("2026-11-04", "N/A"),
+                ("2026-11-04", "0"),
+                ("2026-11-04", "-1"),
                 ("2026-11-04", "12"),
             ],
         )
@@ -175,7 +202,7 @@ class WarehouseTests(unittest.TestCase):
             "gpu_id": "nvidia-b300",
             "gpu_model_code": "B300",
             "billing_type": "SPOT",
-            "term_months": "N/A",
+            "term_months": "0",
             "provider_id": "example",
             "median_price": "1",
             "offering_count": "1",
@@ -187,14 +214,12 @@ class WarehouseTests(unittest.TestCase):
             table="public.example",
             columns=list(provider_row),
             rows=[provider_row],
-            full_start_date="2026-10-01",
             incremental_start_date="2026-11-04",
             end_date="2026-11-08",
         )
-        self.assertIn("term_months = 'N/A'", sql)
-        self.assertIn("term_months <> 'N/A'", sql)
-        self.assertIn("'2026-10-01' AND '2026-11-08'", sql)
+        self.assertNotIn("N/A", sql)
         self.assertIn("'2026-11-04' AND '2026-11-08'", sql)
+        self.assertIn(",'SPOT',0,'example'", sql)
 
 
 if __name__ == "__main__":

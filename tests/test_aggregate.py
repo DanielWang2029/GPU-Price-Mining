@@ -7,7 +7,7 @@ from gpu_prices.warehouse import Provider
 
 
 class DailyAggregateTests(unittest.TestCase):
-    def test_daily_aggregates_map_blank_terms_to_na(self) -> None:
+    def test_daily_aggregates_normalize_blank_terms(self) -> None:
         providers = {
             "cyfuture": Provider(
                 "cyfuture",
@@ -50,16 +50,20 @@ class DailyAggregateTests(unittest.TestCase):
             "price_note": "",
             "source_url": "https://cyfuture.ai/pricing",
         }
-        rows = [base, {**base, "billing_type": "RESERVATION", "term_months": "12"}]
+        rows = [
+            base,
+            {**base, "billing_type": "RESERVATION"},
+            {**base, "billing_type": "RESERVATION", "term_months": "12"},
+        ]
         provider_series, price_series = build_daily_aggregates(rows, providers)
 
         self.assertEqual(
             {row["term_months"] for row in provider_series},
-            {"N/A", "12"},
+            {"0", "-1", "12"},
         )
         self.assertEqual(
             {row["term_months"] for row in price_series},
-            {"N/A", "12"},
+            {"0", "-1", "12"},
         )
         self.assertTrue(
             all(row["provider_id"] == "cyfuture" for row in provider_series)

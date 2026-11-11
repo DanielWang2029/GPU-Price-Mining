@@ -16,7 +16,7 @@ from zoneinfo import ZoneInfo
 
 from gpu_prices.http import HttpClient
 from gpu_prices.models import SourceRow
-from gpu_prices.providers import ccir, kalshi, nebius, silicondata
+from gpu_prices.providers import ccir, computedesk, nebius, silicondata
 from gpu_prices.providers.getdeploying import (
     DATASET_URL_TEMPLATE,
     chart_money_2,
@@ -26,6 +26,8 @@ from gpu_prices.workbook import (
     OUTPUT_HEADERS,
     billing_type,
     load_source_rows,
+    normalize_term_months_value,
+    normalized_term_months,
     provider_id,
     record_row,
 )
@@ -58,11 +60,15 @@ def row_key(row: SourceRow) -> RowKey:
         row.supplier_type,
         row.gpu_model_code,
         billing_type(row.price_type),
-        "" if row.term is None else str(row.term),
+        normalized_term_months(row.price_type, row.term),
         "",
         row.region,
         row.url,
     )
+
+
+def normalize_record_term(billing: str, term: str) -> str:
+    return normalize_term_months_value(billing, term)
 
 
 def calendar_dates(start: date, end: date) -> list[date]:
@@ -105,7 +111,10 @@ def load_current_prices(
             record["supplier_type"].strip(),
             record["gpu_model_code"].strip(),
             record["billing_type"].strip(),
-            record["term_months"].strip(),
+            normalize_record_term(
+                record["billing_type"],
+                record["term_months"],
+            ),
             record["region_or_hq_country"].strip(),
             record["provider_hq_region"].strip(),
             record["source_url"].strip(),
@@ -169,7 +178,10 @@ def load_prior_history(
             record["supplier_type"].strip(),
             record[model_column].strip(),
             record["billing_type"].strip(),
-            record["term_months"].strip(),
+            normalize_record_term(
+                record["billing_type"],
+                record["term_months"],
+            ),
             record["region_or_hq_country"].strip(),
             record["provider_hq_region"].strip(),
             record["source_url"].strip(),
@@ -185,39 +197,28 @@ def load_prior_history(
     return dict(result)
 
 
-def kalshi_history(
+def computedesk_history(
     rows: list[SourceRow],
     dates: list[date],
     client: HttpClient,
 ) -> History:
+    indices = computedesk.parse_indices(client.get_json(computedesk.URL))
     result: History = {}
-    prefer_proxy = False
     for row in rows:
-        curve_url = f"{kalshi.BASE_URL}/{row.gpu_model_code}"
-        curve, _, curve_proxied = kalshi._get_json(
-            client, curve_url, skip_direct=prefer_proxy
-        )
-        prefer_proxy = prefer_proxy or curve_proxied
-        history, _, history_proxied = kalshi._get_json(
-            client,
-            f"{curve_url}/history",
-            skip_direct=prefer_proxy,
-        )
-        prefer_proxy = prefer_proxy or history_proxied
-        result[row.workbook_row] = {
-            day: chart_money_2(
-                kalshi.curve_value(
-                    curve,
-                    history,
-                    datetime.combine(
-                        day,
-                        datetime_time(hour=20),
-                        tzinfo=UTC,
-                    ),
-                )
-            )
-            for day in dates
+        series = indices.get(row.gpu_model_code)
+        if series is None:
+            raise ValueError(f"Compute Desk omitted {row.gpu_model_code}")
+        points = {
+            date.fromisoformat(point["date"]): Decimal(str(point["value"]))
+            for point in series.get("history", [])
         }
+        published_dates = sorted(points)
+        values: dict[date, Decimal] = {}
+        for day in dates:
+            index = bisect.bisect_right(published_dates, day) - 1
+            if index >= 0:
+                values[day] = chart_money_2(points[published_dates[index]])
+        result[row.workbook_row] = values
     return result
 
 
@@ -498,7 +499,7 @@ def build_history(
     }
     curve_rows: set[int] = set()
     groups = {
-        "Kalshi": [row for row in rows if row.source_name == "Kalshi"],
+        "Compute Desk": [row for row in rows if row.source_name == "Compute Desk"],
         "Ornn": [row for row in rows if row.source_name == "Ornn"],
         "SiliconData": [row for row in rows if row.source_name == "SiliconData"],
         "Nebius": [row for row in rows if row.source_name == "Nebius" and row.region],
@@ -506,7 +507,7 @@ def build_history(
         "CCIR": [row for row in rows if row.source_name == "CCIR"],
     }
     collectors = {
-        "Kalshi": kalshi_history,
+        "Compute Desk": computedesk_history,
         "Ornn": ornn_history,
         "SiliconData": silicondata_history,
         "Nebius": nebius_history,
@@ -684,10 +685,6 @@ def main(argv: list[str] | None = None) -> int:
         f"{len(rows) - len(curve_rows)} static rows used end-date prices"
     )
     print(output)
-    print(
-        "Note: Kalshi does not publish archived curve vintages; historical dates "
-        "are evaluated on its currently published curve."
-    )
     return 0
 
 

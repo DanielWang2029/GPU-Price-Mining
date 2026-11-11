@@ -55,10 +55,11 @@ file. Fetch, schema, and parse failures are `status=error`; `--strict` makes tho
 failures return a nonzero exit code, which is suitable for Airflow. An unavailable
 product does not fail the job and is never replaced with zero or an old value.
 
-Workbook values are trimmed before matching. Empty values remain empty rather
-than being replaced with `N/A`. Every generated row sets `source_label` to
-`price_mining`, derives a letters-only lowercase `provider_id`, and leaves the
-reserved enrichment and note columns blank.
+Workbook values are trimmed before matching. Empty values remain empty except
+`term_months`, which is normalized to `0` for non-reservation rows and `-1`
+for reservations whose duration is unknown. Every generated row sets
+`source_label` to `price_mining`, derives a letters-only lowercase
+`provider_id`, and leaves the reserved enrichment and note columns blank.
 
 `record_id` is the lowercase MD5 hex digest of the colon-separated
 `price_date`, `run_date`, `source_label`, `provider_id`,
@@ -71,7 +72,7 @@ values. Null/blank database fields are skipped to match PostgreSQL
 
 | Supplier | Collection source and workbook interpretation |
 | --- | --- |
-| Kalshi | Public forward-curve JSON; evaluates the log-PCHIP chart curve at collection time. |
+| Compute Desk | Public US one-year reserved-equivalent B300/B200/H200 index feed with daily business-day history. |
 | Ornn | Settled global daily index API. |
 | CoreWeave | North America HTML table. Whole-instance totals and GPU counts are retained, then normalized per GPU. |
 | SiliconData | Structured Neo-Cloud index data embedded in each public product page. |
@@ -101,7 +102,7 @@ values. Null/blank database fields are skipped to match PostgreSQL
 
 ### Anti-bot fallback
 
-Kalshi, GetDeploying, UpCloud, and Cyfuture may reject datacenter IPs even though their data
+GetDeploying, UpCloud, and Cyfuture may reject datacenter IPs even though their data
 is public. Prefer running from an allowed network or using the suppliers'
 authenticated API where supported. For a one-off collection, the command can use
 a public read-only text proxy:
@@ -134,8 +135,8 @@ The output defaults to
 When extending beyond a source's rolling retention window, pass the latest
 existing history file with `--prior-history`.
 
-- Kalshi's realized history plus its currently published forward curve,
-  evaluated daily at 20:00 UTC.
+- Compute Desk's published business-day history, carrying the latest fixing
+  across weekends and publication holidays.
 - Ornn's settled daily index history.
 - Silicon Data's explicit daily chart points.
 - Nebius spot-price 15-minute history, sampled at the DAG's 9:00 PM
@@ -150,10 +151,6 @@ existing history file with `--prior-history`.
 All other rows have no published curve and therefore carry the end-date price
 back across the requested range. The backfill fails rather than inventing a
 value if any curve-based source omits a requested date.
-
-Kalshi does not expose archived point-in-time forward-curve snapshots. Its past
-dates can be evaluated on the curve published today, but the exact curve that
-users saw on a prior day cannot be reconstructed retroactively.
 
 ## Warehouse loads
 
@@ -176,15 +173,12 @@ take precedence over price-mining values. Reconciled detail rows also populate
 `gpu_id` from `compute_insight_dim_gpu` before recomputing their record IDs.
 Blank billing types from index sources are normalized to `SPOT` for the
 warehouse tables' non-null billing category.
-Normal aggregation includes priced records with nonblank `term_months`.
-Incremental aggregation can additionally recalculate all termless history with
-`term_months='N/A'` while limiting term-bearing rows to the incremental range:
+All detail and aggregate rows use integer terms: `0` for non-reservation,
+`-1` for reservation with unknown duration, or the explicit month count.
 
 ```bash
 python3 -m gpu_prices.warehouse \
-  --history-csv output/gpu_prices_history_20261104_20261108.csv \
-  --base-history-csv output/gpu_prices_history_20261001_20261103.csv \
-  --incremental-start-date 2026-11-04 \
+  --history-csv output/gpu_prices_history_20261001_20261108.csv \
   --tables-workbook tables.xlsx
 ```
 
@@ -198,7 +192,7 @@ merge/insert report under `output/warehouse/`.
 and records the task's actual local execution date separately as `run_date`.
 
 After collection succeeds, a downstream `gpu_prices.aggregate` task reconciles
-provider metadata, maps empty aggregate terms to `N/A`, and writes:
+provider metadata, applies the integer term rules, and writes:
 
 - `compute_insight_gpu_provider_series_daily_YYYYMMDD.csv`
 - `compute_insight_gpu_price_series_daily_YYYYMMDD.csv`

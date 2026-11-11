@@ -1,59 +1,62 @@
 ﻿price_date,run_date,gpu_id,gpu_model_code,billing_type,term_months,provider_id,median_price,offering_count,supplier_type,reference_url,source_label
-2026-11-08,2026-11-08,nvidia-a100,A100,ON_DEMAND,N/A,coreweave,2.7,1,GPU Cloud,https://www.coreweave.com/pricing,price_mining
-2026-11-08,2026-11-08,nvidia-a100,A100,ON_DEMAND,N/A,deepinfra,1.49,1,GPU Cloud,https://deepinfra.com/pricing,price_mining
-2026-11-08,2026-11-08,nvidia-a100,A100,ON_DEMAND,N/A,getdeploying,1.86,1,Serverless,https://getdeploying.com/gpus/nvidia-a100,price_mining
-2026-11-08,2026-11-08,nvidia-a100,A100,ON_DEMAND,N/A,gpu-ai,1.56,1,GPU Cloud,https://gpu.ai/pricing,price_mining
-2026-11-08,2026-11-08,nvidia-a100,A100,ON_DEMAND,N/A,runpod,1.79,1,GPU Cloud,https://www.runpod.io/pricing,price_mining
-2026-11-08,2026-11-08,nvidia-a100,A100,ON_DEMAND,N/A,spheron,1.48,1,Marketplace,https://www.spheron.ai/gpu-rental/a100/,price_mining
-2026-11-08,2026-11-08,nvidia-a100,A100,ON_DEMAND,N/A,verda,2.316,1,GPU Cloud,https://verda.com/pricing,price_mining
-2026-11-08,2026-11-08,nvidia-a100,A100,RESERVATION,N/A,getdeploying,1.39,1,Serverless,https://getdeploying.com/gpus/nvidia-a100,price_mining
-2026-11-08,2026-11-08,nvidia-a100,A100,SPOT,N/A,getdeploying,1.2,1,Serverless,https://getdeploying.com/gpus/nvidia-a100,price_mining
-2026-11-08,2026-11-08,nvidia-a100,A100,SPOT,N/A,kalshi,0.97,1,Serverless,https://kalshi.com/markets/kxa100ws/a100-weekly/kxa100ws-26jul17?utm_campaign=kalshi-announces-compute-forward-curves-becoming-the-exchange-for-the-ai-economy&utm_medium=referral&utm_source=news.kalshi.com,price_mining
-2026-11-08,2026-11-08,nvidia-a100,A100,SPOT,N/A,verda,1.158,1,GPU Cloud,https://verda.com/pricing,price_mining
-2026-11-08,2026-11-08,nvidia-b200,B200,ON_DEMAND,N/A,coreweave,8.6,1,GPU Cloud,https://www.coreweave.com/pricing,price_mining
-2026-11-08,2026-11-08,nvidia-b200,B200,ON_DEMAND,N/A,daytona,6.25,1,Serverless,https://www.daytona.io/pricing,price_mining
-2026-11-08,2026-11-08,nvidia-b200,B200,ON_DEMAND,N/A,deepinfra,4.89,1,GPU Cloud,https://deepinfra.com/pricing,price_mining
-2026-11-08,2026-11-08,nvidia-b200,B200,ON_DEMAND,N/A,fireworks-ai,13,1,GPU Cloud,https://fireworks.ai/pricing,price_mining
-2026-11-08,2026-11-08,nvidia-b200,B200,ON_DEMAND,N/A,getdeploying,8.01,1,Serverless,https://getdeploying.com/gpus/nvidia-b200,price_mining
-2026-11-08,2026-11-08,nvidia-b200,B200,ON_DEMAND,N/A,hyperbolic,5.99,1,GPU Cloud,https://www.hyperbolic.ai/marketplace,price_mining
-2026-11-08,2026-11-08,nvidia-b200,B200,ON_DEMAND,N/A,hyperstack,6,1,GPU Cloud,https://www.hyperstack.cloud/gpu-pricing,price_mining
-2026-11-08,2026-11-08,nvidia-b200,B200,ON_DEMAND,N/A,nebius,8.5,1,GPU Cloud,https://nebius.com/prices,price_mining
-2026-11-08,2026-11-08,nvidia-b200,B200,ON_DEMAND,N/A,runpod,7.99,1,GPU Cloud,https://www.runpod.io/pricing,price_mining
-2026-11-08,2026-11-08,nvidia-b200,B200,ON_DEMAND,N/A,spheron,11.12,1,Marketplace,https://www.spheron.ai/gpu-rental/b200/,price_mining
-2026-11-08,2026-11-08,nvidia-b200,B200,ON_DEMAND,N/A,together-ai,8.19,1,GPU Cloud,https://www.together.ai/pricing,price_mining
-2026-11-08,2026-11-08,nvidia-b200,B200,ON_DEMAND,N/A,upcloud,6.05,1,General Cloud & Hosting,https://upcloud.com/pricing/,price_mining
-2026-11-08,2026-11-08,nvidia-b200,B200,ON_DEMAND,N/A,verda,9.138,1,GPU Cloud,https://verda.com/pricing,price_mining
+2026-11-08,2026-11-08,nvidia-a100,A100,ON_DEMAND,0,coreweave,2.7,1,GPU Cloud,https://www.coreweave.com/pricing,price_mining
+2026-11-08,2026-11-08,nvidia-a100,A100,ON_DEMAND,0,deepinfra,1.49,1,GPU Cloud,https://deepinfra.com/pricing,price_mining
+2026-11-08,2026-11-08,nvidia-a100,A100,ON_DEMAND,0,getdeploying,1.86,1,Serverless,https://getdeploying.com/gpus/nvidia-a100,price_mining
+2026-11-08,2026-11-08,nvidia-a100,A100,ON_DEMAND,0,gpu-ai,1.56,1,GPU Cloud,https://gpu.ai/pricing,price_mining
+2026-11-08,2026-11-08,nvidia-a100,A100,ON_DEMAND,0,runpod,1.79,1,GPU Cloud,https://www.runpod.io/pricing,price_mining
+2026-11-08,2026-11-08,nvidia-a100,A100,ON_DEMAND,0,spheron,1.48,1,Marketplace,https://www.spheron.ai/gpu-rental/a100/,price_mining
+2026-11-08,2026-11-08,nvidia-a100,A100,ON_DEMAND,0,verda,2.316,1,GPU Cloud,https://verda.com/pricing,price_mining
+2026-11-08,2026-11-08,nvidia-a100,A100,RESERVATION,-1,getdeploying,1.39,1,Serverless,https://getdeploying.com/gpus/nvidia-a100,price_mining
+2026-11-08,2026-11-08,nvidia-a100,A100,SPOT,0,getdeploying,1.2,1,Serverless,https://getdeploying.com/gpus/nvidia-a100,price_mining
+2026-11-08,2026-11-08,nvidia-a100,A100,SPOT,0,kalshi,0.97,1,Serverless,https://kalshi.com/markets/kxa100ws/a100-weekly/kxa100ws-26jul17?utm_campaign=kalshi-announces-compute-forward-curves-becoming-the-exchange-for-the-ai-economy&utm_medium=referral&utm_source=news.kalshi.com,price_mining
+2026-11-08,2026-11-08,nvidia-a100,A100,SPOT,0,verda,1.158,1,GPU Cloud,https://verda.com/pricing,price_mining
+2026-11-08,2026-11-08,nvidia-b200,B200,ON_DEMAND,0,coreweave,8.6,1,GPU Cloud,https://www.coreweave.com/pricing,price_mining
+2026-11-08,2026-11-08,nvidia-b200,B200,ON_DEMAND,0,daytona,6.25,1,Serverless,https://www.daytona.io/pricing,price_mining
+2026-11-08,2026-11-08,nvidia-b200,B200,ON_DEMAND,0,deepinfra,4.89,1,GPU Cloud,https://deepinfra.com/pricing,price_mining
+2026-11-08,2026-11-08,nvidia-b200,B200,ON_DEMAND,0,fireworks-ai,13,1,GPU Cloud,https://fireworks.ai/pricing,price_mining
+2026-11-08,2026-11-08,nvidia-b200,B200,ON_DEMAND,0,getdeploying,8.01,1,Serverless,https://getdeploying.com/gpus/nvidia-b200,price_mining
+2026-11-08,2026-11-08,nvidia-b200,B200,ON_DEMAND,0,hyperbolic,5.99,1,GPU Cloud,https://www.hyperbolic.ai/marketplace,price_mining
+2026-11-08,2026-11-08,nvidia-b200,B200,ON_DEMAND,0,hyperstack,6,1,GPU Cloud,https://www.hyperstack.cloud/gpu-pricing,price_mining
+2026-11-08,2026-11-08,nvidia-b200,B200,ON_DEMAND,0,nebius,8.5,1,GPU Cloud,https://nebius.com/prices,price_mining
+2026-11-08,2026-11-08,nvidia-b200,B200,ON_DEMAND,0,runpod,7.99,1,GPU Cloud,https://www.runpod.io/pricing,price_mining
+2026-11-08,2026-11-08,nvidia-b200,B200,ON_DEMAND,0,spheron,11.12,1,Marketplace,https://www.spheron.ai/gpu-rental/b200/,price_mining
+2026-11-08,2026-11-08,nvidia-b200,B200,ON_DEMAND,0,together-ai,8.19,1,GPU Cloud,https://www.together.ai/pricing,price_mining
+2026-11-08,2026-11-08,nvidia-b200,B200,ON_DEMAND,0,upcloud,6.05,1,General Cloud & Hosting,https://upcloud.com/pricing/,price_mining
+2026-11-08,2026-11-08,nvidia-b200,B200,ON_DEMAND,0,verda,9.138,1,GPU Cloud,https://verda.com/pricing,price_mining
+2026-11-08,2026-11-08,nvidia-b200,B200,RESERVATION,-1,aws,14.208,1,Hyperscaler,https://aws.amazon.com/ec2/capacityblocks/pricing/,price_mining
+2026-11-08,2026-11-08,nvidia-b200,B200,RESERVATION,-1,getdeploying,7.14,1,Serverless,https://getdeploying.com/gpus/nvidia-b200,price_mining
+2026-11-08,2026-11-08,nvidia-b200,B200,RESERVATION,-1,hyperstack,5.1,1,GPU Cloud,https://www.hyperstack.cloud/gpu-pricing,price_mining
 2026-11-08,2026-11-08,nvidia-b200,B200,RESERVATION,1,together-ai,7.99,1,GPU Cloud,https://www.together.ai/pricing,price_mining
 2026-11-08,2026-11-08,nvidia-b200,B200,RESERVATION,3,together-ai,7.79,1,GPU Cloud,https://www.together.ai/pricing,price_mining
 2026-11-08,2026-11-08,nvidia-b200,B200,RESERVATION,36,civo,3.79,1,General Cloud & Hosting,https://www.civo.com/pricing,price_mining
 2026-11-08,2026-11-08,nvidia-b200,B200,RESERVATION,6,together-ai,6.79,1,GPU Cloud,https://www.together.ai/pricing,price_mining
-2026-11-08,2026-11-08,nvidia-b200,B200,RESERVATION,N/A,aws,14.208,1,Hyperscaler,https://aws.amazon.com/ec2/capacityblocks/pricing/,price_mining
-2026-11-08,2026-11-08,nvidia-b200,B200,RESERVATION,N/A,getdeploying,7.14,1,Serverless,https://getdeploying.com/gpus/nvidia-b200,price_mining
-2026-11-08,2026-11-08,nvidia-b200,B200,RESERVATION,N/A,hyperstack,5.1,1,GPU Cloud,https://www.hyperstack.cloud/gpu-pricing,price_mining
-2026-11-08,2026-11-08,nvidia-b200,B200,SPOT,N/A,aws,10.0566125,1,Hyperscaler,https://website.spot.ec2.aws.a2z.com/spot.json,price_mining
-2026-11-08,2026-11-08,nvidia-b200,B200,SPOT,N/A,ccir,6.88,3,Serverless,https://ccir.io/discovery#charts&zone=b200-mumbai-z2,price_mining
-2026-11-08,2026-11-08,nvidia-b200,B200,SPOT,N/A,daytona,3.59,1,Serverless,https://www.daytona.io/pricing,price_mining
-2026-11-08,2026-11-08,nvidia-b200,B200,SPOT,N/A,getdeploying,4.53,1,Serverless,https://getdeploying.com/gpus/nvidia-b200,price_mining
-2026-11-08,2026-11-08,nvidia-b200,B200,SPOT,N/A,kalshi,7.91,1,Serverless,https://kalshi.com/markets/kxb200ws/b200-weekly/kxb200ws-26jul17?utm_campaign=kalshi-announces-compute-forward-curves-becoming-the-exchange-for-the-ai-economy&utm_medium=referral&utm_source=news.kalshi.com,price_mining
-2026-11-08,2026-11-08,nvidia-b200,B200,SPOT,N/A,nebius,2.625,2,GPU Cloud,https://nebius.com/spot-prices?historyRange=1d&period=1d&historyGpus=B200,price_mining
-2026-11-08,2026-11-08,nvidia-b200,B200,SPOT,N/A,ornn,9.88,1,Serverless,https://data.ornn.com/,price_mining
-2026-11-08,2026-11-08,nvidia-b200,B200,SPOT,N/A,silicondata,6.81,1,GPU Cloud,https://www.silicondata.com/products/silicon-index/b200,price_mining
-2026-11-08,2026-11-08,nvidia-b200,B200,SPOT,N/A,spheron,5.22,1,Marketplace,https://www.spheron.ai/gpu-rental/b200/,price_mining
-2026-11-08,2026-11-08,nvidia-b200,B200,SPOT,N/A,together-ai,4.09,1,GPU Cloud,https://www.together.ai/pricing,price_mining
-2026-11-08,2026-11-08,nvidia-b200,B200,SPOT,N/A,upcloud,4.23,1,General Cloud & Hosting,https://upcloud.com/pricing/,price_mining
-2026-11-08,2026-11-08,nvidia-b200,B200,SPOT,N/A,verda,4.569,1,GPU Cloud,https://verda.com/pricing,price_mining
-2026-11-08,2026-11-08,nvidia-b300,B300,ON_DEMAND,N/A,bentaus,6.5,1,GPU Cloud,https://www.bentaus.com/nvidia-b300#pricing,price_mining
-2026-11-08,2026-11-08,nvidia-b300,B300,ON_DEMAND,N/A,civo,7.49,1,General Cloud & Hosting,https://www.civo.com/pricing,price_mining
-2026-11-08,2026-11-08,nvidia-b300,B300,ON_DEMAND,N/A,daytona,7.1,1,Serverless,https://www.daytona.io/pricing,price_mining
-2026-11-08,2026-11-08,nvidia-b300,B300,ON_DEMAND,N/A,deepinfra,5.89,1,GPU Cloud,https://deepinfra.com/pricing,price_mining
-2026-11-08,2026-11-08,nvidia-b300,B300,ON_DEMAND,N/A,fireworks-ai,15,1,GPU Cloud,https://fireworks.ai/pricing,price_mining
-2026-11-08,2026-11-08,nvidia-b300,B300,ON_DEMAND,N/A,getdeploying,9.5,1,Serverless,https://getdeploying.com/gpus/nvidia-b300,price_mining
-2026-11-08,2026-11-08,nvidia-b300,B300,ON_DEMAND,N/A,hyperstack,7.4,1,GPU Cloud,https://www.hyperstack.cloud/gpu-pricing,price_mining
-2026-11-08,2026-11-08,nvidia-b300,B300,ON_DEMAND,N/A,nebius,9.5,1,GPU Cloud,https://nebius.com/prices,price_mining
-2026-11-08,2026-11-08,nvidia-b300,B300,ON_DEMAND,N/A,runpod,8.99,1,GPU Cloud,https://www.runpod.io/pricing,price_mining
-2026-11-08,2026-11-08,nvidia-b300,B300,ON_DEMAND,N/A,together-ai,9.99,1,GPU Cloud,https://www.together.ai/pricing,price_mining
-2026-11-08,2026-11-08,nvidia-b300,B300,ON_DEMAND,N/A,upcloud,7.99,1,General Cloud & Hosting,https://upcloud.com/pricing/,price_mining
-2026-11-08,2026-11-08,nvidia-b300,B300,ON_DEMAND,N/A,verda,11.69,1,GPU Cloud,https://verda.com/pricing,price_mining
+2026-11-08,2026-11-08,nvidia-b200,B200,SPOT,0,aws,10.0566125,1,Hyperscaler,https://website.spot.ec2.aws.a2z.com/spot.json,price_mining
+2026-11-08,2026-11-08,nvidia-b200,B200,SPOT,0,ccir,6.88,3,Serverless,https://ccir.io/discovery#charts&zone=b200-mumbai-z2,price_mining
+2026-11-08,2026-11-08,nvidia-b200,B200,SPOT,0,daytona,3.59,1,Serverless,https://www.daytona.io/pricing,price_mining
+2026-11-08,2026-11-08,nvidia-b200,B200,SPOT,0,getdeploying,4.53,1,Serverless,https://getdeploying.com/gpus/nvidia-b200,price_mining
+2026-11-08,2026-11-08,nvidia-b200,B200,SPOT,0,kalshi,7.91,1,Serverless,https://kalshi.com/markets/kxb200ws/b200-weekly/kxb200ws-26jul17?utm_campaign=kalshi-announces-compute-forward-curves-becoming-the-exchange-for-the-ai-economy&utm_medium=referral&utm_source=news.kalshi.com,price_mining
+2026-11-08,2026-11-08,nvidia-b200,B200,SPOT,0,nebius,2.625,2,GPU Cloud,https://nebius.com/spot-prices?historyRange=1d&period=1d&historyGpus=B200,price_mining
+2026-11-08,2026-11-08,nvidia-b200,B200,SPOT,0,ornn,9.88,1,Serverless,https://data.ornn.com/,price_mining
+2026-11-08,2026-11-08,nvidia-b200,B200,SPOT,0,silicondata,6.81,1,GPU Cloud,https://www.silicondata.com/products/silicon-index/b200,price_mining
+2026-11-08,2026-11-08,nvidia-b200,B200,SPOT,0,spheron,5.22,1,Marketplace,https://www.spheron.ai/gpu-rental/b200/,price_mining
+2026-11-08,2026-11-08,nvidia-b200,B200,SPOT,0,together-ai,4.09,1,GPU Cloud,https://www.together.ai/pricing,price_mining
+2026-11-08,2026-11-08,nvidia-b200,B200,SPOT,0,upcloud,4.23,1,General Cloud & Hosting,https://upcloud.com/pricing/,price_mining
+2026-11-08,2026-11-08,nvidia-b200,B200,SPOT,0,verda,4.569,1,GPU Cloud,https://verda.com/pricing,price_mining
+2026-11-08,2026-11-08,nvidia-b300,B300,ON_DEMAND,0,bentaus,6.5,1,GPU Cloud,https://www.bentaus.com/nvidia-b300#pricing,price_mining
+2026-11-08,2026-11-08,nvidia-b300,B300,ON_DEMAND,0,civo,7.49,1,General Cloud & Hosting,https://www.civo.com/pricing,price_mining
+2026-11-08,2026-11-08,nvidia-b300,B300,ON_DEMAND,0,daytona,7.1,1,Serverless,https://www.daytona.io/pricing,price_mining
+2026-11-08,2026-11-08,nvidia-b300,B300,ON_DEMAND,0,deepinfra,5.89,1,GPU Cloud,https://deepinfra.com/pricing,price_mining
+2026-11-08,2026-11-08,nvidia-b300,B300,ON_DEMAND,0,fireworks-ai,15,1,GPU Cloud,https://fireworks.ai/pricing,price_mining
+2026-11-08,2026-11-08,nvidia-b300,B300,ON_DEMAND,0,getdeploying,9.5,1,Serverless,https://getdeploying.com/gpus/nvidia-b300,price_mining
+2026-11-08,2026-11-08,nvidia-b300,B300,ON_DEMAND,0,hyperstack,7.4,1,GPU Cloud,https://www.hyperstack.cloud/gpu-pricing,price_mining
+2026-11-08,2026-11-08,nvidia-b300,B300,ON_DEMAND,0,nebius,9.5,1,GPU Cloud,https://nebius.com/prices,price_mining
+2026-11-08,2026-11-08,nvidia-b300,B300,ON_DEMAND,0,runpod,8.99,1,GPU Cloud,https://www.runpod.io/pricing,price_mining
+2026-11-08,2026-11-08,nvidia-b300,B300,ON_DEMAND,0,together-ai,9.99,1,GPU Cloud,https://www.together.ai/pricing,price_mining
+2026-11-08,2026-11-08,nvidia-b300,B300,ON_DEMAND,0,upcloud,7.99,1,General Cloud & Hosting,https://upcloud.com/pricing/,price_mining
+2026-11-08,2026-11-08,nvidia-b300,B300,ON_DEMAND,0,verda,11.69,1,GPU Cloud,https://verda.com/pricing,price_mining
+2026-11-08,2026-11-08,nvidia-b300,B300,RESERVATION,-1,aws,16.146,1,Hyperscaler,https://aws.amazon.com/ec2/capacityblocks/pricing/,price_mining
+2026-11-08,2026-11-08,nvidia-b300,B300,RESERVATION,-1,bentaus,4.35,1,GPU Cloud,https://www.bentaus.com/nvidia-b300#pricing,price_mining
+2026-11-08,2026-11-08,nvidia-b300,B300,RESERVATION,-1,getdeploying,5.49,1,Serverless,https://getdeploying.com/gpus/nvidia-b300,price_mining
 2026-11-08,2026-11-08,nvidia-b300,B300,RESERVATION,1,cyfuture,6.07,1,GPU Cloud,https://cyfuture.ai/pricing,price_mining
 2026-11-08,2026-11-08,nvidia-b300,B300,RESERVATION,1,latitude-sh,8,1,General Cloud & Hosting,https://www.latitude.sh/pricing,price_mining
 2026-11-08,2026-11-08,nvidia-b300,B300,RESERVATION,12,cyfuture,5.57,1,GPU Cloud,https://cyfuture.ai/pricing,price_mining
@@ -64,54 +67,51 @@
 2026-11-08,2026-11-08,nvidia-b300,B300,RESERVATION,36,civo,5.49,1,General Cloud & Hosting,https://www.civo.com/pricing,price_mining
 2026-11-08,2026-11-08,nvidia-b300,B300,RESERVATION,36,theai-cloud,4.8,1,GPU Cloud,https://cloud.theai.com/pricing,price_mining
 2026-11-08,2026-11-08,nvidia-b300,B300,RESERVATION,6,cyfuture,5.81,1,GPU Cloud,https://cyfuture.ai/pricing,price_mining
-2026-11-08,2026-11-08,nvidia-b300,B300,RESERVATION,N/A,aws,16.146,1,Hyperscaler,https://aws.amazon.com/ec2/capacityblocks/pricing/,price_mining
-2026-11-08,2026-11-08,nvidia-b300,B300,RESERVATION,N/A,bentaus,4.35,1,GPU Cloud,https://www.bentaus.com/nvidia-b300#pricing,price_mining
-2026-11-08,2026-11-08,nvidia-b300,B300,RESERVATION,N/A,getdeploying,5.49,1,Serverless,https://getdeploying.com/gpus/nvidia-b300,price_mining
-2026-11-08,2026-11-08,nvidia-b300,B300,SPOT,N/A,aws,9.2761625,1,Hyperscaler,https://website.spot.ec2.aws.a2z.com/spot.json,price_mining
-2026-11-08,2026-11-08,nvidia-b300,B300,SPOT,N/A,ccir,8.71,3,Serverless,https://ccir.io/discovery#charts&zone=b300-london-z4,price_mining
-2026-11-08,2026-11-08,nvidia-b300,B300,SPOT,N/A,daytona,4.08,1,Serverless,https://www.daytona.io/pricing,price_mining
-2026-11-08,2026-11-08,nvidia-b300,B300,SPOT,N/A,digitalocean,6.17,1,General Cloud & Hosting,https://www.digitalocean.com/pricing/gpu-droplets,price_mining
-2026-11-08,2026-11-08,nvidia-b300,B300,SPOT,N/A,getdeploying,5.26,1,Serverless,https://getdeploying.com/gpus/nvidia-b300,price_mining
-2026-11-08,2026-11-08,nvidia-b300,B300,SPOT,N/A,nebius,4.6,2,GPU Cloud,https://nebius.com/spot-prices?historyGpus=B300&historyRange=1d&period=1d,price_mining
-2026-11-08,2026-11-08,nvidia-b300,B300,SPOT,N/A,silicondata,7.69,1,GPU Cloud,https://www.silicondata.com/products/silicon-index/b300,price_mining
-2026-11-08,2026-11-08,nvidia-b300,B300,SPOT,N/A,spheron,5.84,1,Marketplace,https://www.spheron.ai/gpu-rental/b300/,price_mining
-2026-11-08,2026-11-08,nvidia-b300,B300,SPOT,N/A,together-ai,4.99,1,GPU Cloud,https://www.together.ai/pricing,price_mining
-2026-11-08,2026-11-08,nvidia-b300,B300,SPOT,N/A,upcloud,5.99,1,General Cloud & Hosting,https://upcloud.com/pricing/,price_mining
-2026-11-08,2026-11-08,nvidia-b300,B300,SPOT,N/A,verda,5.845,1,GPU Cloud,https://verda.com/pricing,price_mining
-2026-11-08,2026-11-08,nvidia-gb200,GB200,ON_DEMAND,N/A,coreweave,10.5,1,GPU Cloud,https://www.coreweave.com/pricing,price_mining
-2026-11-08,2026-11-08,nvidia-gb200,GB200,RESERVATION,N/A,aws,10.582,1,Hyperscaler,https://aws.amazon.com/ec2/capacityblocks/pricing/,price_mining
-2026-11-08,2026-11-08,nvidia-gb300,GB300,ON_DEMAND,N/A,fireworks-ai,20,1,GPU Cloud,https://fireworks.ai/pricing,price_mining
-2026-11-08,2026-11-08,nvidia-gb300,GB300,ON_DEMAND,N/A,verda,13.44,1,GPU Cloud,https://verda.com/pricing,price_mining
+2026-11-08,2026-11-08,nvidia-b300,B300,SPOT,0,aws,9.2761625,1,Hyperscaler,https://website.spot.ec2.aws.a2z.com/spot.json,price_mining
+2026-11-08,2026-11-08,nvidia-b300,B300,SPOT,0,ccir,8.71,3,Serverless,https://ccir.io/discovery#charts&zone=b300-london-z4,price_mining
+2026-11-08,2026-11-08,nvidia-b300,B300,SPOT,0,daytona,4.08,1,Serverless,https://www.daytona.io/pricing,price_mining
+2026-11-08,2026-11-08,nvidia-b300,B300,SPOT,0,digitalocean,6.17,1,General Cloud & Hosting,https://www.digitalocean.com/pricing/gpu-droplets,price_mining
+2026-11-08,2026-11-08,nvidia-b300,B300,SPOT,0,getdeploying,5.26,1,Serverless,https://getdeploying.com/gpus/nvidia-b300,price_mining
+2026-11-08,2026-11-08,nvidia-b300,B300,SPOT,0,nebius,4.6,2,GPU Cloud,https://nebius.com/spot-prices?historyGpus=B300&historyRange=1d&period=1d,price_mining
+2026-11-08,2026-11-08,nvidia-b300,B300,SPOT,0,silicondata,7.69,1,GPU Cloud,https://www.silicondata.com/products/silicon-index/b300,price_mining
+2026-11-08,2026-11-08,nvidia-b300,B300,SPOT,0,spheron,5.84,1,Marketplace,https://www.spheron.ai/gpu-rental/b300/,price_mining
+2026-11-08,2026-11-08,nvidia-b300,B300,SPOT,0,together-ai,4.99,1,GPU Cloud,https://www.together.ai/pricing,price_mining
+2026-11-08,2026-11-08,nvidia-b300,B300,SPOT,0,upcloud,5.99,1,General Cloud & Hosting,https://upcloud.com/pricing/,price_mining
+2026-11-08,2026-11-08,nvidia-b300,B300,SPOT,0,verda,5.845,1,GPU Cloud,https://verda.com/pricing,price_mining
+2026-11-08,2026-11-08,nvidia-gb200,GB200,ON_DEMAND,0,coreweave,10.5,1,GPU Cloud,https://www.coreweave.com/pricing,price_mining
+2026-11-08,2026-11-08,nvidia-gb200,GB200,RESERVATION,-1,aws,10.582,1,Hyperscaler,https://aws.amazon.com/ec2/capacityblocks/pricing/,price_mining
+2026-11-08,2026-11-08,nvidia-gb300,GB300,ON_DEMAND,0,fireworks-ai,20,1,GPU Cloud,https://fireworks.ai/pricing,price_mining
+2026-11-08,2026-11-08,nvidia-gb300,GB300,ON_DEMAND,0,verda,13.44,1,GPU Cloud,https://verda.com/pricing,price_mining
 2026-11-08,2026-11-08,nvidia-gb300,GB300,RESERVATION,36,astra-intellectus,6.25,1,GPU Cloud,https://astra-intellectus.com/gpu-rental/,price_mining
-2026-11-08,2026-11-08,nvidia-gb300,GB300,SPOT,N/A,verda,6.722,1,GPU Cloud,https://verda.com/pricing,price_mining
-2026-11-08,2026-11-08,nvidia-h200,H200,ON_DEMAND,N/A,civo,3.49,1,General Cloud & Hosting,https://www.civo.com/pricing,price_mining
-2026-11-08,2026-11-08,nvidia-h200,H200,ON_DEMAND,N/A,daytona,4.54,1,Serverless,https://www.daytona.io/pricing,price_mining
-2026-11-08,2026-11-08,nvidia-h200,H200,ON_DEMAND,N/A,deepinfra,3.49,1,GPU Cloud,https://deepinfra.com/pricing,price_mining
-2026-11-08,2026-11-08,nvidia-h200,H200,ON_DEMAND,N/A,digitalocean,4.47,1,General Cloud & Hosting,https://www.digitalocean.com/pricing/gpu-droplets,price_mining
-2026-11-08,2026-11-08,nvidia-h200,H200,ON_DEMAND,N/A,fireworks-ai,8,1,GPU Cloud,https://fireworks.ai/pricing,price_mining
-2026-11-08,2026-11-08,nvidia-h200,H200,ON_DEMAND,N/A,getdeploying,5,1,Serverless,https://getdeploying.com/gpus/nvidia-h200,price_mining
-2026-11-08,2026-11-08,nvidia-h200,H200,ON_DEMAND,N/A,gpu-ai,6.61,1,GPU Cloud,https://gpu.ai/pricing,price_mining
-2026-11-08,2026-11-08,nvidia-h200,H200,ON_DEMAND,N/A,hyperbolic,3.99,1,GPU Cloud,https://www.hyperbolic.ai/marketplace,price_mining
-2026-11-08,2026-11-08,nvidia-h200,H200,ON_DEMAND,N/A,hyperstack,3.99,1,GPU Cloud,https://www.hyperstack.cloud/gpu-pricing,price_mining
-2026-11-08,2026-11-08,nvidia-h200,H200,ON_DEMAND,N/A,nebius,5.4,1,GPU Cloud,https://nebius.com/prices,price_mining
-2026-11-08,2026-11-08,nvidia-h200,H200,ON_DEMAND,N/A,runpod,5.29,1,GPU Cloud,https://www.runpod.io/pricing,price_mining
-2026-11-08,2026-11-08,nvidia-h200,H200,ON_DEMAND,N/A,spheron,4.8,1,Marketplace,https://www.spheron.ai/gpu-rental/h200/,price_mining
-2026-11-08,2026-11-08,nvidia-h200,H200,ON_DEMAND,N/A,together-ai,5.99,1,GPU Cloud,https://www.together.ai/pricing,price_mining
-2026-11-08,2026-11-08,nvidia-h200,H200,ON_DEMAND,N/A,verda,6.44,1,GPU Cloud,https://verda.com/pricing,price_mining
+2026-11-08,2026-11-08,nvidia-gb300,GB300,SPOT,0,verda,6.722,1,GPU Cloud,https://verda.com/pricing,price_mining
+2026-11-08,2026-11-08,nvidia-h200,H200,ON_DEMAND,0,civo,3.49,1,General Cloud & Hosting,https://www.civo.com/pricing,price_mining
+2026-11-08,2026-11-08,nvidia-h200,H200,ON_DEMAND,0,daytona,4.54,1,Serverless,https://www.daytona.io/pricing,price_mining
+2026-11-08,2026-11-08,nvidia-h200,H200,ON_DEMAND,0,deepinfra,3.49,1,GPU Cloud,https://deepinfra.com/pricing,price_mining
+2026-11-08,2026-11-08,nvidia-h200,H200,ON_DEMAND,0,digitalocean,4.47,1,General Cloud & Hosting,https://www.digitalocean.com/pricing/gpu-droplets,price_mining
+2026-11-08,2026-11-08,nvidia-h200,H200,ON_DEMAND,0,fireworks-ai,8,1,GPU Cloud,https://fireworks.ai/pricing,price_mining
+2026-11-08,2026-11-08,nvidia-h200,H200,ON_DEMAND,0,getdeploying,5,1,Serverless,https://getdeploying.com/gpus/nvidia-h200,price_mining
+2026-11-08,2026-11-08,nvidia-h200,H200,ON_DEMAND,0,gpu-ai,6.61,1,GPU Cloud,https://gpu.ai/pricing,price_mining
+2026-11-08,2026-11-08,nvidia-h200,H200,ON_DEMAND,0,hyperbolic,3.99,1,GPU Cloud,https://www.hyperbolic.ai/marketplace,price_mining
+2026-11-08,2026-11-08,nvidia-h200,H200,ON_DEMAND,0,hyperstack,3.99,1,GPU Cloud,https://www.hyperstack.cloud/gpu-pricing,price_mining
+2026-11-08,2026-11-08,nvidia-h200,H200,ON_DEMAND,0,nebius,5.4,1,GPU Cloud,https://nebius.com/prices,price_mining
+2026-11-08,2026-11-08,nvidia-h200,H200,ON_DEMAND,0,runpod,5.29,1,GPU Cloud,https://www.runpod.io/pricing,price_mining
+2026-11-08,2026-11-08,nvidia-h200,H200,ON_DEMAND,0,spheron,4.8,1,Marketplace,https://www.spheron.ai/gpu-rental/h200/,price_mining
+2026-11-08,2026-11-08,nvidia-h200,H200,ON_DEMAND,0,together-ai,5.99,1,GPU Cloud,https://www.together.ai/pricing,price_mining
+2026-11-08,2026-11-08,nvidia-h200,H200,ON_DEMAND,0,verda,6.44,1,GPU Cloud,https://verda.com/pricing,price_mining
+2026-11-08,2026-11-08,nvidia-h200,H200,RESERVATION,-1,getdeploying,4.22,1,Serverless,https://getdeploying.com/gpus/nvidia-h200,price_mining
+2026-11-08,2026-11-08,nvidia-h200,H200,RESERVATION,-1,hyperstack,2.79,1,GPU Cloud,https://www.hyperstack.cloud/gpu-pricing,price_mining
 2026-11-08,2026-11-08,nvidia-h200,H200,RESERVATION,1,together-ai,4.99,1,GPU Cloud,https://www.together.ai/pricing,price_mining
 2026-11-08,2026-11-08,nvidia-h200,H200,RESERVATION,12,digitalocean,3.4,1,General Cloud & Hosting,https://www.digitalocean.com/pricing/gpu-droplets,price_mining
 2026-11-08,2026-11-08,nvidia-h200,H200,RESERVATION,3,together-ai,4.15,1,GPU Cloud,https://www.together.ai/pricing,price_mining
 2026-11-08,2026-11-08,nvidia-h200,H200,RESERVATION,36,civo,2.99,1,General Cloud & Hosting,https://www.civo.com/pricing,price_mining
 2026-11-08,2026-11-08,nvidia-h200,H200,RESERVATION,6,together-ai,3.99,1,GPU Cloud,https://www.together.ai/pricing,price_mining
-2026-11-08,2026-11-08,nvidia-h200,H200,RESERVATION,N/A,getdeploying,4.22,1,Serverless,https://getdeploying.com/gpus/nvidia-h200,price_mining
-2026-11-08,2026-11-08,nvidia-h200,H200,RESERVATION,N/A,hyperstack,2.79,1,GPU Cloud,https://www.hyperstack.cloud/gpu-pricing,price_mining
-2026-11-08,2026-11-08,nvidia-h200,H200,SPOT,N/A,ccir,3.66,3,Serverless,https://ccir.io/discovery#charts&zone=h200-standard-london-z2,price_mining
-2026-11-08,2026-11-08,nvidia-h200,H200,SPOT,N/A,daytona,2.61,1,Serverless,https://www.daytona.io/pricing,price_mining
-2026-11-08,2026-11-08,nvidia-h200,H200,SPOT,N/A,getdeploying,3.46,1,Serverless,https://getdeploying.com/gpus/nvidia-h200,price_mining
-2026-11-08,2026-11-08,nvidia-h200,H200,SPOT,N/A,kalshi,6.81,1,Serverless,https://kalshi.com/markets/kxh200ws/weekly-h200/kxh200ws-26jul17?utm_campaign=kalshi-announces-compute-forward-curves-becoming-the-exchange-for-the-ai-economy&utm_medium=referral&utm_source=news.kalshi.com,price_mining
-2026-11-08,2026-11-08,nvidia-h200,H200,SPOT,N/A,nebius,2.89,1,GPU Cloud,https://nebius.com/spot-prices?historyRange=1d&period=1d&historyGpus=H200,price_mining
-2026-11-08,2026-11-08,nvidia-h200,H200,SPOT,N/A,ornn,6.57,1,Serverless,https://data.ornn.com/,price_mining
-2026-11-08,2026-11-08,nvidia-h200,H200,SPOT,N/A,silicondata,3.55,1,GPU Cloud,https://www.silicondata.com/products/silicon-index/h200,price_mining
-2026-11-08,2026-11-08,nvidia-h200,H200,SPOT,N/A,spheron,3.32,1,Marketplace,https://www.spheron.ai/gpu-rental/h200/,price_mining
-2026-11-08,2026-11-08,nvidia-h200,H200,SPOT,N/A,together-ai,2.99,1,GPU Cloud,https://www.together.ai/pricing,price_mining
-2026-11-08,2026-11-08,nvidia-h200,H200,SPOT,N/A,verda,3.22,1,GPU Cloud,https://verda.com/pricing,price_mining
+2026-11-08,2026-11-08,nvidia-h200,H200,SPOT,0,ccir,3.66,3,Serverless,https://ccir.io/discovery#charts&zone=h200-standard-london-z2,price_mining
+2026-11-08,2026-11-08,nvidia-h200,H200,SPOT,0,daytona,2.61,1,Serverless,https://www.daytona.io/pricing,price_mining
+2026-11-08,2026-11-08,nvidia-h200,H200,SPOT,0,getdeploying,3.46,1,Serverless,https://getdeploying.com/gpus/nvidia-h200,price_mining
+2026-11-08,2026-11-08,nvidia-h200,H200,SPOT,0,kalshi,6.81,1,Serverless,https://kalshi.com/markets/kxh200ws/weekly-h200/kxh200ws-26jul17?utm_campaign=kalshi-announces-compute-forward-curves-becoming-the-exchange-for-the-ai-economy&utm_medium=referral&utm_source=news.kalshi.com,price_mining
+2026-11-08,2026-11-08,nvidia-h200,H200,SPOT,0,nebius,2.89,1,GPU Cloud,https://nebius.com/spot-prices?historyRange=1d&period=1d&historyGpus=H200,price_mining
+2026-11-08,2026-11-08,nvidia-h200,H200,SPOT,0,ornn,6.57,1,Serverless,https://data.ornn.com/,price_mining
+2026-11-08,2026-11-08,nvidia-h200,H200,SPOT,0,silicondata,3.55,1,GPU Cloud,https://www.silicondata.com/products/silicon-index/h200,price_mining
+2026-11-08,2026-11-08,nvidia-h200,H200,SPOT,0,spheron,3.32,1,Marketplace,https://www.spheron.ai/gpu-rental/h200/,price_mining
+2026-11-08,2026-11-08,nvidia-h200,H200,SPOT,0,together-ai,2.99,1,GPU Cloud,https://www.together.ai/pricing,price_mining
+2026-11-08,2026-11-08,nvidia-h200,H200,SPOT,0,verda,3.22,1,GPU Cloud,https://verda.com/pricing,price_mining
