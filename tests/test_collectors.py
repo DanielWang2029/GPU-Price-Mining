@@ -1,9 +1,15 @@
 from __future__ import annotations
 
+import csv
+import tempfile
 import unittest
+from datetime import datetime, timezone
 from decimal import Decimal
 from pathlib import Path
 
+from openpyxl import load_workbook
+
+from gpu_prices.models import SourceRow, ok
 from gpu_prices.providers.astra_intellectus import parse_visible_offers
 from gpu_prices.providers.coreweave import parse_prices as parse_coreweave_prices
 from gpu_prices.providers.daytona import parse_panels
@@ -28,6 +34,7 @@ from gpu_prices.workbook import (
     make_record_id,
     normalize_term_months_value,
     provider_id,
+    write_outputs,
 )
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -108,6 +115,40 @@ class WorkbookTests(unittest.TestCase):
         self.assertEqual(normalize_term_months_value("RESERVATION", "12.0"), "12")
         with self.assertRaisesRegex(ValueError, "must be an integer"):
             normalize_term_months_value("RESERVATION", "12.5")
+
+    def test_csv_and_workbook_outputs_use_the_same_normalized_term(self) -> None:
+        source = SourceRow(
+            workbook_row=2,
+            source_name="Example",
+            gpu_model_code="H200",
+            price_type="On-Demand",
+            region="US",
+            url="https://example.com",
+        )
+        observation = ok(
+            source,
+            Decimal("3.5"),
+            fetched_at=datetime(2026, 11, 8, tzinfo=timezone.utc),
+            source_url=source.url,
+        )
+        with tempfile.TemporaryDirectory() as temporary:
+            csv_path, xlsx_path, _ = write_outputs(
+                [observation],
+                price_date="2026-11-08",
+                run_date="2026-11-08",
+                output_dir=Path(temporary),
+            )
+            with csv_path.open(encoding="utf-8-sig", newline="") as handle:
+                csv_row = next(csv.DictReader(handle))
+            worksheet = load_workbook(xlsx_path, data_only=True)["每日价格"]
+            headers = [cell.value for cell in worksheet[1]]
+            xlsx_row = {
+                header: worksheet.cell(2, index + 1).value
+                for index, header in enumerate(headers)
+            }
+        self.assertEqual(csv_row["term_months"], "0")
+        self.assertEqual(xlsx_row["term_months"], 0)
+        self.assertEqual(csv_row["record_id"], xlsx_row["record_id"])
 
     def test_record_id_matches_concat_ws_field_order(self) -> None:
         value = make_record_id(

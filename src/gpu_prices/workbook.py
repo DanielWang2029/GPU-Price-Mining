@@ -415,9 +415,7 @@ def write_outputs(
     for observation in ordered:
         row = data_row(price_date, run_date, observation)
         row[9] = observation.gpu_count
-        row[19] = (
-            float(observation.row.term) if observation.row.term is not None else None
-        )
+        row[19] = int(row[19])
         row[22] = (
             float(observation.raw_price) if observation.raw_price is not None else None
         )
