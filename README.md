@@ -167,7 +167,11 @@ writes 860 estimates to
 `output/silicondata_estimates/silicondata_estimated_daily_prices.csv`.
 It also creates a standalone SVG plot, three PNG overlays that compare the
 reconstructed magenta trace with each source curve, and a quantitative quality
-report in the same directory.
+report in the same directory. The command additionally writes an idempotent
+provider-series load to
+`sql/warehouse/05_insert_silicondata_gpu_index_provider_series_daily.sql`
+using `source_label='GPU INDEX'`, `billing_type='ON_DEMAND'`, and
+`term_months=0`.
 
 ## Warehouse loads
 
