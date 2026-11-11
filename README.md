@@ -152,6 +152,23 @@ All other rows have no published curve and therefore carry the end-date price
 back across the requested range. The backfill fails rather than inventing a
 value if any curve-based source omits a requested date.
 
+### Silicon Data screenshot digitization
+
+The supplied November 10 Silicon Data screenshots can be converted into
+two-decimal daily estimates without network access:
+
+```bash
+python3 scripts/digitize_silicondata_curves.py
+```
+
+The digitizer isolates the rendered blue curve, maps chart pixels to calendar
+dates, calibrates against the labeled start/end prices and period extrema, and
+writes 860 estimates to
+`output/silicondata_estimates/silicondata_estimated_daily_prices.csv`.
+It also creates a standalone SVG plot, three PNG overlays that compare the
+reconstructed magenta trace with each source curve, and a quantitative quality
+report in the same directory.
+
 ## Warehouse loads
 
 `gpu_prices.warehouse` reconciles the historical output against `tables.xlsx`,
