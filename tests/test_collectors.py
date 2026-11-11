@@ -26,6 +26,7 @@ from gpu_prices.workbook import (
     OUTPUT_HEADERS,
     load_source_rows,
     make_record_id,
+    normalize_term_months_value,
     provider_id,
 )
 
@@ -99,6 +100,14 @@ class WorkbookTests(unittest.TestCase):
         self.assertNotIn("cloud_type", OUTPUT_HEADERS)
         self.assertIn("gpu_id", OUTPUT_HEADERS)
         self.assertIn("gpu_model_code", OUTPUT_HEADERS)
+
+    def test_term_months_are_normalized_to_database_integers(self) -> None:
+        self.assertEqual(normalize_term_months_value("ON_DEMAND", ""), "0")
+        self.assertEqual(normalize_term_months_value("SPOT", "N/A"), "0")
+        self.assertEqual(normalize_term_months_value("RESERVATION", None), "-1")
+        self.assertEqual(normalize_term_months_value("RESERVATION", "12.0"), "12")
+        with self.assertRaisesRegex(ValueError, "must be an integer"):
+            normalize_term_months_value("RESERVATION", "12.5")
 
     def test_record_id_matches_concat_ws_field_order(self) -> None:
         value = make_record_id(

@@ -11,7 +11,7 @@ from typing import Iterable
 
 from openpyxl import load_workbook
 
-from gpu_prices.workbook import make_record_id
+from gpu_prices.workbook import make_record_id, normalize_term_months_value
 
 DETAIL_TABLE = "public.compute_insight_gpu_price_detail_daily"
 PROVIDER_SERIES_TABLE = "public.compute_insight_gpu_provider_series_daily"
@@ -343,6 +343,10 @@ def reconcile_detail(
         row["publisher_name"] = provider.provider_name
         if not row["billing_type"]:
             row["billing_type"] = "SPOT"
+        row["term_months"] = normalize_term_months_value(
+            row["billing_type"],
+            row["term_months"],
+        )
         row["supplier_type"] = provider.supplier_type
         if not row["region_or_hq_country"]:
             row["region_or_hq_country"] = provider.country
@@ -489,11 +493,12 @@ def select_incremental_aggregate_rows(
 ) -> list[dict[str, str]]:
     selected: list[dict[str, str]] = []
     for row in rows:
-        if row["term_months"]:
-            if row["price_date"] >= incremental_start:
-                selected.append(row)
-            continue
-        selected.append({**row, "term_months": "N/A"})
+        term = normalize_term_months_value(
+            row["billing_type"],
+            row["term_months"],
+        )
+        if row["price_date"] >= incremental_start:
+            selected.append({**row, "term_months": term})
     return selected
 
 
@@ -516,24 +521,7 @@ def write_csv(
 def _sql_value(column: str, value: str) -> str:
     if not value:
         return "NULL"
-    numeric = {
-        "gpu_count",
-        "vram_per_gpu_gb",
-        "vram_total_gb",
-        "cpu_cores",
-        "system_ram_gb",
-        "disk_storage_gb",
-        "interconnect_bandwidth_gbps",
-        "gpu_mem_bandwidth_gbps",
-        "raw_price",
-        "price_gpu_hour",
-        "median_price",
-        "offering_count",
-        "p25_price",
-        "p75_price",
-        "min_price",
-    }
-    if column in numeric:
+    if column in NUMERIC_COLUMNS:
         Decimal(value)
         return value
     return "'" + value.replace("'", "''") + "'"
@@ -572,7 +560,6 @@ def render_incremental_aggregate_sql(
     table: str,
     columns: list[str],
     rows: list[dict[str, str]],
-    full_start_date: str,
     incremental_start_date: str,
     end_date: str,
 ) -> str:
@@ -580,12 +567,8 @@ def render_incremental_aggregate_sql(
     chunks: list[str] = [
         "BEGIN;",
         f"DELETE FROM {table} "
-        "WHERE source_label = 'price_mining' AND ("
-        f"(term_months = 'N/A' AND price_date BETWEEN "
-        f"'{full_start_date}' AND '{end_date}') OR "
-        f"(term_months <> 'N/A' AND price_date BETWEEN "
-        f"'{incremental_start_date}' AND '{end_date}')"
-        ");",
+        "WHERE source_label = 'price_mining' "
+        f"AND price_date BETWEEN '{incremental_start_date}' AND '{end_date}';",
     ]
     for start in range(0, len(rows), 500):
         batch = rows[start : start + 500]
@@ -680,7 +663,8 @@ def write_report(
             "geography are applied before aggregation.",
             "- Blank index-series billing types are normalized to `SPOT`, the "
             "non-null warehouse category for market/index rates.",
-            "- Aggregate tables include only priced records with a nonblank term.",
+            "- Term months are normalized to integer sentinels: 0 for "
+            "non-reservation and -1 for reservations with unknown duration.",
             "- Provider medians group by date, GPU model, provider, billing type, "
             "and term.",
             "- Price percentiles group by date, GPU model, billing type, term, "
@@ -717,8 +701,7 @@ def build_parser() -> argparse.ArgumentParser:
         "--base-history-csv",
         type=Path,
         help=(
-            "Earlier history whose termless rows must be re-aggregated together "
-            "with the incremental history."
+            "Optional earlier history used while reconciling an incremental run."
         ),
     )
     parser.add_argument(
@@ -760,7 +743,6 @@ def main(argv: list[str] | None = None) -> int:
         )
         provider_series = aggregate_provider_series(aggregate_input)
         price_series = aggregate_price_series(aggregate_input)
-        full_start_date = min(row["price_date"] for row in detail)
         end_date = max(row["price_date"] for row in history)
 
         provider_csv = args.output_dir / "compute_insight_gpu_provider_series_daily.csv"
@@ -775,7 +757,6 @@ def main(argv: list[str] | None = None) -> int:
                 table=PROVIDER_SERIES_TABLE,
                 columns=PROVIDER_SERIES_COLUMNS,
                 rows=provider_series,
-                full_start_date=full_start_date,
                 incremental_start_date=args.incremental_start_date,
                 end_date=end_date,
             ),
@@ -788,7 +769,6 @@ def main(argv: list[str] | None = None) -> int:
                 table=PRICE_SERIES_TABLE,
                 columns=PRICE_SERIES_COLUMNS,
                 rows=price_series,
-                full_start_date=full_start_date,
                 incremental_start_date=args.incremental_start_date,
                 end_date=end_date,
             ),

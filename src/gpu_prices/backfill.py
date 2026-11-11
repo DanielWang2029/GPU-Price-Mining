@@ -26,6 +26,8 @@ from gpu_prices.workbook import (
     OUTPUT_HEADERS,
     billing_type,
     load_source_rows,
+    normalize_term_months_value,
+    normalized_term_months,
     provider_id,
     record_row,
 )
@@ -58,11 +60,15 @@ def row_key(row: SourceRow) -> RowKey:
         row.supplier_type,
         row.gpu_model_code,
         billing_type(row.price_type),
-        "" if row.term is None else str(row.term),
+        normalized_term_months(row.price_type, row.term),
         "",
         row.region,
         row.url,
     )
+
+
+def normalize_record_term(billing: str, term: str) -> str:
+    return normalize_term_months_value(billing, term)
 
 
 def calendar_dates(start: date, end: date) -> list[date]:
@@ -105,7 +111,10 @@ def load_current_prices(
             record["supplier_type"].strip(),
             record["gpu_model_code"].strip(),
             record["billing_type"].strip(),
-            record["term_months"].strip(),
+            normalize_record_term(
+                record["billing_type"],
+                record["term_months"],
+            ),
             record["region_or_hq_country"].strip(),
             record["provider_hq_region"].strip(),
             record["source_url"].strip(),
@@ -169,7 +178,10 @@ def load_prior_history(
             record["supplier_type"].strip(),
             record[model_column].strip(),
             record["billing_type"].strip(),
-            record["term_months"].strip(),
+            normalize_record_term(
+                record["billing_type"],
+                record["term_months"],
+            ),
             record["region_or_hq_country"].strip(),
             record["provider_hq_region"].strip(),
             record["source_url"].strip(),

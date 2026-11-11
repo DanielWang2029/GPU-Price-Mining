@@ -55,10 +55,11 @@ file. Fetch, schema, and parse failures are `status=error`; `--strict` makes tho
 failures return a nonzero exit code, which is suitable for Airflow. An unavailable
 product does not fail the job and is never replaced with zero or an old value.
 
-Workbook values are trimmed before matching. Empty values remain empty rather
-than being replaced with `N/A`. Every generated row sets `source_label` to
-`price_mining`, derives a letters-only lowercase `provider_id`, and leaves the
-reserved enrichment and note columns blank.
+Workbook values are trimmed before matching. Empty values remain empty except
+`term_months`, which is normalized to `0` for non-reservation rows and `-1`
+for reservations whose duration is unknown. Every generated row sets
+`source_label` to `price_mining`, derives a letters-only lowercase
+`provider_id`, and leaves the reserved enrichment and note columns blank.
 
 `record_id` is the lowercase MD5 hex digest of the colon-separated
 `price_date`, `run_date`, `source_label`, `provider_id`,
@@ -172,15 +173,12 @@ take precedence over price-mining values. Reconciled detail rows also populate
 `gpu_id` from `compute_insight_dim_gpu` before recomputing their record IDs.
 Blank billing types from index sources are normalized to `SPOT` for the
 warehouse tables' non-null billing category.
-Normal aggregation includes priced records with nonblank `term_months`.
-Incremental aggregation can additionally recalculate all termless history with
-`term_months='N/A'` while limiting term-bearing rows to the incremental range:
+All detail and aggregate rows use integer terms: `0` for non-reservation,
+`-1` for reservation with unknown duration, or the explicit month count.
 
 ```bash
 python3 -m gpu_prices.warehouse \
-  --history-csv output/gpu_prices_history_20261104_20261108.csv \
-  --base-history-csv output/gpu_prices_history_20261001_20261103.csv \
-  --incremental-start-date 2026-11-04 \
+  --history-csv output/gpu_prices_history_20261001_20261108.csv \
   --tables-workbook tables.xlsx
 ```
 
@@ -194,7 +192,7 @@ merge/insert report under `output/warehouse/`.
 and records the task's actual local execution date separately as `run_date`.
 
 After collection succeeds, a downstream `gpu_prices.aggregate` task reconciles
-provider metadata, maps empty aggregate terms to `N/A`, and writes:
+provider metadata, applies the integer term rules, and writes:
 
 - `compute_insight_gpu_provider_series_daily_YYYYMMDD.csv`
 - `compute_insight_gpu_price_series_daily_YYYYMMDD.csv`
