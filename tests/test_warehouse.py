@@ -4,6 +4,8 @@ import unittest
 from decimal import Decimal
 
 from gpu_prices.warehouse import (
+    NEW_PROVIDERS,
+    PROVIDER_IDS,
     Provider,
     _percentile,
     aggregate_price_series,
@@ -16,6 +18,10 @@ from gpu_prices.warehouse import (
 
 
 class WarehouseTests(unittest.TestCase):
+    def test_retired_kalshi_provider_remains_available_for_history(self) -> None:
+        self.assertEqual(PROVIDER_IDS["Kalshi"], "kalshi")
+        self.assertEqual(NEW_PROVIDERS["kalshi"].provider_name, "Kalshi")
+
     def test_percentile_continuous_interpolation(self) -> None:
         values = [Decimal("1"), Decimal("2"), Decimal("5"), Decimal("10")]
         self.assertEqual(_percentile(values, Decimal("0.25")), Decimal("1.75"))

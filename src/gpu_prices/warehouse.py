@@ -118,6 +118,8 @@ GPU_IDS = {
 
 PROVIDER_IDS = {
     "Compute Desk": "compute-desk",
+    # Keep retired providers resolvable when regenerating historical data.
+    "Kalshi": "kalshi",
     "Ornn": "ornn",
     "CoreWeave": "coreweave",
     "SiliconData": "silicondata",
@@ -165,6 +167,17 @@ NEW_PROVIDERS = {
         "compute-desk",
         "Compute Desk",
         "https://www.computedesk.com",
+        "US",
+        "North America",
+        "Serverless",
+        "review",
+        "2026-11-03 00:00:00",
+        False,
+    ),
+    "kalshi": Provider(
+        "kalshi",
+        "Kalshi",
+        "https://kalshi.com",
         "US",
         "North America",
         "Serverless",
