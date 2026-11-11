@@ -18,6 +18,28 @@ PLOT_X_START = 272
 PLOT_X_END = 2769
 PLOT_Y_START = 640
 PLOT_Y_END = 1360
+PROVIDER_SERIES_TABLE = "public.compute_insight_gpu_provider_series_daily"
+PROVIDER_SERIES_COLUMNS = (
+    "price_date",
+    "run_date",
+    "gpu_id",
+    "gpu_model_code",
+    "billing_type",
+    "term_months",
+    "provider_id",
+    "median_price",
+    "offering_count",
+    "supplier_type",
+    "reference_url",
+    "source_label",
+)
+GPU_IDS = {
+    "B200": "nvidia-b200",
+    "B300": "nvidia-b300",
+    "H200": "nvidia-h200",
+}
+SOURCE_LABEL = "GPU INDEX"
+REFERENCE_URL = "https://portal.silicondata.com/silicon-index"
 
 
 @dataclass(frozen=True, slots=True)
@@ -507,6 +529,78 @@ def write_estimates_csv(
                 )
 
 
+def _sql_string(value: str) -> str:
+    return "'" + value.replace("'", "''") + "'"
+
+
+def write_provider_series_sql(
+    path: Path,
+    all_estimates: dict[str, list[tuple[date, float]]],
+    *,
+    run_date: date,
+) -> None:
+    rows = sorted(
+        (
+            current_date,
+            model,
+            price,
+        )
+        for model, estimates in all_estimates.items()
+        for current_date, price in estimates
+    )
+    start_date = rows[0][0]
+    end_date = rows[-1][0]
+    models = sorted(all_estimates)
+    chunks = [
+        "BEGIN;",
+        "",
+        f"DELETE FROM {PROVIDER_SERIES_TABLE}",
+        f"WHERE source_label = {_sql_string(SOURCE_LABEL)}",
+        "  AND provider_id = 'silicondata'",
+        "  AND billing_type = 'ON_DEMAND'",
+        "  AND term_months = 0",
+        "  AND gpu_model_code IN ("
+        + ",".join(_sql_string(model) for model in models)
+        + ")",
+        f"  AND price_date BETWEEN '{start_date}' AND '{end_date}';",
+        "",
+    ]
+    columns = ",".join(PROVIDER_SERIES_COLUMNS)
+    for batch_start in range(0, len(rows), 500):
+        values = []
+        for current_date, model, price in rows[batch_start : batch_start + 500]:
+            values.append(
+                "    ("
+                + ",".join(
+                    [
+                        _sql_string(current_date.isoformat()),
+                        _sql_string(run_date.isoformat()),
+                        _sql_string(GPU_IDS[model]),
+                        _sql_string(model),
+                        "'ON_DEMAND'",
+                        "0",
+                        "'silicondata'",
+                        f"{price:.2f}",
+                        "1",
+                        "'GPU Cloud'",
+                        _sql_string(REFERENCE_URL),
+                        _sql_string(SOURCE_LABEL),
+                    ]
+                )
+                + ")"
+            )
+        chunks.extend(
+            [
+                f"INSERT INTO {PROVIDER_SERIES_TABLE} ({columns}) VALUES",
+                ",\n".join(values) + ";",
+                "",
+            ]
+        )
+    chunks.append("COMMIT;")
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text("\n".join(chunks) + "\n", encoding="utf-8")
+
+
 def _month_starts(start: date, end: date) -> list[date]:
     current = start.replace(day=1)
     values: list[date] = []
@@ -693,6 +787,14 @@ def build_parser() -> argparse.ArgumentParser:
         type=Path,
         default=Path("output/gpu_prices_history_20261001_20261108.csv"),
     )
+    parser.add_argument(
+        "--sql-path",
+        type=Path,
+        default=Path(
+            "sql/warehouse/"
+            "05_insert_silicondata_gpu_index_provider_series_daily.sql"
+        ),
+    )
     return parser
 
 
@@ -745,11 +847,18 @@ def main(argv: list[str] | None = None) -> int:
         curve_metrics,
         historical_metrics,
     )
+    run_date = max(config.end_date for config in CONFIGS)
+    write_provider_series_sql(
+        args.sql_path,
+        all_estimates,
+        run_date=run_date,
+    )
 
     print(f"Estimated rows: {sum(map(len, all_estimates.values())):,}")
     print(csv_path)
     print(plot_path)
     print(report_path)
+    print(args.sql_path)
     for model in all_estimates:
         image_error = curve_metrics[model]["mean_absolute_error"]
         reference = historical_metrics[model]
