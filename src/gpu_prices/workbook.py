@@ -233,9 +233,11 @@ def normalize_term_months_value(
     billing: str,
     term: Decimal | str | None,
 ) -> str:
+    if billing.strip().upper() != "RESERVATION":
+        return "0"
     cleaned = "" if term is None else str(term).strip()
     if not cleaned or cleaned.upper() == "N/A":
-        return "-1" if billing.strip().upper() == "RESERVATION" else "0"
+        return "-1"
     try:
         value = Decimal(cleaned)
     except Exception as exc:

@@ -110,6 +110,7 @@ class WorkbookTests(unittest.TestCase):
 
     def test_term_months_are_normalized_to_database_integers(self) -> None:
         self.assertEqual(normalize_term_months_value("ON_DEMAND", ""), "0")
+        self.assertEqual(normalize_term_months_value("ON_DEMAND", "12"), "0")
         self.assertEqual(normalize_term_months_value("SPOT", "N/A"), "0")
         self.assertEqual(normalize_term_months_value("RESERVATION", None), "-1")
         self.assertEqual(normalize_term_months_value("RESERVATION", "12.0"), "12")
