@@ -5,6 +5,12 @@ from datetime import datetime
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
+from gpu_prices.gpu_index import (
+    load_rows as load_gpu_index_rows,
+    merge_rows as merge_gpu_index_rows,
+    rows_from_detail as gpu_index_rows_from_detail,
+    split_detail_rows,
+)
 from gpu_prices.warehouse import (
     PRICE_SERIES_COLUMNS,
     PROVIDER_SERIES_COLUMNS,
@@ -25,15 +31,34 @@ LOS_ANGELES = ZoneInfo("America/Los_Angeles")
 def build_daily_aggregates(
     rows: list[dict[str, str]],
     providers: dict[str, Provider],
+    index_rows: list[dict[str, str]] | None = None,
 ) -> tuple[list[dict[str, str]], list[dict[str, str]]]:
-    detail, _, _ = reconcile_detail(rows, providers)
-    start_date = min(row["price_date"] for row in detail)
+    reconciled, _, _ = reconcile_detail(rows, providers)
+    detail, legacy_index_detail = split_detail_rows(reconciled)
+    start_date = min(row["price_date"] for row in reconciled)
     aggregate_input = select_incremental_aggregate_rows(
         detail,
         incremental_start=start_date,
     )
+    direct_index_rows = merge_gpu_index_rows(
+        gpu_index_rows_from_detail(legacy_index_detail),
+        index_rows or [],
+    )
+    provider_rows = [
+        *aggregate_provider_series(aggregate_input),
+        *direct_index_rows,
+    ]
+    provider_rows.sort(
+        key=lambda row: (
+            row["price_date"],
+            row["gpu_model_code"],
+            row["provider_id"],
+            row["billing_type"],
+            row["term_months"],
+        )
+    )
     return (
-        aggregate_provider_series(aggregate_input),
+        provider_rows,
         aggregate_price_series(aggregate_input),
     )
 
@@ -61,6 +86,13 @@ def build_parser() -> argparse.ArgumentParser:
         type=Path,
         default=Path("output"),
     )
+    parser.add_argument(
+        "--gpu-index-csv",
+        type=Path,
+        help=(
+            "Direct GPU INDEX provider-series CSV emitted by gpu_prices.collect."
+        ),
+    )
     return parser
 
 
@@ -74,7 +106,21 @@ def main(argv: list[str] | None = None) -> int:
         )
     validate_gpu_dimension(args.tables_workbook)
     providers = load_provider_dimension(args.tables_workbook)
-    provider_series, price_series = build_daily_aggregates(rows, providers)
+    index_rows = (
+        load_gpu_index_rows(args.gpu_index_csv)
+        if args.gpu_index_csv is not None
+        else []
+    )
+    index_dates = {row["price_date"] for row in index_rows}
+    if index_dates and index_dates != set(dates):
+        raise ValueError(
+            f"GPU INDEX dates {sorted(index_dates)} do not match raw dates {dates}"
+        )
+    provider_series, price_series = build_daily_aggregates(
+        rows,
+        providers,
+        index_rows,
+    )
     date_token = dates[0].replace("-", "")
 
     provider_path = (

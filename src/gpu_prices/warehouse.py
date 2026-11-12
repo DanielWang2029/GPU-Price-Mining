@@ -11,6 +11,11 @@ from typing import Iterable
 
 from openpyxl import load_workbook
 
+from gpu_prices.gpu_index import (
+    merge_rows as merge_gpu_index_rows,
+    rows_from_detail as gpu_index_rows_from_detail,
+    split_detail_rows,
+)
 from gpu_prices.workbook import make_record_id, normalize_term_months_value
 
 DETAIL_TABLE = "public.compute_insight_gpu_price_detail_daily"
@@ -547,12 +552,14 @@ def render_insert_sql(
     rows: list[dict[str, str]],
     start_date: str,
     end_date: str,
+    source_labels: tuple[str, ...] = ("price_mining",),
 ) -> str:
     column_sql = ",".join(columns)
+    labels = ",".join(_sql_value("source_label", label) for label in source_labels)
     chunks: list[str] = [
         "BEGIN;",
         f"DELETE FROM {table} "
-        f"WHERE source_label = 'price_mining' "
+        f"WHERE source_label IN ({labels}) "
         f"AND price_date BETWEEN '{start_date}' AND '{end_date}';",
     ]
     for start in range(0, len(rows), 500):
@@ -575,12 +582,14 @@ def render_incremental_aggregate_sql(
     rows: list[dict[str, str]],
     incremental_start_date: str,
     end_date: str,
+    source_labels: tuple[str, ...] = ("price_mining",),
 ) -> str:
     column_sql = ",".join(columns)
+    labels = ",".join(_sql_value("source_label", label) for label in source_labels)
     chunks: list[str] = [
         "BEGIN;",
         f"DELETE FROM {table} "
-        "WHERE source_label = 'price_mining' "
+        f"WHERE source_label IN ({labels}) "
         f"AND price_date BETWEEN '{incremental_start_date}' AND '{end_date}';",
     ]
     for start in range(0, len(rows), 500):
@@ -669,13 +678,15 @@ def write_report(
             "",
             "## Main transformations",
             "",
-            "- Raw price-mining rows are loaded into "
-            "`compute_insight_gpu_price_detail_daily`; this follows the workbook "
-            "schema (the request had the raw/aggregate table names reversed).",
+            "- Non-index price-mining rows are loaded into "
+            "`compute_insight_gpu_price_detail_daily`.",
+            "- Compute Desk, Ornn, and Silicon Data bypass detail and aggregation; "
+            "their published values are written directly to provider series with "
+            "`source_label='GPU INDEX'`, `billing_type='ON_DEMAND'`, and term 0.",
             "- Existing dim_provider IDs, names, supplier types, and missing HQ "
             "geography are applied before aggregation.",
-            "- Blank index-series billing types are normalized to `SPOT`, the "
-            "non-null warehouse category for market/index rates.",
+            "- Other blank billing types are normalized to `SPOT` before "
+            "aggregation.",
             "- Term months are normalized to integer sentinels: 0 for "
             "non-reservation and -1 for reservations with unknown duration.",
             "- Provider medians group by date, GPU model, provider, billing type, "
@@ -749,12 +760,21 @@ def main(argv: list[str] | None = None) -> int:
             )
         base_history = load_history(args.base_history_csv)
         combined = [*base_history, *history]
-        detail, _, _ = reconcile_detail(combined, existing)
+        reconciled, _, _ = reconcile_detail(combined, existing)
+        detail, index_detail = split_detail_rows(reconciled)
         aggregate_input = select_incremental_aggregate_rows(
             detail,
             incremental_start=args.incremental_start_date,
         )
-        provider_series = aggregate_provider_series(aggregate_input)
+        direct_index_rows = [
+            row
+            for row in gpu_index_rows_from_detail(index_detail)
+            if row["price_date"] >= args.incremental_start_date
+        ]
+        provider_series = merge_gpu_index_rows(
+            aggregate_provider_series(aggregate_input),
+            direct_index_rows,
+        )
         price_series = aggregate_price_series(aggregate_input)
         end_date = max(row["price_date"] for row in history)
 
@@ -772,6 +792,7 @@ def main(argv: list[str] | None = None) -> int:
                 rows=provider_series,
                 incremental_start_date=args.incremental_start_date,
                 end_date=end_date,
+                source_labels=("price_mining", "GPU INDEX"),
             ),
             encoding="utf-8",
         )
@@ -791,11 +812,15 @@ def main(argv: list[str] | None = None) -> int:
         print(f"Price-series rows: {len(price_series):,}")
         return 0
 
-    detail, inserted, merged = reconcile_detail(history, existing)
-    provider_series = aggregate_provider_series(detail)
+    reconciled, inserted, merged = reconcile_detail(history, existing)
+    detail, index_detail = split_detail_rows(reconciled)
+    provider_series = merge_gpu_index_rows(
+        aggregate_provider_series(detail),
+        gpu_index_rows_from_detail(index_detail),
+    )
     price_series = aggregate_price_series(detail)
-    start_date = min(row["price_date"] for row in detail)
-    end_date = max(row["price_date"] for row in detail)
+    start_date = min(row["price_date"] for row in history)
+    end_date = max(row["price_date"] for row in history)
 
     detail_csv = args.output_dir / "compute_insight_gpu_price_detail_daily.csv"
     provider_csv = args.output_dir / "compute_insight_gpu_provider_series_daily.csv"
@@ -828,6 +853,7 @@ def main(argv: list[str] | None = None) -> int:
             rows=provider_series,
             start_date=start_date,
             end_date=end_date,
+            source_labels=("price_mining", "GPU INDEX"),
         ),
         encoding="utf-8",
     )

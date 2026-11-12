@@ -379,8 +379,14 @@ def write_outputs(
     price_date: str,
     run_date: str,
     output_dir: Path,
+    audit_observations: Iterable[Observation] | None = None,
 ) -> tuple[Path, Path, Path]:
     ordered = sorted(observations, key=lambda item: item.row.workbook_row)
+    audit_ordered = (
+        ordered
+        if audit_observations is None
+        else sorted(audit_observations, key=lambda item: item.row.workbook_row)
+    )
     output_dir.mkdir(parents=True, exist_ok=True)
     date_token = iso_date(price_date).replace("-", "")
     csv_path = output_dir / f"gpu_prices_{date_token}.csv"
@@ -396,7 +402,7 @@ def write_outputs(
     with audit_path.open("w", newline="", encoding="utf-8-sig") as handle:
         writer = csv.writer(handle, lineterminator="\n")
         writer.writerow(AUDIT_HEADERS)
-        for observation in ordered:
+        for observation in audit_ordered:
             writer.writerow(
                 [
                     observation.row.workbook_row,

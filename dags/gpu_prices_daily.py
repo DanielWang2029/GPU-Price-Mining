@@ -82,6 +82,7 @@ with DAG(
         cd "$GPU_PRICE_PROJECT_ROOT"
         python3 -m gpu_prices.aggregate \
           --input-csv "$GPU_PRICE_OUTPUT_DIR/gpu_prices_{{ data_interval_end.in_timezone('America/Los_Angeles').strftime('%Y%m%d') }}.csv" \
+          --gpu-index-csv "$GPU_PRICE_OUTPUT_DIR/gpu_index_provider_series_daily_{{ data_interval_end.in_timezone('America/Los_Angeles').strftime('%Y%m%d') }}.csv" \
           --tables-workbook "$GPU_PRICE_TABLES_WORKBOOK" \
           --output-dir "$GPU_PRICE_OUTPUT_DIR"
         """,

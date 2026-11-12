@@ -54,8 +54,39 @@ class DailyAggregateTests(unittest.TestCase):
             base,
             {**base, "billing_type": "RESERVATION"},
             {**base, "billing_type": "RESERVATION", "term_months": "12"},
+            {
+                **base,
+                "publisher_name": "SiliconData",
+                "provider_id": "silicondata",
+                "supplier_type": "NeoCloud",
+                "billing_type": "",
+                "term_months": "0",
+                "price_gpu_hour": "7.68",
+                "raw_price": "7.68",
+                "source_url": (
+                    "https://www.silicondata.com/products/silicon-index/b300"
+                ),
+            },
         ]
-        provider_series, price_series = build_daily_aggregates(rows, providers)
+        direct_index_row = {
+            "price_date": "2026-11-08",
+            "run_date": "2026-11-08",
+            "gpu_id": "nvidia-b300",
+            "gpu_model_code": "B300",
+            "billing_type": "ON_DEMAND",
+            "term_months": "0",
+            "provider_id": "silicondata",
+            "median_price": "7.68",
+            "offering_count": "1",
+            "supplier_type": "GPU Cloud",
+            "reference_url": "https://portal.silicondata.com/silicon-index",
+            "source_label": "GPU INDEX",
+        }
+        provider_series, price_series = build_daily_aggregates(
+            rows,
+            providers,
+            [direct_index_row],
+        )
 
         self.assertEqual(
             {row["term_months"] for row in provider_series},
@@ -66,7 +97,18 @@ class DailyAggregateTests(unittest.TestCase):
             {"0", "-1", "12"},
         )
         self.assertTrue(
-            all(row["provider_id"] == "cyfuture" for row in provider_series)
+            all(
+                row["provider_id"] == "cyfuture"
+                for row in provider_series
+                if row["provider_id"] != "silicondata"
+            )
+        )
+        silicon_rows = [
+            row for row in provider_series if row["provider_id"] == "silicondata"
+        ]
+        self.assertEqual(silicon_rows, [direct_index_row])
+        self.assertTrue(
+            all(row["region_group"] == "Asia-Pacific" for row in price_series)
         )
         self.assertTrue(all(row["gpu_id"] == "nvidia-b300" for row in price_series))
 
