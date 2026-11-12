@@ -11,8 +11,12 @@ from zoneinfo import ZoneInfo
 
 from gpu_prices.gpu_index import (
     output_path as gpu_index_output_path,
+)
+from gpu_prices.gpu_index import (
     rows_from_observations,
     split_observations,
+)
+from gpu_prices.gpu_index import (
     write_rows as write_gpu_index_rows,
 )
 from gpu_prices.http import HttpClient

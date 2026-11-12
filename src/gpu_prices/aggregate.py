@@ -7,8 +7,14 @@ from zoneinfo import ZoneInfo
 
 from gpu_prices.gpu_index import (
     load_rows as load_gpu_index_rows,
+)
+from gpu_prices.gpu_index import (
     merge_rows as merge_gpu_index_rows,
+)
+from gpu_prices.gpu_index import (
     rows_from_detail as gpu_index_rows_from_detail,
+)
+from gpu_prices.gpu_index import (
     split_detail_rows,
 )
 from gpu_prices.warehouse import (
