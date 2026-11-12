@@ -60,6 +60,9 @@ OUTPUT_HEADERS = [
     "source_url",
 ]
 DATA_SOURCE = "price_mining"
+PUBLISHER_NAMES = {
+    "SiliconData": "Silicon Data",
+}
 BILLING_TYPES = {
     "On-Demand": "ON_DEMAND",
     "Reserve": "RESERVATION",
@@ -215,6 +218,10 @@ def provider_id(name: str) -> str:
     return re.sub(r"[^a-z]", "", name.lower())
 
 
+def publisher_name(name: str) -> str:
+    return PUBLISHER_NAMES.get(name, name)
+
+
 def billing_type(value: str) -> str:
     try:
         return BILLING_TYPES[value]
@@ -320,7 +327,8 @@ def record_row(
 ) -> list[object]:
     normalized_price_date = iso_date(price_date)
     normalized_run_date = iso_date(run_date)
-    provider = provider_id(row.source_name)
+    publisher = publisher_name(row.source_name)
+    provider = provider_id(publisher)
     billing = billing_type(row.price_type)
     term = normalized_term_months(row.price_type, row.term)
     raw_text = _decimal_text(raw_price)
@@ -347,7 +355,7 @@ def record_row(
         normalized_run_date,
         DATA_SOURCE,
         record_id,
-        row.source_name,
+        publisher,
         provider,
         row.supplier_type,
         gpu_id,

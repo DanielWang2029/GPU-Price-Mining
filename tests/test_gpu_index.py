@@ -17,6 +17,7 @@ from gpu_prices.gpu_index import (
     write_rows,
 )
 from gpu_prices.models import SourceRow, ok, unavailable
+from gpu_prices.warehouse import NEW_PROVIDERS, PROVIDER_IDS
 from gpu_prices.workbook import write_outputs
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -105,10 +106,10 @@ class GpuIndexRoutingTests(unittest.TestCase):
         self.assertTrue(all(row["offering_count"] == "1" for row in rows))
         self.assertEqual(
             {row["provider_id"] for row in rows},
-            {"compute-desk", "ornn", "silicondata"},
+            {"computedesk", "ornn", "silicondata"},
         )
         self.assertEqual(
-            next(row for row in rows if row["provider_id"] == "compute-desk")[
+            next(row for row in rows if row["provider_id"] == "computedesk")[
                 "median_price"
             ],
             "7.49",
@@ -141,6 +142,8 @@ class GpuIndexRoutingTests(unittest.TestCase):
             ["CoreWeave"],
         )
         self.assertEqual(len(audit_rows), 5)
+        self.assertIn("Silicon Data", {row["publisher_name"] for row in audit_rows})
+        self.assertNotIn("SiliconData", {row["publisher_name"] for row in audit_rows})
         self.assertEqual(loaded, rows)
         self.assertEqual(list(loaded[0]), PROVIDER_SERIES_COLUMNS)
 
@@ -149,7 +152,7 @@ class GpuIndexRoutingTests(unittest.TestCase):
             {"publisher_name": "CoreWeave", "provider_id": "coreweave"},
             {"publisher_name": "Silicon Data", "provider_id": "silicondata"},
             {"publisher_name": "Ornn", "provider_id": "ornn"},
-            {"publisher_name": "Compute Desk", "provider_id": "compute-desk"},
+            {"publisher_name": "Compute Desk", "provider_id": "computedesk"},
         ]
         detail, index = split_detail_rows(rows)
         self.assertEqual(
@@ -158,7 +161,7 @@ class GpuIndexRoutingTests(unittest.TestCase):
         )
         self.assertEqual(
             {row["provider_id"] for row in index},
-            {"silicondata", "ornn", "compute-desk"},
+            {"silicondata", "ornn", "computedesk"},
         )
 
     def test_cleanup_sql_preserves_gpu_index_rows(self) -> None:
@@ -174,6 +177,33 @@ class GpuIndexRoutingTests(unittest.TestCase):
             self.assertIn("'silicondata'", sql)
             self.assertIn("'ornn'", sql)
             self.assertIn("'compute-desk'", sql)
+            self.assertIn("'computedesk'", sql)
+
+    def test_provider_identity_is_canonical_everywhere(self) -> None:
+        self.assertEqual(PROVIDER_IDS["Compute Desk"], "computedesk")
+        self.assertEqual(
+            NEW_PROVIDERS["computedesk"].provider_id,
+            "computedesk",
+        )
+        migration = (
+            ROOT
+            / "sql"
+            / "warehouse"
+            / "08_unify_computedesk_provider_id.sql"
+        ).read_text(encoding="utf-8")
+        self.assertIn("SET provider_id = 'computedesk'", migration)
+        self.assertIn("WHERE provider_id = 'compute-desk'", migration)
+
+        for filename in (
+            "gpu_prices_20261103.csv",
+            "gpu_prices_20261108.csv",
+            "gpu_prices_history_20261001_20261108.csv",
+        ):
+            content = (ROOT / "output" / filename).read_text(
+                encoding="utf-8-sig"
+            )
+            self.assertNotIn(",SiliconData,", content)
+            self.assertIn(",Silicon Data,", content)
 
 
 if __name__ == "__main__":

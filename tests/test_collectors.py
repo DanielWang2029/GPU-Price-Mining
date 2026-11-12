@@ -34,6 +34,7 @@ from gpu_prices.workbook import (
     make_record_id,
     normalize_term_months_value,
     provider_id,
+    publisher_name,
     write_outputs,
 )
 
@@ -103,6 +104,7 @@ class WorkbookTests(unittest.TestCase):
             )
         )
         self.assertEqual(provider_id("Together.ai"), "togetherai")
+        self.assertEqual(publisher_name("SiliconData"), "Silicon Data")
         self.assertEqual(len(OUTPUT_HEADERS), 27)
         self.assertNotIn("cloud_type", OUTPUT_HEADERS)
         self.assertIn("gpu_id", OUTPUT_HEADERS)
