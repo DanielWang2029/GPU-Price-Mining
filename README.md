@@ -37,10 +37,12 @@ on which the record was collected; both default to the current
 
 Each run writes:
 
-- `gpu_prices_YYYYMMDD.csv`: the 27 database columns from `表结构设计`.
-- `gpu_prices_YYYYMMDD.xlsx`: the same rows as an Excel table.
+- `gpu_prices_YYYYMMDD.csv`: non-index rows in the 27-column detail schema.
+- `gpu_prices_YYYYMMDD.xlsx`: the same non-index rows as an Excel table.
+- `gpu_index_provider_series_daily_YYYYMMDD.csv`: Compute Desk, Ornn, and
+  Silicon Data values already shaped for the provider-series table.
 - `gpu_prices_YYYYMMDD_audit.csv`: source row, status, source URL, effective time,
-  raw value, and collection note.
+  raw value, and collection note for every source, including index feeds.
 
 `raw_price` is the total amount published for the selected offering and
 `price_gpu_hour` is its normalized one-GPU hourly price. `gpu_count` records the
@@ -57,9 +59,11 @@ product does not fail the job and is never replaced with zero or an old value.
 
 Workbook values are trimmed before matching. Empty values remain empty except
 `term_months`, which is normalized to `0` for non-reservation rows and `-1`
-for reservations whose duration is unknown. Every generated row sets
-`source_label` to `price_mining`, derives a letters-only lowercase
-`provider_id`, and leaves the reserved enrichment and note columns blank.
+for reservations whose duration is unknown. Raw detail rows use
+`source_label='price_mining'`. Compute Desk, Ornn, and Silicon Data bypass
+detail and median calculation: their published value is written directly as
+`median_price` with `source_label='GPU INDEX'`, `billing_type='ON_DEMAND'`,
+`term_months=0`, and `offering_count=1`.
 
 `record_id` is the lowercase MD5 hex digest of the colon-separated
 `price_date`, `run_date`, `source_label`, `provider_id`,
@@ -185,15 +189,15 @@ python3 -m gpu_prices.warehouse \
   --tables-workbook tables.xlsx
 ```
 
-The workbook schemas route raw rows to
-`compute_insight_gpu_price_detail_daily`, provider medians to
+The workbook schemas route non-index raw rows to
+`compute_insight_gpu_price_detail_daily`, provider medians and direct GPU index
+values to
 `compute_insight_gpu_provider_series_daily`, and p25/p50/p75/min aggregates to
 `compute_insight_gpu_price_series_daily`. Blank provider geography is filled
 from `compute_insight_dim_provider`; existing provider IDs and classifications
 take precedence over price-mining values. Reconciled detail rows also populate
 `gpu_id` from `compute_insight_dim_gpu` before recomputing their record IDs.
-Blank billing types from index sources are normalized to `SPOT` for the
-warehouse tables' non-null billing category.
+GPU index values are excluded from market percentile aggregation.
 All detail and aggregate rows use integer terms: `0` for non-reservation,
 `-1` for reservation with unknown duration, or the explicit month count.
 
@@ -205,6 +209,9 @@ python3 -m gpu_prices.warehouse \
 
 Generated SQL is stored under `sql/warehouse/`, reconciled CSVs and the provider
 merge/insert report under `output/warehouse/`.
+Run cleanup SQL 06 and 07 once to remove legacy `price_mining` detail and
+derived provider-series rows for Compute Desk, Ornn, and Silicon Data. They do
+not delete rows already labeled `GPU INDEX`.
 
 ## Airflow
 
@@ -213,7 +220,8 @@ merge/insert report under `output/warehouse/`.
 and records the task's actual local execution date separately as `run_date`.
 
 After collection succeeds, a downstream `gpu_prices.aggregate` task reconciles
-provider metadata, applies the integer term rules, and writes:
+provider metadata, merges the direct GPU index rows, applies the integer term
+rules to other providers, and writes:
 
 - `compute_insight_gpu_provider_series_daily_YYYYMMDD.csv`
 - `compute_insight_gpu_price_series_daily_YYYYMMDD.csv`

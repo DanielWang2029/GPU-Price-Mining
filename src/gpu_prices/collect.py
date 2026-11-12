@@ -9,6 +9,16 @@ from datetime import datetime, timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
+from gpu_prices.gpu_index import (
+    output_path as gpu_index_output_path,
+)
+from gpu_prices.gpu_index import (
+    rows_from_observations,
+    split_observations,
+)
+from gpu_prices.gpu_index import (
+    write_rows as write_gpu_index_rows,
+)
 from gpu_prices.http import HttpClient
 from gpu_prices.models import Observation, SourceRow, failed
 from gpu_prices.providers import (
@@ -126,9 +136,9 @@ def run(
     providers: list[str] | None,
     workers: int,
     allow_read_proxy: bool,
-) -> tuple[list[Observation], tuple[Path, Path, Path]]:
-    iso_date(price_date)
-    iso_date(run_date)
+) -> tuple[list[Observation], tuple[Path, ...]]:
+    normalized_price_date = iso_date(price_date)
+    normalized_run_date = iso_date(run_date)
     source_rows = load_source_rows(workbook_path)
     by_provider: dict[str, list[SourceRow]] = defaultdict(list)
     for row in source_rows:
@@ -159,13 +169,25 @@ def run(
         for future in as_completed(futures):
             observations.extend(future.result())
 
-    outputs = write_outputs(
-        observations,
+    raw_observations, index_observations = split_observations(observations)
+    raw_outputs = write_outputs(
+        raw_observations,
         price_date=price_date,
         run_date=run_date,
         output_dir=output_dir,
+        audit_observations=observations,
     )
-    return observations, outputs
+    index_rows = rows_from_observations(
+        index_observations,
+        price_date=normalized_price_date,
+        run_date=normalized_run_date,
+    )
+    index_path = gpu_index_output_path(
+        output_dir,
+        normalized_price_date.replace("-", ""),
+    )
+    write_gpu_index_rows(index_path, index_rows)
+    return observations, (*raw_outputs, index_path)
 
 
 def build_parser() -> argparse.ArgumentParser:

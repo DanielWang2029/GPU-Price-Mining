@@ -216,8 +216,13 @@ class WarehouseTests(unittest.TestCase):
             rows=[provider_row],
             incremental_start_date="2026-11-04",
             end_date="2026-11-08",
+            source_labels=("price_mining", "GPU INDEX"),
         )
         self.assertNotIn("N/A", sql)
+        self.assertIn(
+            "source_label IN ('price_mining','GPU INDEX')",
+            sql,
+        )
         self.assertIn("'2026-11-04' AND '2026-11-08'", sql)
         self.assertIn(",'SPOT',0,'example'", sql)
 
