@@ -7,9 +7,12 @@ from datetime import datetime, timezone
 from decimal import Decimal
 from pathlib import Path
 
+from openpyxl import load_workbook
+
 from gpu_prices.gpu_index import (
     PROVIDER_SERIES_COLUMNS,
     SOURCE_LABEL,
+    is_gpu_index,
     load_rows,
     rows_from_observations,
     split_detail_rows,
@@ -106,10 +109,10 @@ class GpuIndexRoutingTests(unittest.TestCase):
         self.assertTrue(all(row["offering_count"] == "1" for row in rows))
         self.assertEqual(
             {row["provider_id"] for row in rows},
-            {"computedesk", "ornn", "silicondata"},
+            {"compute-desk", "ornn", "silicondata"},
         )
         self.assertEqual(
-            next(row for row in rows if row["provider_id"] == "computedesk")[
+            next(row for row in rows if row["provider_id"] == "compute-desk")[
                 "median_price"
             ],
             "7.49",
@@ -152,7 +155,7 @@ class GpuIndexRoutingTests(unittest.TestCase):
             {"publisher_name": "CoreWeave", "provider_id": "coreweave"},
             {"publisher_name": "Silicon Data", "provider_id": "silicondata"},
             {"publisher_name": "Ornn", "provider_id": "ornn"},
-            {"publisher_name": "Compute Desk", "provider_id": "computedesk"},
+            {"publisher_name": "Compute Desk", "provider_id": "compute-desk"},
         ]
         detail, index = split_detail_rows(rows)
         self.assertEqual(
@@ -161,8 +164,9 @@ class GpuIndexRoutingTests(unittest.TestCase):
         )
         self.assertEqual(
             {row["provider_id"] for row in index},
-            {"silicondata", "ornn", "computedesk"},
+            {"silicondata", "ornn", "compute-desk"},
         )
+        self.assertTrue(is_gpu_index(provider_id="computedesk"))
 
     def test_cleanup_sql_preserves_gpu_index_rows(self) -> None:
         for filename in (
@@ -180,19 +184,27 @@ class GpuIndexRoutingTests(unittest.TestCase):
             self.assertIn("'computedesk'", sql)
 
     def test_provider_identity_is_canonical_everywhere(self) -> None:
-        self.assertEqual(PROVIDER_IDS["Compute Desk"], "computedesk")
+        self.assertEqual(PROVIDER_IDS["Compute Desk"], "compute-desk")
         self.assertEqual(
-            NEW_PROVIDERS["computedesk"].provider_id,
-            "computedesk",
+            NEW_PROVIDERS["compute-desk"].provider_id,
+            "compute-desk",
         )
         migration = (
             ROOT
             / "sql"
             / "warehouse"
-            / "08_unify_computedesk_provider_id.sql"
+            / "08_unify_compute_desk_provider_id.sql"
         ).read_text(encoding="utf-8")
-        self.assertIn("SET provider_id = 'computedesk'", migration)
-        self.assertIn("WHERE provider_id = 'compute-desk'", migration)
+        self.assertIn("SET provider_id = 'compute-desk'", migration)
+        self.assertIn("WHERE provider_id = 'computedesk'", migration)
+        publisher_migration = (
+            ROOT
+            / "sql"
+            / "warehouse"
+            / "09_unify_silicon_data_publisher_name.sql"
+        ).read_text(encoding="utf-8")
+        self.assertIn("SET publisher_name = 'Silicon Data'", publisher_migration)
+        self.assertIn("WHERE publisher_name = 'SiliconData'", publisher_migration)
 
         for filename in (
             "gpu_prices_20261103.csv",
@@ -204,6 +216,22 @@ class GpuIndexRoutingTests(unittest.TestCase):
             )
             self.assertNotIn(",SiliconData,", content)
             self.assertIn(",Silicon Data,", content)
+        for filename in ("gpu_prices_20261103.xlsx", "gpu_prices_20261108.xlsx"):
+            workbook = load_workbook(
+                ROOT / "output" / filename,
+                read_only=True,
+                data_only=True,
+            )
+            sheet = workbook["每日价格"]
+            headers = [cell.value for cell in sheet[1]]
+            publisher_column = headers.index("publisher_name") + 1
+            publishers = {
+                sheet.cell(row, publisher_column).value
+                for row in range(2, sheet.max_row + 1)
+            }
+            workbook.close()
+            self.assertIn("Silicon Data", publishers)
+            self.assertNotIn("SiliconData", publishers)
 
 
 if __name__ == "__main__":

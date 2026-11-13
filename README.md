@@ -64,7 +64,7 @@ for reservations whose duration is unknown. Raw detail rows use
 detail and median calculation: their published value is written directly as
 `median_price` with `source_label='GPU INDEX'`, `billing_type='ON_DEMAND'`,
 `term_months=0`, and `offering_count=1`.
-Canonical identity values are `provider_id='computedesk'` for Compute Desk and
+Canonical identity values are `provider_id='compute-desk'` for Compute Desk and
 `publisher_name='Silicon Data'` for Silicon Data.
 
 `record_id` is the lowercase MD5 hex digest of the colon-separated
@@ -214,7 +214,8 @@ merge/insert report under `output/warehouse/`.
 Run cleanup SQL 06 and 07 once to remove legacy `price_mining` detail and
 derived provider-series rows for Compute Desk, Ornn, and Silicon Data. They do
 not delete rows already labeled `GPU INDEX`. SQL 08 migrates the legacy
-`compute-desk` provider ID to `computedesk` in provider dimensions and facts.
+`computedesk` provider ID to `compute-desk` in provider dimensions and facts;
+SQL 09 updates legacy `SiliconData` publisher names to `Silicon Data`.
 
 ## Airflow
 

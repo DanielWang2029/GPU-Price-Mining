@@ -15,6 +15,7 @@ from pathlib import Path
 from zoneinfo import ZoneInfo
 
 from gpu_prices.http import HttpClient
+from gpu_prices.identity import canonicalize_provider_id
 from gpu_prices.models import SourceRow
 from gpu_prices.providers import ccir, computedesk, nebius, silicondata
 from gpu_prices.providers.getdeploying import (
@@ -109,7 +110,7 @@ def load_current_prices(
             )
         key: RowKey = (
             publisher_name(record["publisher_name"].strip()),
-            record["provider_id"].strip(),
+            canonicalize_provider_id(record["provider_id"].strip()),
             record["supplier_type"].strip(),
             record["gpu_model_code"].strip(),
             record["billing_type"].strip(),
@@ -176,7 +177,7 @@ def load_prior_history(
     for record in records:
         key: RowKey = (
             publisher_name(record["publisher_name"].strip()),
-            record["provider_id"].strip(),
+            canonicalize_provider_id(record["provider_id"].strip()),
             record["supplier_type"].strip(),
             record[model_column].strip(),
             record["billing_type"].strip(),
@@ -503,7 +504,9 @@ def build_history(
     groups = {
         "Compute Desk": [row for row in rows if row.source_name == "Compute Desk"],
         "Ornn": [row for row in rows if row.source_name == "Ornn"],
-        "SiliconData": [row for row in rows if row.source_name == "SiliconData"],
+        "Silicon Data": [
+            row for row in rows if row.source_name == "Silicon Data"
+        ],
         "Nebius": [row for row in rows if row.source_name == "Nebius" and row.region],
         "GetDeploying": [row for row in rows if row.source_name == "GetDeploying"],
         "CCIR": [row for row in rows if row.source_name == "CCIR"],
@@ -511,7 +514,7 @@ def build_history(
     collectors = {
         "Compute Desk": computedesk_history,
         "Ornn": ornn_history,
-        "SiliconData": silicondata_history,
+        "Silicon Data": silicondata_history,
         "Nebius": nebius_history,
         "GetDeploying": getdeploying_history,
         "CCIR": ccir_history,

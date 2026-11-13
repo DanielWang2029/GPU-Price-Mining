@@ -20,6 +20,7 @@ from gpu_prices.gpu_index import (
 from gpu_prices.gpu_index import (
     split_detail_rows,
 )
+from gpu_prices.identity import provider_id as canonical_provider_id
 from gpu_prices.workbook import make_record_id, normalize_term_months_value
 
 DETAIL_TABLE = "public.compute_insight_gpu_price_detail_daily"
@@ -126,13 +127,13 @@ GPU_IDS = {
 }
 
 PROVIDER_IDS = {
-    "Compute Desk": "computedesk",
+    "Compute Desk": canonical_provider_id("Compute Desk"),
     # Keep retired providers resolvable when regenerating historical data.
     "Kalshi": "kalshi",
     "Ornn": "ornn",
     "CoreWeave": "coreweave",
-    "SiliconData": "silicondata",
-    "Silicon Data": "silicondata",
+    "SiliconData": canonical_provider_id("Silicon Data"),
+    "Silicon Data": canonical_provider_id("Silicon Data"),
     "Nebius": "nebius",
     "GetDeploying": "getdeploying",
     "RunPod": "runpod",
@@ -173,8 +174,8 @@ class Provider:
 
 
 NEW_PROVIDERS = {
-    "computedesk": Provider(
-        "computedesk",
+    canonical_provider_id("Compute Desk"): Provider(
+        canonical_provider_id("Compute Desk"),
         "Compute Desk",
         "https://www.computedesk.com",
         "US",

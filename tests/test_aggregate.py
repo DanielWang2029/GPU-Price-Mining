@@ -56,7 +56,7 @@ class DailyAggregateTests(unittest.TestCase):
             {**base, "billing_type": "RESERVATION", "term_months": "12"},
             {
                 **base,
-                "publisher_name": "SiliconData",
+                "publisher_name": "Silicon Data",
                 "provider_id": "silicondata",
                 "supplier_type": "NeoCloud",
                 "billing_type": "",
