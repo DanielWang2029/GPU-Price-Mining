@@ -24,7 +24,9 @@ def parse_table(html: str) -> dict[str, list[str]]:
         (
             candidate
             for candidate in soup.select("table.pricing_table.is-gpu")
-            if "91-180 days" in text(candidate.select_one("thead"))
+            if "Preemptible" in text(candidate.select_one("thead"))
+            and "ON-Demand" in text(candidate.select_one("thead"))
+            and "NVIDIA HGX H200" in text(candidate)
         ),
         None,
     )

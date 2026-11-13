@@ -24,6 +24,7 @@ from gpu_prices.providers.silicondata import (
     parse_index_history,
     parse_index_page,
 )
+from gpu_prices.providers.together_ai import parse_table as parse_together_table
 from gpu_prices.providers.upcloud import (
     parse_getdeploying_mirror,
     parse_public_page,
@@ -204,6 +205,44 @@ class ParserTests(unittest.TestCase):
         self.assertEqual(normalized, Decimal("10.50"))
         self.assertEqual(raw, Decimal("42.00"))
         self.assertEqual(count, 4)
+
+    def test_together_reads_current_gpu_cluster_table(self) -> None:
+        html = """
+        <table class="pricing_table">
+          <tbody><tr><td>NVIDIA HGX H200</td><td>$5.99</td></tr></tbody>
+        </table>
+        <table class="pricing_table is-gpu">
+          <thead>
+            <tr>
+              <th>Hardware</th><th>Preemptible</th>
+              <th>ON-Demand</th><th>Reserved</th>
+            </tr>
+            <tr>
+              <th>Pay as you go</th><th>Pay as you go</th>
+              <th>3-30 days</th><th>31-90 days</th><th>91+ days</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>NVIDIA HGX H200</td><td>$2.99 Checking…</td>
+              <td>$5.99 Checking…</td><td>$4.99</td><td>$4.15</td>
+              <td>Request Capacity</td>
+            </tr>
+          </tbody>
+        </table>
+        """
+        rows = parse_together_table(html)
+        self.assertEqual(
+            rows["NVIDIA HGX H200"],
+            [
+                "NVIDIA HGX H200",
+                "$2.99 Checking…",
+                "$5.99 Checking…",
+                "$4.99",
+                "$4.15",
+                "Request Capacity",
+            ],
+        )
 
     def test_silicondata_reads_explicit_daily_points(self) -> None:
         html = (
