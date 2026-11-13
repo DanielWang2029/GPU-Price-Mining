@@ -297,19 +297,19 @@ class NewProviderParserTests(unittest.TestCase):
         payload = {
             "indices": [
                 {
-                    "alias": "CDB300",
+                    "alias": "CDGXB300",
                     "latest_date": "2026-11-09",
                     "latest_value": 7.44,
                     "history": [{"date": "2026-11-09", "value": 7.44}],
                 },
                 {
-                    "alias": "CDB200",
+                    "alias": "CDGXB200",
                     "latest_date": "2026-11-09",
                     "latest_value": 5.64,
                     "history": [{"date": "2026-11-09", "value": 5.64}],
                 },
                 {
-                    "alias": "CDH200",
+                    "alias": "CDGXH200",
                     "latest_date": "2026-11-09",
                     "latest_value": 3.47,
                     "history": [{"date": "2026-11-09", "value": 3.47}],
