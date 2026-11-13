@@ -59,7 +59,7 @@ REGISTRY: dict[str, Collector] = {
     "Compute Desk": computedesk.collect,
     "Ornn": ornn.collect,
     "CoreWeave": coreweave.collect,
-    "SiliconData": silicondata.collect,
+    "Silicon Data": silicondata.collect,
     "Nebius": nebius.collect,
     "GetDeploying": getdeploying.collect,
     "RunPod": runpod.collect,

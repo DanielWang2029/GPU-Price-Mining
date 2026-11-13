@@ -6,6 +6,9 @@ from decimal import Decimal
 from pathlib import Path
 from typing import Iterable
 
+from gpu_prices.identity import canonicalize_provider_id
+from gpu_prices.identity import provider_id as canonical_provider_id
+from gpu_prices.identity import publisher_name
 from gpu_prices.models import Observation
 
 SOURCE_LABEL = "GPU INDEX"
@@ -47,7 +50,7 @@ class IndexRoute:
 
 ROUTES = (
     IndexRoute(
-        provider_id="computedesk",
+        provider_id=canonical_provider_id("Compute Desk"),
         supplier_type="Serverless",
         reference_url="https://www.computedesk.com/indexes-overview",
         source_names=frozenset({"Compute Desk"}),
@@ -62,7 +65,7 @@ ROUTES = (
         provider_id="silicondata",
         supplier_type="GPU Cloud",
         reference_url="https://portal.silicondata.com/silicon-index",
-        source_names=frozenset({"SiliconData", "Silicon Data"}),
+        source_names=frozenset({"Silicon Data"}),
     ),
 )
 ROUTES_BY_PROVIDER_ID = {route.provider_id: route for route in ROUTES}
@@ -80,9 +83,9 @@ def route_for(
     source_name: str = "",
     provider_id: str = "",
 ) -> IndexRoute | None:
-    return ROUTES_BY_PROVIDER_ID.get(provider_id) or ROUTES_BY_SOURCE_NAME.get(
-        source_name
-    )
+    return ROUTES_BY_PROVIDER_ID.get(
+        canonicalize_provider_id(provider_id)
+    ) or ROUTES_BY_SOURCE_NAME.get(publisher_name(source_name))
 
 
 def is_gpu_index(

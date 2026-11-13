@@ -76,6 +76,8 @@ class WorkbookTests(unittest.TestCase):
             identities,
         )
         self.assertFalse(any(row.source_name == "Kalshi" for row in rows))
+        self.assertTrue(any(row.source_name == "Silicon Data" for row in rows))
+        self.assertFalse(any(row.source_name == "SiliconData" for row in rows))
         self.assertTrue(
             all(
                 value == value.strip()
@@ -104,6 +106,7 @@ class WorkbookTests(unittest.TestCase):
             )
         )
         self.assertEqual(provider_id("Together.ai"), "togetherai")
+        self.assertEqual(provider_id("Compute Desk"), "compute-desk")
         self.assertEqual(publisher_name("SiliconData"), "Silicon Data")
         self.assertEqual(len(OUTPUT_HEADERS), 27)
         self.assertNotIn("cloud_type", OUTPUT_HEADERS)

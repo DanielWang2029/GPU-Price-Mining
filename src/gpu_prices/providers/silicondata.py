@@ -90,4 +90,4 @@ def collect(
 
 
 if __name__ == "__main__":
-    run_provider_cli("SiliconData")
+    run_provider_cli("Silicon Data")

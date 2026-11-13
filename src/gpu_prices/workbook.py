@@ -16,6 +16,7 @@ from openpyxl.styles import Font
 from openpyxl.utils import get_column_letter
 from openpyxl.worksheet.table import Table, TableStyleInfo
 
+from gpu_prices.identity import provider_id, publisher_name
 from gpu_prices.models import Observation, SourceRow
 
 SOURCE_SHEET = "算力价格来源"
@@ -60,9 +61,6 @@ OUTPUT_HEADERS = [
     "source_url",
 ]
 DATA_SOURCE = "price_mining"
-PUBLISHER_NAMES = {
-    "SiliconData": "Silicon Data",
-}
 BILLING_TYPES = {
     "On-Demand": "ON_DEMAND",
     "Reserve": "RESERVATION",
@@ -202,7 +200,7 @@ def load_source_rows(path: Path) -> list[SourceRow]:
         rows.append(
             SourceRow(
                 workbook_row=row_number,
-                source_name=values[0],
+                source_name=publisher_name(values[0]),
                 supplier_type=values[1],
                 gpu_model_code=values[2],
                 price_type=values[3],
@@ -212,14 +210,6 @@ def load_source_rows(path: Path) -> list[SourceRow]:
             )
         )
     return rows
-
-
-def provider_id(name: str) -> str:
-    return re.sub(r"[^a-z]", "", name.lower())
-
-
-def publisher_name(name: str) -> str:
-    return PUBLISHER_NAMES.get(name, name)
 
 
 def billing_type(value: str) -> str:
