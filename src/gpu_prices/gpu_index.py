@@ -6,9 +6,8 @@ from decimal import Decimal
 from pathlib import Path
 from typing import Iterable
 
-from gpu_prices.identity import canonicalize_provider_id
+from gpu_prices.identity import canonicalize_provider_id, publisher_name
 from gpu_prices.identity import provider_id as canonical_provider_id
-from gpu_prices.identity import publisher_name
 from gpu_prices.models import Observation
 
 SOURCE_LABEL = "GPU INDEX"

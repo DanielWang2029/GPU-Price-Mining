@@ -14,8 +14,8 @@ from decimal import Decimal
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
-from gpu_prices.identity import canonicalize_provider_id
 from gpu_prices.http import HttpClient
+from gpu_prices.identity import canonicalize_provider_id
 from gpu_prices.models import SourceRow
 from gpu_prices.providers import ccir, computedesk, nebius, silicondata
 from gpu_prices.providers.getdeploying import (
