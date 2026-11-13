@@ -29,6 +29,7 @@ from gpu_prices.workbook import (
     normalize_term_months_value,
     normalized_term_months,
     provider_id,
+    publisher_name,
     record_row,
 )
 
@@ -54,9 +55,10 @@ CurrentPrices = dict[int, CurrentPrice]
 
 
 def row_key(row: SourceRow) -> RowKey:
+    publisher = publisher_name(row.source_name)
     return (
-        row.source_name,
-        provider_id(row.source_name),
+        publisher,
+        provider_id(publisher),
         row.supplier_type,
         row.gpu_model_code,
         billing_type(row.price_type),
@@ -106,7 +108,7 @@ def load_current_prices(
                 f"expected {expected_date}"
             )
         key: RowKey = (
-            record["publisher_name"].strip(),
+            publisher_name(record["publisher_name"].strip()),
             record["provider_id"].strip(),
             record["supplier_type"].strip(),
             record["gpu_model_code"].strip(),
@@ -173,7 +175,7 @@ def load_prior_history(
     result: History = defaultdict(dict)
     for record in records:
         key: RowKey = (
-            record["publisher_name"].strip(),
+            publisher_name(record["publisher_name"].strip()),
             record["provider_id"].strip(),
             record["supplier_type"].strip(),
             record[model_column].strip(),

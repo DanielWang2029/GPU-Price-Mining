@@ -47,7 +47,7 @@ class IndexRoute:
 
 ROUTES = (
     IndexRoute(
-        provider_id="compute-desk",
+        provider_id="computedesk",
         supplier_type="Serverless",
         reference_url="https://www.computedesk.com/indexes-overview",
         source_names=frozenset({"Compute Desk"}),

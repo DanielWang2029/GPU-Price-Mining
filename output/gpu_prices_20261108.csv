@@ -7,9 +7,9 @@
 2026-11-08,2026-11-08,price_mining,f46cf16a48ce806f07ad36b5fc13fff3,CoreWeave,coreweave,NeoCloud,,GB200,4,,,,,,,,,ON_DEMAND,0,,North America,42.00,10.50,AVAILABLE,,https://www.coreweave.com/pricing
 2026-11-08,2026-11-08,price_mining,e6bfe47e334d70f0b023b5d3471727e5,CoreWeave,coreweave,NeoCloud,,B200,8,,,,,,,,,ON_DEMAND,0,,North America,68.80,8.60,AVAILABLE,,https://www.coreweave.com/pricing
 2026-11-08,2026-11-08,price_mining,09b9c1321a2ba960d06aef0c14ff281a,CoreWeave,coreweave,NeoCloud,,A100,8,,,,,,,,,ON_DEMAND,0,,North America,21.60,2.70,AVAILABLE,,https://www.coreweave.com/pricing
-2026-11-08,2026-11-08,price_mining,3622af9abb9226b21bb299cdb2c2c513,SiliconData,silicondata,NeoCloud,,B300,1,,,,,,,,,,0,,,7.69,7.69,AVAILABLE,,https://www.silicondata.com/products/silicon-index/b300
-2026-11-08,2026-11-08,price_mining,025e6d8a1fd485ee654bfbdb829da4e1,SiliconData,silicondata,NeoCloud,,B200,1,,,,,,,,,,0,,,6.81,6.81,AVAILABLE,,https://www.silicondata.com/products/silicon-index/b200
-2026-11-08,2026-11-08,price_mining,76d7bcd70663f4130675d1db756176da,SiliconData,silicondata,NeoCloud,,H200,1,,,,,,,,,,0,,,3.55,3.55,AVAILABLE,,https://www.silicondata.com/products/silicon-index/h200
+2026-11-08,2026-11-08,price_mining,3622af9abb9226b21bb299cdb2c2c513,Silicon Data,silicondata,NeoCloud,,B300,1,,,,,,,,,,0,,,7.69,7.69,AVAILABLE,,https://www.silicondata.com/products/silicon-index/b300
+2026-11-08,2026-11-08,price_mining,025e6d8a1fd485ee654bfbdb829da4e1,Silicon Data,silicondata,NeoCloud,,B200,1,,,,,,,,,,0,,,6.81,6.81,AVAILABLE,,https://www.silicondata.com/products/silicon-index/b200
+2026-11-08,2026-11-08,price_mining,76d7bcd70663f4130675d1db756176da,Silicon Data,silicondata,NeoCloud,,H200,1,,,,,,,,,,0,,,3.55,3.55,AVAILABLE,,https://www.silicondata.com/products/silicon-index/h200
 2026-11-08,2026-11-08,price_mining,a5fe76d33abf0bffae4e346c9978b2fb,Nebius,nebius,NeoCloud,,B300,1,,,,,,,,,ON_DEMAND,0,,,9.50,9.50,AVAILABLE,,https://nebius.com/prices
 2026-11-08,2026-11-08,price_mining,e93997ef7c001957795e43fe0d1f9411,Nebius,nebius,NeoCloud,,B200,1,,,,,,,,,ON_DEMAND,0,,,8.50,8.50,AVAILABLE,,https://nebius.com/prices
 2026-11-08,2026-11-08,price_mining,6a1117d438b8876cac3e0db5e9569788,Nebius,nebius,NeoCloud,,H200,1,,,,,,,,,ON_DEMAND,0,,,5.40,5.40,AVAILABLE,,https://nebius.com/prices

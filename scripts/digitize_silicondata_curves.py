@@ -479,7 +479,7 @@ def reference_metrics(
     references = {
         date.fromisoformat(row["price_date"]): float(row["price_gpu_hour"])
         for row in rows
-        if row["publisher_name"] == "SiliconData"
+        if row["publisher_name"] == "Silicon Data"
         and row["gpu_model_code"] == model
         and row["price_gpu_hour"]
     }

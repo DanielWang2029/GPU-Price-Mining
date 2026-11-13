@@ -126,12 +126,13 @@ GPU_IDS = {
 }
 
 PROVIDER_IDS = {
-    "Compute Desk": "compute-desk",
+    "Compute Desk": "computedesk",
     # Keep retired providers resolvable when regenerating historical data.
     "Kalshi": "kalshi",
     "Ornn": "ornn",
     "CoreWeave": "coreweave",
     "SiliconData": "silicondata",
+    "Silicon Data": "silicondata",
     "Nebius": "nebius",
     "GetDeploying": "getdeploying",
     "RunPod": "runpod",
@@ -172,8 +173,8 @@ class Provider:
 
 
 NEW_PROVIDERS = {
-    "compute-desk": Provider(
-        "compute-desk",
+    "computedesk": Provider(
+        "computedesk",
         "Compute Desk",
         "https://www.computedesk.com",
         "US",
