@@ -22,8 +22,13 @@ ROOT = Path(__file__).resolve().parents[1]
 
 class SiliconDataDigitizationTests(unittest.TestCase):
     def test_digitized_curves_match_image_and_labeled_anchors(self) -> None:
-        expected_rows = {"B300": 202, "B200": 467, "H200": 191}
-        image_mae_limits = {"B300": 0.005, "B200": 0.006, "H200": 0.003}
+        expected_rows = {"B300": 202, "B200": 467, "H100": 806, "H200": 191}
+        image_mae_limits = {
+            "B300": 0.005,
+            "B200": 0.006,
+            "H100": 0.004,
+            "H200": 0.003,
+        }
         history_mae_limits = {"B300": 0.005, "B200": 0.020, "H200": 0.005}
         reference = ROOT / "output/gpu_prices_history_20261001_20261108.csv"
         all_estimates: dict[str, list[tuple[date, float]]] = {}
@@ -39,6 +44,11 @@ class SiliconDataDigitizationTests(unittest.TestCase):
                 self.assertEqual(len(estimates), expected_rows[config.model])
                 self.assertEqual(by_date[config.start_date], config.start_price)
                 self.assertEqual(by_date[config.end_date], config.end_price)
+                if config.output_end_date is not None:
+                    self.assertEqual(
+                        by_date[config.output_end_date],
+                        config.output_end_price,
+                    )
                 self.assertEqual(by_date[config.low_date], config.low_price)
                 self.assertEqual(by_date[config.high_date], config.high_price)
                 self.assertTrue(
@@ -70,18 +80,26 @@ class SiliconDataDigitizationTests(unittest.TestCase):
                     config.model,
                     estimates,
                 )
-                self.assertIsNotNone(saved_metrics)
-                assert saved_metrics is not None
-                self.assertLess(
-                    saved_metrics["mean_absolute_error"],
-                    history_mae_limits[config.model],
-                )
+                if config.model == "H100":
+                    self.assertIsNone(saved_metrics)
+                else:
+                    self.assertIsNotNone(saved_metrics)
+                    assert saved_metrics is not None
+                    self.assertLess(
+                        saved_metrics["mean_absolute_error"],
+                        history_mae_limits[config.model],
+                    )
 
         with TemporaryDirectory() as temporary:
             sql_path = Path(temporary) / "provider_series.sql"
+            sql_estimates = {
+                model: estimates
+                for model, estimates in all_estimates.items()
+                if model != "H100"
+            }
             write_provider_series_sql(
                 sql_path,
-                all_estimates,
+                sql_estimates,
                 run_date=date(2026, 11, 10),
             )
             sql = sql_path.read_text(encoding="utf-8")

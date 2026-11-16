@@ -160,7 +160,7 @@ value if any curve-based source omits a requested date.
 
 ### Silicon Data screenshot digitization
 
-The supplied November 10 Silicon Data screenshots can be converted into
+The supplied Silicon Data screenshots can be converted into
 two-decimal daily estimates without network access:
 
 ```bash
@@ -169,12 +169,17 @@ python3 scripts/digitize_silicondata_curves.py
 
 The digitizer isolates the rendered blue curve, maps chart pixels to calendar
 dates, calibrates against the labeled start/end prices and period extrema, and
-writes 860 estimates to
+writes 1,666 estimates to
 `output/silicondata_estimates/silicondata_estimated_daily_prices.csv`.
-It also creates a standalone SVG plot, three PNG overlays that compare the
-reconstructed magenta trace with each source curve, and a quantitative quality
-report in the same directory. The command additionally writes an idempotent
-provider-series load to
+H100's 806 rows and dedicated plot are also saved as
+`silicondata_h100_estimated_daily_prices.csv` and
+`silicondata_h100_estimated_price_curve.svg`. Its screenshot ends November 10
+at $3.06, so the requested November 15 value of $3.10 is represented by a
+five-day extension after the digitized curve.
+The command also creates a standalone combined SVG plot, four PNG overlays that
+compare the reconstructed magenta trace with each source curve, and a
+quantitative quality report in the same directory. It additionally writes an
+idempotent provider-series load for B200, B300, and H200 to
 `sql/warehouse/05_insert_silicondata_gpu_index_provider_series_daily.sql`
 using `source_label='GPU INDEX'`, `billing_type='ON_DEMAND'`, and
 `term_months=0`.
