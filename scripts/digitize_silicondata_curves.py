@@ -857,6 +857,14 @@ def build_parser() -> argparse.ArgumentParser:
             "05_insert_silicondata_gpu_index_provider_series_daily.sql"
         ),
     )
+    parser.add_argument(
+        "--h100-sql-path",
+        type=Path,
+        default=Path(
+            "sql/warehouse/"
+            "10_insert_silicondata_h100_gpu_index_provider_series_daily.sql"
+        ),
+    )
     return parser
 
 
@@ -935,6 +943,14 @@ def main(argv: list[str] | None = None) -> int:
         sql_estimates,
         run_date=run_date,
     )
+    h100_config = next(config for config in CONFIGS if config.model == "H100")
+    if h100_config.output_end_date is None:
+        raise ValueError("H100 output end date is required for SQL generation")
+    write_provider_series_sql(
+        args.h100_sql_path,
+        {"H100": all_estimates["H100"]},
+        run_date=h100_config.output_end_date,
+    )
 
     print(f"Estimated rows: {sum(map(len, all_estimates.values())):,}")
     print(csv_path)
@@ -943,6 +959,7 @@ def main(argv: list[str] | None = None) -> int:
     print(h100_plot_path)
     print(report_path)
     print(args.sql_path)
+    print(args.h100_sql_path)
     for model in all_estimates:
         image_error = curve_metrics[model]["mean_absolute_error"]
         reference = historical_metrics[model]

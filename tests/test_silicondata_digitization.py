@@ -92,6 +92,7 @@ class SiliconDataDigitizationTests(unittest.TestCase):
 
         with TemporaryDirectory() as temporary:
             sql_path = Path(temporary) / "provider_series.sql"
+            h100_sql_path = Path(temporary) / "h100_provider_series.sql"
             sql_estimates = {
                 model: estimates
                 for model, estimates in all_estimates.items()
@@ -102,7 +103,13 @@ class SiliconDataDigitizationTests(unittest.TestCase):
                 sql_estimates,
                 run_date=date(2026, 11, 10),
             )
+            write_provider_series_sql(
+                h100_sql_path,
+                {"H100": all_estimates["H100"]},
+                run_date=date(2026, 11, 15),
+            )
             sql = sql_path.read_text(encoding="utf-8")
+            h100_sql = h100_sql_path.read_text(encoding="utf-8")
         self.assertIn(
             "DELETE FROM public.compute_insight_gpu_provider_series_daily",
             sql,
@@ -124,6 +131,29 @@ class SiliconDataDigitizationTests(unittest.TestCase):
             "('2026-11-10','2026-11-10','nvidia-h200','H200',"
             "'ON_DEMAND',0,'silicondata',3.48,1,'GPU Cloud'",
             sql,
+        )
+        self.assertNotIn("public.public.", h100_sql)
+        self.assertEqual(h100_sql.count("INSERT INTO "), 2)
+        self.assertEqual(
+            h100_sql.count(
+                "'https://portal.silicondata.com/silicon-index','GPU INDEX'"
+            ),
+            806,
+        )
+        self.assertIn("gpu_model_code IN ('H100')", h100_sql)
+        self.assertIn(
+            "price_date BETWEEN '2024-09-01' AND '2026-11-15'",
+            h100_sql,
+        )
+        self.assertIn(
+            "('2024-09-01','2026-11-15','nvidia-h100','H100',"
+            "'ON_DEMAND',0,'silicondata',3.40,1,'GPU Cloud'",
+            h100_sql,
+        )
+        self.assertIn(
+            "('2026-11-15','2026-11-15','nvidia-h100','H100',"
+            "'ON_DEMAND',0,'silicondata',3.10,1,'GPU Cloud'",
+            h100_sql,
         )
 
 

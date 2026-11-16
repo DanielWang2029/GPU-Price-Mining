@@ -182,7 +182,9 @@ quantitative quality report in the same directory. It additionally writes an
 idempotent provider-series load for B200, B300, and H200 to
 `sql/warehouse/05_insert_silicondata_gpu_index_provider_series_daily.sql`
 using `source_label='GPU INDEX'`, `billing_type='ON_DEMAND'`, and
-`term_months=0`.
+`term_months=0`. The H100 estimates are written separately to
+`sql/warehouse/10_insert_silicondata_h100_gpu_index_provider_series_daily.sql`
+with the same provider-series metadata.
 
 ## Warehouse loads
 
