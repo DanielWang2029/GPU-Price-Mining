@@ -74,6 +74,39 @@ Canonical identity values are `provider_id='compute-desk'` for Compute Desk and
 values. Null/blank database fields are skipped to match PostgreSQL
 `CONCAT_WS` semantics.
 
+## AMD Instinct price mining
+
+The AMD collector mines repeatable public prices for MI355X, MI325X, and
+MI300X without relying on launch announcements:
+
+```bash
+python3 -m gpu_prices.amd_collect \
+  --price-date 20261117 \
+  --run-date 20261117 \
+  --allow-read-proxy \
+  --strict
+```
+
+Provider adapters are split under `src/gpu_prices/amd_providers/`. The run
+collects Bentaus, Cirrascale, CoreGPU, Cyfuture AI, Daytona, DigitalOcean,
+GPUBank, Hot Aisle, Impossible Cloud, Microsoft Azure, OpenRelay, Oracle
+Cloud, Runcrate, Runpod, TensorWave, and Vultr.
+
+Outputs are:
+
+- `output/amd_gpu_prices_YYYYMMDD.csv`: direct rows for
+  `compute_insight_gpu_price_detail_daily`.
+- `output/amd_gpu_prices_YYYYMMDD_audit.csv`: provider failures and exact
+  duplicates collapsed under the current record-ID formula.
+- `sql/warehouse/11_insert_amd_gpu_price_detail_daily_YYYYMMDD.sql`: an
+  idempotent daily detail load.
+- `sql/warehouse/12_insert_amd_gpu_providers.sql`: idempotent provider
+  dimension inserts.
+
+Distinct machine configurations and billing terms remain separate rows.
+Identical listings from multiple URLs are fetched but collapsed because
+`source_url` is not part of the required `record_id` formula.
+
 ## Source behavior
 
 | Supplier | Collection source and workbook interpretation |
