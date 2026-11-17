@@ -6,7 +6,8 @@ from decimal import Decimal
 from pathlib import Path
 from typing import Iterable
 
-from gpu_prices.workbook import DETAIL_COLUMNS, iso_date, make_record_id
+from gpu_prices.workbook import OUTPUT_HEADERS as DETAIL_COLUMNS
+from gpu_prices.workbook import iso_date, make_record_id
 
 SOURCE_LABEL = "price_mining"
 GPU_SPECS = {
