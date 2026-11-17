@@ -29,7 +29,15 @@ def collect(client: HttpClient, _now: datetime) -> list[AmdOffer]:
         ("Low Priority", "SPOT"),
         ("ND96isrMI300Xv5", "ON_DEMAND"),
     ):
-        candidates = [item for item in linux if item.get("skuName") == label]
+        candidates = [
+            item
+            for item in linux
+            if (
+                item.get("skuName") == label
+                if label == "ND96isrMI300Xv5"
+                else str(item.get("skuName", "")).endswith(f" {label}")
+            )
+        ]
         if len(candidates) != 1:
             raise ValueError(f"Azure expected one Linux {label!r} MI300X price")
         selected.append((billing_type, candidates[0]))
