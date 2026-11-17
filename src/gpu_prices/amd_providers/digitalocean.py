@@ -37,7 +37,10 @@ def parse_docs_prices(html: str) -> dict[tuple[str, str, int], Decimal]:
             cells = [text(cell) for cell in row.find_all(["th", "td"])]
             if len(cells) != 2:
                 continue
-            match = re.fullmatch(r"AMD (MI(?:300|325|355)X)(?: \\((\\d+)x\\))?", cells[0])
+            match = re.fullmatch(
+                r"AMD (MI(?:300|325|355)X)(?: \((\d+)x\))?",
+                cells[0],
+            )
             if match is None:
                 continue
             count = int(match.group(2) or 1)
