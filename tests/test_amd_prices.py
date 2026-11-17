@@ -9,6 +9,7 @@ from gpu_prices.amd_prices import (
     render_detail_sql,
     render_provider_sql,
 )
+from gpu_prices.amd_providers.cirrascale import parse_price_card
 from gpu_prices.amd_providers.digitalocean import parse_docs_prices
 from gpu_prices.amd_providers.hotaisle import parse_prices as parse_hotaisle_prices
 from gpu_prices.amd_providers.tensorwave import parse_price as parse_tensorwave_price
@@ -115,6 +116,17 @@ class AmdPriceTests(unittest.TestCase):
                 """
             ),
             (Decimal("2.99"), Decimal("3.39")),
+        )
+        self.assertEqual(
+            parse_price_card(
+                """
+                <div class="cro-table_row">
+                  <div class="cro-table_feature">AMD MI355X</div>
+                  <div>As low as $4.29/GPUhr</div>
+                </div>
+                """
+            ),
+            Decimal("4.29"),
         )
         self.assertEqual(
             parse_ranges(

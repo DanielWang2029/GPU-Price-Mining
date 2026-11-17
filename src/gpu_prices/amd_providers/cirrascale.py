@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 from datetime import datetime
 from decimal import Decimal
 
@@ -7,7 +8,7 @@ from bs4 import BeautifulSoup
 
 from gpu_prices.amd_prices import AmdOffer
 from gpu_prices.http import HttpClient
-from gpu_prices.providers.common import parse_price, text
+from gpu_prices.providers.common import text
 
 URL = "https://www.cirrascale.com/pricing"
 
@@ -27,7 +28,10 @@ def parse_price_card(html: str) -> Decimal:
     row = label.find_parent("div", class_="cro-table_row")
     if row is None:
         raise ValueError("Cirrascale MI355X pricing row was malformed")
-    return Decimal(str(parse_price(text(row))))
+    match = re.search(r"\$([0-9.]+)\s*/GPUhr", text(row), re.IGNORECASE)
+    if match is None:
+        raise ValueError("Cirrascale MI355X row omitted the GPU-hour price")
+    return Decimal(match.group(1))
 
 
 def collect(client: HttpClient, _now: datetime) -> list[AmdOffer]:
