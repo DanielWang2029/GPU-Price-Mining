@@ -7,6 +7,7 @@ from bs4 import BeautifulSoup
 
 from gpu_prices.amd_prices import AmdOffer
 from gpu_prices.http import FetchError, HttpClient
+from gpu_prices.models import money_2
 from gpu_prices.providers.common import parse_price, text
 
 URL = "https://cyfuture.ai/pricing"
@@ -80,7 +81,7 @@ def collect(client: HttpClient, _now: datetime) -> list[AmdOffer]:
                         billing_type=billing_type,
                         term_months=term,
                         raw_price=inr,
-                        price_gpu_hour=(inr / inr_per_usd) / count,
+                        price_gpu_hour=money_2((inr / inr_per_usd) / count),
                         gpu_count=count,
                         availability="AVAILABLE",
                         source_url=source_url,

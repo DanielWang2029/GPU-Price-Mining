@@ -5,6 +5,7 @@ from decimal import Decimal
 
 from gpu_prices.amd_prices import AmdOffer
 from gpu_prices.http import HttpClient
+from gpu_prices.models import money_2
 
 URL = "https://coregpu.io/api/v1/gpus/mi325x"
 HOURS_PER_MONTH = Decimal(730)
@@ -21,7 +22,7 @@ def collect(client: HttpClient, _now: datetime) -> list[AmdOffer]:
             billing_type="RESERVATION",
             term_months=1,
             raw_price=monthly,
-            price_gpu_hour=monthly / HOURS_PER_MONTH,
+            price_gpu_hour=money_2(monthly / HOURS_PER_MONTH),
             gpu_count=1,
             availability=availability,
             source_url=URL,
