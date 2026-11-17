@@ -35,12 +35,12 @@ def collect(client: HttpClient, _now: datetime) -> list[AmdOffer]:
                 gpu_model_code=model,
                 billing_type="RESERVATION",
                 term_months=-1,
-                raw_price=price * 8,
+                raw_price=price,
                 price_gpu_hour=price,
-                gpu_count=8,
+                gpu_count=1,
                 availability="AVAILABLE",
                 source_url=url,
-                gpu_spec=f"8x {model} OAM bare-metal node",
+                gpu_spec=f"8x {model} OAM node; advertised price is per GPU",
                 price_note=(
                     "Advertised starting price; TensorWave documents customized "
                     "reservations and does not expose live stock."

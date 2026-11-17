@@ -22,16 +22,19 @@ def collect(client: HttpClient, _now: datetime) -> list[AmdOffer]:
             gpu_model_code="MI300X",
             billing_type="ON_DEMAND",
             term_months=0,
-            raw_price=per_gpu * count,
+            raw_price=per_gpu,
             price_gpu_hour=per_gpu,
-            gpu_count=count,
+            gpu_count=1,
             availability=(
                 "AVAILABLE"
                 if int(item.get("available_options") or 0) > 0
                 else "UNAVAILABLE"
             ),
             source_url=URL,
-            gpu_spec=f"MI300X {count}x {','.join(item.get('deployment_types', []))}",
+            gpu_spec=(
+                f"MI300X {count}x {','.join(item.get('deployment_types', []))}; "
+                "advertised price is per GPU"
+            ),
             cpu_cores=Decimal(str(specs.get("vcpus") or 0)),
             system_ram_gb=Decimal(str(specs.get("memory_gb") or 0)),
             disk_storage_gb=Decimal(str(specs.get("storage_gb") or 0)),

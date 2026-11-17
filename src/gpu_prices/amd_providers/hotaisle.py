@@ -28,36 +28,31 @@ def parse_prices(html: str) -> tuple[Decimal, Decimal]:
 
 def collect(client: HttpClient, _now: datetime) -> list[AmdOffer]:
     vm_price, bare_price = parse_prices(client.get_text(URL))
-    rows: list[AmdOffer] = []
-    for count in (1, 2, 4):
-        rows.append(
-            AmdOffer(
-                provider_id="hotaisle",
-                gpu_model_code="MI300X",
-                billing_type="ON_DEMAND",
-                term_months=0,
-                raw_price=vm_price * count,
-                price_gpu_hour=vm_price,
-                gpu_count=count,
-                availability="AVAILABLE",
-                source_url=URL,
-                gpu_spec=f"MI300X VM {count}x",
-                price_note="Published VM per-GPU rate, billed by the minute.",
-            )
-        )
-    rows.append(
+    return [
         AmdOffer(
             provider_id="hotaisle",
             gpu_model_code="MI300X",
             billing_type="ON_DEMAND",
             term_months=0,
-            raw_price=bare_price * 8,
-            price_gpu_hour=bare_price,
-            gpu_count=8,
+            raw_price=vm_price,
+            price_gpu_hour=vm_price,
+            gpu_count=1,
             availability="AVAILABLE",
             source_url=URL,
-            gpu_spec="MI300X bare metal 8x",
+            gpu_spec="MI300X 1x/2x/4x VMs; advertised price is per GPU",
+            price_note="Published VM per-GPU rate, billed by the minute.",
+        ),
+        AmdOffer(
+            provider_id="hotaisle",
+            gpu_model_code="MI300X",
+            billing_type="ON_DEMAND",
+            term_months=0,
+            raw_price=bare_price,
+            price_gpu_hour=bare_price,
+            gpu_count=1,
+            availability="AVAILABLE",
+            source_url=URL,
+            gpu_spec="MI300X 8x bare metal; advertised price is per GPU",
             price_note="Published dedicated bare-metal per-GPU rate.",
-        )
-    )
-    return rows
+        ),
+    ]

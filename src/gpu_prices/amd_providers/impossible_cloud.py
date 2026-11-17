@@ -32,12 +32,12 @@ def collect(client: HttpClient, _now: datetime) -> list[AmdOffer]:
                 gpu_model_code="MI355X",
                 billing_type="RESERVATION",
                 term_months=term,
-                raw_price=per_gpu * count,
+                raw_price=per_gpu,
                 price_gpu_hour=per_gpu,
-                gpu_count=count,
+                gpu_count=1,
                 availability=availability,
                 source_url=URL,
-                gpu_spec=str(offer["sku"]),
+                gpu_spec=f"{offer['sku']} ({count}-GPU node; price is per GPU)",
                 system_ram_gb=Decimal(2304),
                 price_note=(
                     f"{offer.get('region', '')} reserved offer; status "

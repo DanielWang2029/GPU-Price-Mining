@@ -39,12 +39,12 @@ def collect(client: HttpClient, _now: datetime) -> list[AmdOffer]:
                 gpu_model_code=model,
                 billing_type="ON_DEMAND",
                 term_months=0,
-                raw_price=per_gpu * 8,
+                raw_price=per_gpu,
                 price_gpu_hour=per_gpu,
-                gpu_count=8,
+                gpu_count=1,
                 availability="AVAILABLE",
                 source_url=f"{URL}?partNumber={part_number}&currencyCode=USD",
-                gpu_spec=shape,
+                gpu_spec=f"{shape} (8-GPU shape; catalog metric is per GPU)",
                 price_note=(
                     "Oracle PAY_AS_YOU_GO GPU-per-hour price; public catalog "
                     f"last updated {payload.get('lastUpdated', '')}."
