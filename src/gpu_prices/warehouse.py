@@ -124,6 +124,9 @@ GPU_IDS = {
     "GB200": "nvidia-gb200",
     "GB300": "nvidia-gb300",
     "H200": "nvidia-h200",
+    "MI300X": "amd-mi300x",
+    "MI325X": "amd-mi325x",
+    "MI355X": "amd-mi355x",
 }
 
 PROVIDER_IDS = {

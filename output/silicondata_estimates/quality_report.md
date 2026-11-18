@@ -8,6 +8,7 @@ The source line is isolated by its exact rendered RGB value, sampled at each cal
 |---|---:|---:|---:|---:|
 | B300 | 2,386 | $0.0023 | $0.0090 | $0.0266 |
 | B200 | 2,142 | $0.0038 | $0.0123 | $0.1100 |
+| H100 | 2,275 | $0.0020 | $0.0057 | $0.0350 |
 | H200 | 2,331 | $0.0012 | $0.0040 | $0.0129 |
 
 Columns obscured by the chart's high/low annotation markers are interpolated and excluded from the pixel-error metric.
@@ -19,6 +20,9 @@ The isolated maximum residuals occur at near-vertical joins between calendar sam
 |---|---:|---:|---:|---:|
 | B300 | 39 | $0.0031 | $0.0100 | $0.0200 |
 | B200 | 39 | $0.0167 | $0.0440 | $0.1100 |
+| H100 | 0 | n/a | n/a | n/a |
 | H200 | 39 | $0.0013 | $0.0100 | $0.0100 |
+
+The H100 screenshot ends on November 10 at $3.06. The requested November 15 endpoint of $3.10 is applied as a five-day linear extension after the image-derived curve.
 
 The comparison PNGs draw the reconstructed, two-decimal series in magenta over the supplied blue source curves. Visible blue outside the magenta trace identifies a mismatch.

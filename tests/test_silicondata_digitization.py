@@ -22,8 +22,13 @@ ROOT = Path(__file__).resolve().parents[1]
 
 class SiliconDataDigitizationTests(unittest.TestCase):
     def test_digitized_curves_match_image_and_labeled_anchors(self) -> None:
-        expected_rows = {"B300": 202, "B200": 467, "H200": 191}
-        image_mae_limits = {"B300": 0.005, "B200": 0.006, "H200": 0.003}
+        expected_rows = {"B300": 202, "B200": 467, "H100": 806, "H200": 191}
+        image_mae_limits = {
+            "B300": 0.005,
+            "B200": 0.006,
+            "H100": 0.004,
+            "H200": 0.003,
+        }
         history_mae_limits = {"B300": 0.005, "B200": 0.020, "H200": 0.005}
         reference = ROOT / "output/gpu_prices_history_20261001_20261108.csv"
         all_estimates: dict[str, list[tuple[date, float]]] = {}
@@ -39,6 +44,11 @@ class SiliconDataDigitizationTests(unittest.TestCase):
                 self.assertEqual(len(estimates), expected_rows[config.model])
                 self.assertEqual(by_date[config.start_date], config.start_price)
                 self.assertEqual(by_date[config.end_date], config.end_price)
+                if config.output_end_date is not None:
+                    self.assertEqual(
+                        by_date[config.output_end_date],
+                        config.output_end_price,
+                    )
                 self.assertEqual(by_date[config.low_date], config.low_price)
                 self.assertEqual(by_date[config.high_date], config.high_price)
                 self.assertTrue(
@@ -70,21 +80,36 @@ class SiliconDataDigitizationTests(unittest.TestCase):
                     config.model,
                     estimates,
                 )
-                self.assertIsNotNone(saved_metrics)
-                assert saved_metrics is not None
-                self.assertLess(
-                    saved_metrics["mean_absolute_error"],
-                    history_mae_limits[config.model],
-                )
+                if config.model == "H100":
+                    self.assertIsNone(saved_metrics)
+                else:
+                    self.assertIsNotNone(saved_metrics)
+                    assert saved_metrics is not None
+                    self.assertLess(
+                        saved_metrics["mean_absolute_error"],
+                        history_mae_limits[config.model],
+                    )
 
         with TemporaryDirectory() as temporary:
             sql_path = Path(temporary) / "provider_series.sql"
+            h100_sql_path = Path(temporary) / "h100_provider_series.sql"
+            sql_estimates = {
+                model: estimates
+                for model, estimates in all_estimates.items()
+                if model != "H100"
+            }
             write_provider_series_sql(
                 sql_path,
-                all_estimates,
+                sql_estimates,
                 run_date=date(2026, 11, 10),
             )
+            write_provider_series_sql(
+                h100_sql_path,
+                {"H100": all_estimates["H100"]},
+                run_date=date(2026, 11, 15),
+            )
             sql = sql_path.read_text(encoding="utf-8")
+            h100_sql = h100_sql_path.read_text(encoding="utf-8")
         self.assertIn(
             "DELETE FROM public.compute_insight_gpu_provider_series_daily",
             sql,
@@ -106,6 +131,29 @@ class SiliconDataDigitizationTests(unittest.TestCase):
             "('2026-11-10','2026-11-10','nvidia-h200','H200',"
             "'ON_DEMAND',0,'silicondata',3.48,1,'GPU Cloud'",
             sql,
+        )
+        self.assertNotIn("public.public.", h100_sql)
+        self.assertEqual(h100_sql.count("INSERT INTO "), 2)
+        self.assertEqual(
+            h100_sql.count(
+                "'https://portal.silicondata.com/silicon-index','GPU INDEX'"
+            ),
+            806,
+        )
+        self.assertIn("gpu_model_code IN ('H100')", h100_sql)
+        self.assertIn(
+            "price_date BETWEEN '2024-09-01' AND '2026-11-15'",
+            h100_sql,
+        )
+        self.assertIn(
+            "('2024-09-01','2026-11-15','nvidia-h100','H100',"
+            "'ON_DEMAND',0,'silicondata',3.40,1,'GPU Cloud'",
+            h100_sql,
+        )
+        self.assertIn(
+            "('2026-11-15','2026-11-15','nvidia-h100','H100',"
+            "'ON_DEMAND',0,'silicondata',3.10,1,'GPU Cloud'",
+            h100_sql,
         )
 
 

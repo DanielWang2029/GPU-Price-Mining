@@ -36,6 +36,7 @@ PROVIDER_SERIES_COLUMNS = (
 GPU_IDS = {
     "B200": "nvidia-b200",
     "B300": "nvidia-b300",
+    "H100": "nvidia-h100",
     "H200": "nvidia-h200",
 }
 SOURCE_LABEL = "GPU INDEX"
@@ -54,6 +55,9 @@ class CurveConfig:
     low_price: float
     high_date: date
     high_price: float
+    output_end_date: date | None = None
+    output_end_price: float | None = None
+    calibration_start_y: float | None = None
 
 
 @dataclass(slots=True)
@@ -97,6 +101,21 @@ CONFIGS = (
         low_price=4.29,
         high_date=date(2026, 11, 10),
         high_price=6.97,
+    ),
+    CurveConfig(
+        model="H100",
+        image_name="gpu-index-h100-chart.png",
+        start_date=date(2024, 9, 1),
+        end_date=date(2026, 11, 10),
+        start_price=3.40,
+        end_price=3.06,
+        low_date=date(2025, 2, 5),
+        low_price=1.86,
+        high_date=date(2024, 9, 1),
+        high_price=3.40,
+        output_end_date=date(2026, 11, 15),
+        output_end_price=3.10,
+        calibration_start_y=756.0,
     ),
     CurveConfig(
         model="H200",
@@ -331,7 +350,11 @@ def estimate_curve(
     config: CurveConfig,
     centerline: dict[int, float],
 ) -> tuple[list[tuple[date, float]], float, float]:
-    start_y = centerline[PLOT_X_START]
+    start_y = (
+        centerline[PLOT_X_START]
+        if config.calibration_start_y is None
+        else config.calibration_start_y
+    )
     end_y = centerline[PLOT_X_END]
     if abs(start_y - end_y) < 1:
         raise ValueError(f"Invalid endpoint calibration for {config.model}")
@@ -354,6 +377,19 @@ def estimate_curve(
         price = min(config.high_price, max(config.low_price, y_to_price(y)))
         price = anchors.get(current_date, price)
         estimates.append((current_date, round(price + 1e-10, 2)))
+    if config.output_end_date is not None:
+        if config.output_end_price is None:
+            raise ValueError(f"{config.model} output end date has no price")
+        extension_days = (config.output_end_date - config.end_date).days
+        if extension_days < 1:
+            raise ValueError(f"{config.model} output end must follow chart end")
+        for offset in range(1, extension_days + 1):
+            current_date = config.end_date + timedelta(days=offset)
+            fraction = offset / extension_days
+            price = config.end_price + fraction * (
+                config.output_end_price - config.end_price
+            )
+            estimates.append((current_date, round(price + 1e-10, 2)))
     return estimates, start_y, end_y
 
 
@@ -404,6 +440,7 @@ def write_comparison_png(
     points = [
         (round(_date_x(config, current_date)), price_y(price))
         for current_date, price in estimates
+        if current_date <= config.end_date
     ]
     for start, end in zip(points, points[1:]):
         _draw_line(raster, start, end, COMPARISON_RGB)
@@ -431,8 +468,13 @@ def reconstruction_metrics(
     centerline: dict[int, float],
     candidates: dict[int, list[int]],
 ) -> dict[str, float]:
-    by_date = dict(estimates)
-    daily_dates = [current_date for current_date, _ in estimates]
+    chart_estimates = [
+        (current_date, price)
+        for current_date, price in estimates
+        if current_date <= config.end_date
+    ]
+    by_date = dict(chart_estimates)
+    daily_dates = [current_date for current_date, _ in chart_estimates]
 
     def reconstructed_price(x: int) -> float:
         date_position = (x - PLOT_X_START) / (PLOT_X_END - PLOT_X_START)
@@ -616,6 +658,8 @@ def _month_starts(start: date, end: date) -> list[date]:
 def write_estimate_plot_svg(
     path: Path,
     all_estimates: dict[str, list[tuple[date, float]]],
+    *,
+    title: str = "Silicon Data estimated daily GPU index prices",
 ) -> None:
     width = 1600
     height = 900
@@ -628,9 +672,19 @@ def write_estimate_plot_svg(
     start = min(values[0][0] for values in all_estimates.values())
     end = max(values[-1][0] for values in all_estimates.values())
     total_days = (end - start).days
-    y_min = 2.5
-    y_max = 8.0
-    colors = {"B300": "#e11d48", "B200": "#2e63e6", "H200": "#059669"}
+    prices = [
+        price
+        for estimates in all_estimates.values()
+        for _, price in estimates
+    ]
+    y_min = math.floor((min(prices) - 0.1) * 2) / 2
+    y_max = math.ceil((max(prices) + 0.1) * 2) / 2
+    colors = {
+        "B300": "#e11d48",
+        "B200": "#2e63e6",
+        "H100": "#7c3aed",
+        "H200": "#059669",
+    }
 
     def x_position(value: date) -> float:
         return left + ((value - start).days / total_days) * plot_width
@@ -644,8 +698,7 @@ def write_estimate_plot_svg(
         f'height="{height}" viewBox="0 0 {width} {height}">',
         '<rect width="100%" height="100%" fill="#ffffff"/>',
         '<text x="110" y="45" font-family="Arial, sans-serif" font-size="30" '
-        'font-weight="700" fill="#0f172a">Silicon Data estimated daily GPU '
-        "index prices</text>",
+        f'font-weight="700" fill="#0f172a">{title}</text>',
         '<text x="110" y="75" font-family="Arial, sans-serif" font-size="16" '
         'fill="#475569">Digitized from the supplied curves; USD per GPU-hour, '
         "rounded to $0.01</text>",
@@ -685,8 +738,13 @@ def write_estimate_plot_svg(
             f'<polyline points="{points}" fill="none" stroke="{colors[model]}" '
             'stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>'
         )
-    legend_x = 1030
-    for index, model in enumerate(("B300", "B200", "H200")):
+    legend_models = [
+        model
+        for model in ("B300", "B200", "H100", "H200")
+        if model in all_estimates
+    ]
+    legend_x = width - right - len(legend_models) * 150
+    for index, model in enumerate(legend_models):
         x = legend_x + index * 155
         parts.extend(
             [
@@ -761,6 +819,10 @@ def write_quality_report(
     lines.extend(
         [
             "",
+            "The H100 screenshot ends on November 10 at $3.06. The requested "
+            "November 15 endpoint of $3.10 is applied as a five-day linear "
+            "extension after the image-derived curve.",
+            "",
             "The comparison PNGs draw the reconstructed, two-decimal series in "
             "magenta over the supplied blue source curves. Visible blue outside "
             "the magenta trace identifies a mismatch.",
@@ -793,6 +855,14 @@ def build_parser() -> argparse.ArgumentParser:
         default=Path(
             "sql/warehouse/"
             "05_insert_silicondata_gpu_index_provider_series_daily.sql"
+        ),
+    )
+    parser.add_argument(
+        "--h100-sql-path",
+        type=Path,
+        default=Path(
+            "sql/warehouse/"
+            "10_insert_silicondata_h100_gpu_index_provider_series_daily.sql"
         ),
     )
     return parser
@@ -839,26 +909,57 @@ def main(argv: list[str] | None = None) -> int:
 
     csv_path = args.output_dir / "silicondata_estimated_daily_prices.csv"
     plot_path = args.output_dir / "silicondata_estimated_price_curves.svg"
+    h100_csv_path = (
+        args.output_dir / "silicondata_h100_estimated_daily_prices.csv"
+    )
+    h100_plot_path = (
+        args.output_dir / "silicondata_h100_estimated_price_curve.svg"
+    )
     report_path = args.output_dir / "quality_report.md"
     write_estimates_csv(csv_path, all_estimates)
     write_estimate_plot_svg(plot_path, all_estimates)
+    write_estimates_csv(h100_csv_path, {"H100": all_estimates["H100"]})
+    write_estimate_plot_svg(
+        h100_plot_path,
+        {"H100": all_estimates["H100"]},
+        title="Silicon Data H100 estimated daily GPU index price",
+    )
     write_quality_report(
         report_path,
         curve_metrics,
         historical_metrics,
     )
-    run_date = max(config.end_date for config in CONFIGS)
+    sql_models = {"B200", "B300", "H200"}
+    sql_estimates = {
+        model: estimates
+        for model, estimates in all_estimates.items()
+        if model in sql_models
+    }
+    run_date = max(
+        config.end_date for config in CONFIGS if config.model in sql_models
+    )
     write_provider_series_sql(
         args.sql_path,
-        all_estimates,
+        sql_estimates,
         run_date=run_date,
+    )
+    h100_config = next(config for config in CONFIGS if config.model == "H100")
+    if h100_config.output_end_date is None:
+        raise ValueError("H100 output end date is required for SQL generation")
+    write_provider_series_sql(
+        args.h100_sql_path,
+        {"H100": all_estimates["H100"]},
+        run_date=h100_config.output_end_date,
     )
 
     print(f"Estimated rows: {sum(map(len, all_estimates.values())):,}")
     print(csv_path)
     print(plot_path)
+    print(h100_csv_path)
+    print(h100_plot_path)
     print(report_path)
     print(args.sql_path)
+    print(args.h100_sql_path)
     for model in all_estimates:
         image_error = curve_metrics[model]["mean_absolute_error"]
         reference = historical_metrics[model]

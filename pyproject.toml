@@ -19,6 +19,7 @@ gpu-prices = "gpu_prices.collect:main"
 gpu-prices-aggregate = "gpu_prices.aggregate:main"
 gpu-prices-backfill = "gpu_prices.backfill:main"
 gpu-prices-warehouse = "gpu_prices.warehouse:main"
+gpu-prices-amd = "gpu_prices.amd_collect:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

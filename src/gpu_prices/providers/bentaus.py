@@ -13,6 +13,7 @@ URL = "https://www.bentaus.com/nvidia-b300"
 RANGE_RE = re.compile(
     r"\$\s*(?P<low>\d+(?:\.\d+)?)\s*[-–—]\s*\$\s*(?P<high>\d+(?:\.\d+)?)"
 )
+SINGLE_RE = re.compile(r"\$\s*(?P<price>\d+(?:\.\d+)?)")
 
 
 def parse_ranges(html: str) -> dict[str, tuple[str, str]]:
@@ -36,9 +37,13 @@ def parse_ranges(html: str) -> dict[str, tuple[str, str]]:
             raise ValueError(f"Bentaus omitted {labels[price_type]} plan")
         price_heading = heading.find_next("h4")
         match = RANGE_RE.search(text(price_heading))
-        if match is None:
-            raise ValueError(f"Bentaus omitted {price_type} price range")
-        result[price_type] = (match.group("low"), match.group(0))
+        if match is not None:
+            result[price_type] = (match.group("low"), match.group(0))
+            continue
+        single = SINGLE_RE.search(text(price_heading))
+        if single is None:
+            raise ValueError(f"Bentaus omitted {price_type} price")
+        result[price_type] = (single.group("price"), single.group(0))
     return result
 
 

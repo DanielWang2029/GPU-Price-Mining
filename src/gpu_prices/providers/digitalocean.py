@@ -17,6 +17,9 @@ SECTIONS = {
 MODELS = {
     "B300": "NVIDIA HGX B300",
     "H200": "NVIDIA HGX H200",
+    "MI300X": "AMD Instinct™ MI300X",
+    "MI325X": "AMD Instinct™ MI325X",
+    "MI355X": "AMD Instinct™ MI355X",
 }
 
 

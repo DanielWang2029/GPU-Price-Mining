@@ -74,6 +74,39 @@ Canonical identity values are `provider_id='compute-desk'` for Compute Desk and
 values. Null/blank database fields are skipped to match PostgreSQL
 `CONCAT_WS` semantics.
 
+## AMD Instinct price mining
+
+The AMD collector mines repeatable public prices for MI355X, MI325X, and
+MI300X without relying on launch announcements:
+
+```bash
+python3 -m gpu_prices.amd_collect \
+  --price-date 20261117 \
+  --run-date 20261117 \
+  --allow-read-proxy \
+  --strict
+```
+
+Provider adapters are split under `src/gpu_prices/amd_providers/`. The run
+collects Bentaus, Cirrascale, CoreGPU, Cyfuture AI, Daytona, DigitalOcean,
+GPUBank, Hot Aisle, Impossible Cloud, Microsoft Azure, OpenRelay, Oracle
+Cloud, Runcrate, Runpod, TensorWave, and Vultr.
+
+Outputs are:
+
+- `output/amd_gpu_prices_YYYYMMDD.csv`: direct rows for
+  `compute_insight_gpu_price_detail_daily`.
+- `output/amd_gpu_prices_YYYYMMDD_audit.csv`: provider failures and exact
+  duplicates collapsed under the current record-ID formula.
+- `sql/warehouse/11_insert_amd_gpu_price_detail_daily_YYYYMMDD.sql`: an
+  idempotent daily detail load.
+- `sql/warehouse/12_insert_amd_gpu_providers.sql`: idempotent provider
+  dimension inserts.
+
+Distinct machine configurations and billing terms remain separate rows.
+Identical listings from multiple URLs are fetched but collapsed because
+`source_url` is not part of the required `record_id` formula.
+
 ## Source behavior
 
 | Supplier | Collection source and workbook interpretation |
@@ -160,7 +193,7 @@ value if any curve-based source omits a requested date.
 
 ### Silicon Data screenshot digitization
 
-The supplied November 10 Silicon Data screenshots can be converted into
+The supplied Silicon Data screenshots can be converted into
 two-decimal daily estimates without network access:
 
 ```bash
@@ -169,15 +202,22 @@ python3 scripts/digitize_silicondata_curves.py
 
 The digitizer isolates the rendered blue curve, maps chart pixels to calendar
 dates, calibrates against the labeled start/end prices and period extrema, and
-writes 860 estimates to
+writes 1,666 estimates to
 `output/silicondata_estimates/silicondata_estimated_daily_prices.csv`.
-It also creates a standalone SVG plot, three PNG overlays that compare the
-reconstructed magenta trace with each source curve, and a quantitative quality
-report in the same directory. The command additionally writes an idempotent
-provider-series load to
+H100's 806 rows and dedicated plot are also saved as
+`silicondata_h100_estimated_daily_prices.csv` and
+`silicondata_h100_estimated_price_curve.svg`. Its screenshot ends November 10
+at $3.06, so the requested November 15 value of $3.10 is represented by a
+five-day extension after the digitized curve.
+The command also creates a standalone combined SVG plot, four PNG overlays that
+compare the reconstructed magenta trace with each source curve, and a
+quantitative quality report in the same directory. It additionally writes an
+idempotent provider-series load for B200, B300, and H200 to
 `sql/warehouse/05_insert_silicondata_gpu_index_provider_series_daily.sql`
 using `source_label='GPU INDEX'`, `billing_type='ON_DEMAND'`, and
-`term_months=0`.
+`term_months=0`. The H100 estimates are written separately to
+`sql/warehouse/10_insert_silicondata_h100_gpu_index_provider_series_daily.sql`
+with the same provider-series metadata.
 
 ## Warehouse loads
 
