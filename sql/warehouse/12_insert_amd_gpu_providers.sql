@@ -35,3 +35,18 @@ WHERE NOT EXISTS (
     FROM public.compute_insight_dim_provider AS existing
     WHERE existing.provider_id = values.provider_id
 );
+
+UPDATE public.compute_insight_dim_provider
+SET
+    region_or_hq_country = COALESCE(
+        NULLIF(region_or_hq_country, ''),
+        'Unknown'
+    ),
+    provider_hq_region = COALESCE(NULLIF(provider_hq_region, ''), 'Other')
+WHERE provider_id = 'gpubank'
+  AND (
+    region_or_hq_country IS NULL
+    OR region_or_hq_country = ''
+    OR provider_hq_region IS NULL
+    OR provider_hq_region = ''
+  );
