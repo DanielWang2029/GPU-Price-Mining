@@ -69,8 +69,8 @@ PROVIDERS = {
         "North America", "General Cloud & Hosting",
     ),
     "gpubank": ProviderMetadata(
-        "gpubank", "GPUBank", "https://gpubank.io", "", "", "Unclassified",
-        "low",
+        "gpubank", "GPUBank", "https://gpubank.io", "Unknown", "Other",
+        "Unclassified", "low",
     ),
     "hotaisle": ProviderMetadata(
         "hotaisle", "Hot Aisle", "https://hotaisle.xyz", "US",

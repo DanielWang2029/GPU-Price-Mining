@@ -137,6 +137,23 @@ class WarehouseTests(unittest.TestCase):
         self.assertEqual(north_america["min_price"], "4")
         self.assertEqual(north_america["term_months"], "12")
 
+    def test_price_aggregation_uses_other_for_blank_region(self) -> None:
+        rows = [
+            {
+                "price_date": "2026-11-19",
+                "run_date": "2026-11-19",
+                "gpu_model_code": "MI300X",
+                "billing_type": "ON_DEMAND",
+                "term_months": "0",
+                "supplier_type": "Unclassified",
+                "provider_hq_region": "",
+                "price_gpu_hour": "1.65",
+                "source_label": "price_mining",
+            }
+        ]
+        output = aggregate_price_series(rows)
+        self.assertEqual(output[0]["region_group"], "Other")
+
     def test_provider_insert_casts_updated_at_to_timestamp(self) -> None:
         provider = Provider(
             "example",

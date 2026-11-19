@@ -401,9 +401,9 @@ def reconcile_detail(
         )
         row["supplier_type"] = provider.supplier_type
         if not row["region_or_hq_country"]:
-            row["region_or_hq_country"] = provider.country
+            row["region_or_hq_country"] = provider.country or "Unknown"
         if not row["provider_hq_region"]:
-            row["provider_hq_region"] = provider.region
+            row["provider_hq_region"] = provider.region or "Other"
         try:
             row["gpu_id"] = GPU_IDS[row["gpu_model_code"]]
         except KeyError as exc:
@@ -509,7 +509,7 @@ def aggregate_price_series(
             row["billing_type"],
             row["term_months"],
             row["supplier_type"],
-            row["provider_hq_region"],
+            row["provider_hq_region"] or "Other",
         )
         groups[key].append(row)
 
