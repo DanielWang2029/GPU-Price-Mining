@@ -18,7 +18,7 @@ from gpu_prices.backfill import (
     write_history_csv,
 )
 from gpu_prices.models import SourceRow
-from gpu_prices.workbook import OUTPUT_HEADERS
+from gpu_prices.workbook import AUDIT_HEADERS, OUTPUT_HEADERS
 
 
 class TextClient:
@@ -219,6 +219,30 @@ nvidia-b300,2026-10-05,ON_DEMAND,,1,10,8.7,8.99,5,10
             self.assertEqual(current[7].raw_price, Decimal("42.00"))
             self.assertEqual(current[7].price_gpu_hour, Decimal("10.50"))
             self.assertEqual(current[7].gpu_count, 4)
+
+            audit_path = root / "current_audit.csv"
+            audit_record = {column: "" for column in AUDIT_HEADERS}
+            audit_record.update(current_record)
+            audit_record.update(
+                {
+                    "workbook_row": "7",
+                    "status": "ok",
+                    "fetched_source_url": source.url,
+                }
+            )
+            with audit_path.open("w", encoding="utf-8", newline="") as handle:
+                writer = csv.DictWriter(handle, fieldnames=AUDIT_HEADERS)
+                writer.writeheader()
+                writer.writerow(audit_record)
+            audit_current = load_current_prices(
+                audit_path,
+                [source],
+                date(2026, 10, 26),
+            )
+            self.assertEqual(
+                audit_current[7].price_gpu_hour,
+                Decimal("10.50"),
+            )
 
             output_path = root / "history.csv"
             dates = [date(2026, 10, 25), date(2026, 10, 26)]

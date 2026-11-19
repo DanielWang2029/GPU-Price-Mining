@@ -24,6 +24,7 @@ from gpu_prices.providers.getdeploying import (
     select_reservation_chart_row,
 )
 from gpu_prices.workbook import (
+    AUDIT_HEADERS,
     OUTPUT_HEADERS,
     billing_type,
     load_source_rows,
@@ -94,11 +95,13 @@ def load_current_prices(
     end: date,
 ) -> CurrentPrices:
     with path.open(newline="", encoding="utf-8-sig") as handle:
-        records = list(csv.DictReader(handle))
-    if records and list(records[0]) != OUTPUT_HEADERS:
+        reader = csv.DictReader(handle)
+        fieldnames = reader.fieldnames or []
+        records = list(reader)
+    if fieldnames not in (OUTPUT_HEADERS, AUDIT_HEADERS):
         raise ValueError(
-            f"Unexpected current-price columns: {list(records[0])}; "
-            f"expected {OUTPUT_HEADERS}"
+            f"Unexpected current-price columns: {fieldnames}; "
+            f"expected detail or audit schema"
         )
     expected_date = end.isoformat()
     by_key: dict[RowKey, CurrentPrice] = {}
