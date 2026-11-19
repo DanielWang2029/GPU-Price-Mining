@@ -55,7 +55,11 @@ def parse_stock(payload: dict[str, object]) -> dict[str, bool]:
     canada = next(item for item in payload["stocks"] if item["region"] == "CANADA-1")
     by_model = {item["model"]: item for item in canada["models"]}
     return {
-        model: int(by_model[stock_model]["available"]) > 0
+        model: (
+            int(by_model[stock_model]["available"].rstrip("+")) > 0
+            if stock_model in by_model
+            else False
+        )
         for model, stock_model in STOCK_MODELS.items()
     }
 
