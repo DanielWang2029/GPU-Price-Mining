@@ -1,0 +1,10 @@
+﻿price_date,run_date,gpu_id,gpu_model_code,billing_type,term_months,provider_id,median_price,offering_count,supplier_type,reference_url,source_label
+2026-11-19,2026-11-19,nvidia-b200,B200,ON_DEMAND,0,compute-desk,6.06,1,Serverless,https://www.computedesk.com/indexes-overview,GPU INDEX
+2026-11-19,2026-11-19,nvidia-b200,B200,ON_DEMAND,0,ornn,9.21,1,Serverless,https://data.ornn.com/,GPU INDEX
+2026-11-19,2026-11-19,nvidia-b200,B200,ON_DEMAND,0,silicondata,6.94,1,GPU Cloud,https://portal.silicondata.com/silicon-index,GPU INDEX
+2026-11-19,2026-11-19,nvidia-b300,B300,ON_DEMAND,0,compute-desk,7.21,1,Serverless,https://www.computedesk.com/indexes-overview,GPU INDEX
+2026-11-19,2026-11-19,nvidia-b300,B300,ON_DEMAND,0,silicondata,7.47,1,GPU Cloud,https://portal.silicondata.com/silicon-index,GPU INDEX
+2026-11-19,2026-11-19,nvidia-h100,H100,ON_DEMAND,0,silicondata,3.01,1,GPU Cloud,https://portal.silicondata.com/silicon-index,GPU INDEX
+2026-11-19,2026-11-19,nvidia-h200,H200,ON_DEMAND,0,compute-desk,3.52,1,Serverless,https://www.computedesk.com/indexes-overview,GPU INDEX
+2026-11-19,2026-11-19,nvidia-h200,H200,ON_DEMAND,0,ornn,7.11,1,Serverless,https://data.ornn.com/,GPU INDEX
+2026-11-19,2026-11-19,nvidia-h200,H200,ON_DEMAND,0,silicondata,3.76,1,GPU Cloud,https://portal.silicondata.com/silicon-index,GPU INDEX
