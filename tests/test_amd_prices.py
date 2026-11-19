@@ -128,9 +128,13 @@ class AmdPriceTests(unittest.TestCase):
         sql = render_provider_sql(
             ["digitalocean", "openrelay", "coregpu", "gpubank"],
             updated_at="2026-11-17 00:00:00",
+            existing_provider_ids={"digitalocean", "openrelay"},
         )
         self.assertIn("WHERE NOT EXISTS", sql)
-        self.assertIn("'OpenRelay'", sql)
+        self.assertNotIn("'OpenRelay'", sql)
+        self.assertNotIn("'DigitalOcean'", sql)
+        self.assertIn("'CoreGPU'", sql)
+        self.assertIn("'GPUBank'", sql)
         self.assertIn("'Unclassified'", sql)
         self.assertIn("::timestamp without time zone", sql)
 

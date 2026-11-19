@@ -87,7 +87,7 @@ PROVIDERS = {
     ),
     "openrelay": ProviderMetadata(
         "openrelay", "OpenRelay", "https://openrelay.inc", "US",
-        "North America", "GPU Cloud",
+        "North America", "Unclassified",
     ),
     "oracle-cloud": ProviderMetadata(
         "oracle-cloud", "Oracle Cloud", "https://www.oracle.com/cloud", "US",
@@ -329,8 +329,15 @@ def render_provider_sql(
     provider_ids: Iterable[str],
     *,
     updated_at: str,
+    existing_provider_ids: Iterable[str] = (),
 ) -> str:
-    providers = [PROVIDERS[provider_id] for provider_id in sorted(set(provider_ids))]
+    existing = set(existing_provider_ids)
+    providers = [
+        PROVIDERS[provider_id]
+        for provider_id in sorted(set(provider_ids) - existing)
+    ]
+    if not providers:
+        return "-- All AMD providers already exist in dim_provider.\n"
     values = ",\n".join(
         "    ("
         + ",".join(
