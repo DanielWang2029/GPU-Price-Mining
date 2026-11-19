@@ -52,10 +52,10 @@ class GpuIndexRoutingTests(unittest.TestCase):
             SourceRow(
                 4,
                 "SiliconData",
-                "H200",
+                "H100",
                 "",
                 "",
-                "https://www.silicondata.com/products/silicon-index/h200",
+                "https://www.silicondata.com/products/silicon-index/h100",
                 "NeoCloud",
             ),
         ]
@@ -116,6 +116,12 @@ class GpuIndexRoutingTests(unittest.TestCase):
                 "median_price"
             ],
             "7.49",
+        )
+        self.assertEqual(
+            next(row for row in rows if row["provider_id"] == "silicondata")[
+                "gpu_id"
+            ],
+            "nvidia-h100",
         )
         detail_observations, index_observations = split_observations(observations)
         self.assertEqual(

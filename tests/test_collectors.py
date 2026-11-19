@@ -45,8 +45,8 @@ ROOT = Path(__file__).resolve().parents[1]
 class WorkbookTests(unittest.TestCase):
     def test_source_workbook_has_one_normalized_row_per_request(self) -> None:
         rows = load_source_rows(ROOT / "算力价格爬虫数据整理.xlsx")
-        self.assertEqual(len(rows), 131)
-        self.assertEqual(len({row.workbook_row for row in rows}), 131)
+        self.assertEqual(len(rows), 132)
+        self.assertEqual(len({row.workbook_row for row in rows}), 132)
         self.assertEqual(len({row.source_name for row in rows}), 27)
         identities = {
             (
@@ -64,6 +64,7 @@ class WorkbookTests(unittest.TestCase):
         self.assertIn(("TheAI Cloud", "B300", "Reserve", Decimal("24")), identities)
         self.assertIn(("Hyperstack", "B300", "On-Demand", None), identities)
         self.assertIn(("CCIR", "H200", "Spot", None), identities)
+        self.assertIn(("Silicon Data", "H100", "", None), identities)
         self.assertIn(
             ("Compute Desk", "B300", "Reserve", Decimal("12")),
             identities,
