@@ -1,4 +1,4 @@
-# November 1–19 warehouse load
+# 2026-11-01–2026-11-19 warehouse load
 
 Run in this order:
 
@@ -10,18 +10,10 @@ Run in this order:
 Only `coregpu` and `gpubank` are absent from the supplied provider dimension;
 SQL 12 contains only those two IDs.
 
-Coverage:
-
-- Existing non-AMD raw data from November 1–8 is retained in the replacement
-  window.
-- New non-AMD prices cover November 9–19. Published curves use their dated
-  online values; static pages carry the November 19 value backward.
-- AMD prices cover November 1–19 and use the November 19 static list price.
-- GPUBank was unreachable on November 19, so its November 17 values are carried
-  as `UNAVAILABLE` with an explicit stale-value note.
-- AWS Capacity Block reservation terms are normalized to six months.
-- `GPU INDEX` replacement begins November 9, preserving previously loaded H100
-  index history before that date.
+`price_mining` is replaced from 2026-11-01 through 2026-11-19.
+`GPU INDEX` is replaced only from 2026-11-09 through
+2026-11-19, preserving earlier index history. GPUBank's last known prices
+are marked unavailable because its source was unreachable at the end date.
 
 Row counts:
 

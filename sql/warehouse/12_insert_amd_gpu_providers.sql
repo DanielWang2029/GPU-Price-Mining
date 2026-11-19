@@ -19,7 +19,7 @@ SELECT
     values.updated_at::timestamp without time zone
 FROM (VALUES
     ('coregpu','CoreGPU','https://coregpu.io','US','North America','GPU Cloud','review','2026-11-19 00:00:00'),
-    ('gpubank','GPUBank','https://gpubank.io',NULL,NULL,'Unclassified','low','2026-11-19 00:00:00')
+    ('gpubank','GPUBank','https://gpubank.io','Unknown','Other','Unclassified','low','2026-11-19 00:00:00')
 ) AS values (
     provider_id,
     provider_name,
