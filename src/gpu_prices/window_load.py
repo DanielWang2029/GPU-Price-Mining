@@ -202,33 +202,6 @@ def main(argv: list[str] | None = None) -> int:
         ),
         encoding="utf-8",
     )
-    (args.sql_dir / "README.md").write_text(
-        f"""# {args.start_date}–{args.end_date} warehouse load
-
-Run in this order:
-
-1. `../12_insert_amd_gpu_providers.sql`
-2. `13_insert_compute_insight_gpu_price_detail_daily.sql`
-3. `14_insert_compute_insight_gpu_provider_series_daily.sql`
-4. `15_insert_compute_insight_gpu_price_series_daily.sql`
-
-Only `coregpu` and `gpubank` are absent from the supplied provider dimension;
-SQL 12 contains only those two IDs.
-
-`price_mining` is replaced from {args.start_date} through {args.end_date}.
-`GPU INDEX` is replaced only from {args.index_start_date} through
-{args.end_date}, preserving earlier index history. GPUBank's last known prices
-are marked unavailable because its source was unreachable at the end date.
-
-Row counts:
-
-- Detail: {len(detail):,}
-- Provider series SQL: {len(provider_sql_rows):,}
-- Price series: {len(price_series):,}
-""",
-        encoding="utf-8",
-    )
-
     print(f"Combined raw rows: {len(combined):,}")
     print(f"Detail rows: {len(detail):,}")
     print(f"Provider-series rows: {len(provider_csv_rows):,}")
