@@ -10,8 +10,8 @@ from pathlib import Path
 from zoneinfo import ZoneInfo
 
 from gpu_prices.amd_prices import (
-    AmdOffer,
     PROVIDERS,
+    AmdOffer,
     build_detail_rows,
     render_detail_sql,
     render_provider_sql,
