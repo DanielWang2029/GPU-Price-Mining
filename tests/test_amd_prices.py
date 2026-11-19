@@ -1,11 +1,14 @@
 from __future__ import annotations
 
 import unittest
+from datetime import date
 from decimal import Decimal
 
+from gpu_prices.amd_backfill import build_history
 from gpu_prices.amd_prices import (
     AmdOffer,
     build_detail_rows,
+    detail_row,
     render_detail_sql,
     render_provider_sql,
 )
@@ -17,6 +20,50 @@ from gpu_prices.providers.bentaus import parse_ranges
 
 
 class AmdPriceTests(unittest.TestCase):
+    def test_static_backfill_carries_current_and_explicit_fallback_prices(self) -> None:
+        current = detail_row(
+            AmdOffer(
+                provider_id="openrelay",
+                gpu_model_code="MI300X",
+                billing_type="ON_DEMAND",
+                term_months=0,
+                raw_price=Decimal("1.99"),
+                price_gpu_hour=Decimal("1.99"),
+                gpu_count=1,
+                availability="AVAILABLE",
+                source_url="https://api.openrelay.inc/v1/public/pricing",
+            ),
+            price_date="2026-11-19",
+            run_date="2026-11-19",
+        )
+        fallback = detail_row(
+            AmdOffer(
+                provider_id="gpubank",
+                gpu_model_code="MI300X",
+                billing_type="ON_DEMAND",
+                term_months=0,
+                raw_price=Decimal("1.65"),
+                price_gpu_hour=Decimal("1.65"),
+                gpu_count=1,
+                availability="AVAILABLE",
+                source_url="https://gpubank.io/prices.json",
+            ),
+            price_date="2026-11-17",
+            run_date="2026-11-17",
+        )
+        rows = build_history(
+            [current],
+            dates=[date(2026, 11, 18), date(2026, 11, 19)],
+            run_date="20261119",
+            fallback_rows=[fallback],
+            fallback_providers={"gpubank"},
+        )
+        self.assertEqual(len(rows), 4)
+        self.assertEqual(len({row["record_id"] for row in rows}), 4)
+        gpubank = [row for row in rows if row["provider_id"] == "gpubank"]
+        self.assertTrue(all(row["availability"] == "UNAVAILABLE" for row in gpubank))
+        self.assertTrue(all("Last known value" in row["price_note"] for row in gpubank))
+
     def test_detail_rows_and_sql_use_amd_dimensions(self) -> None:
         offer = AmdOffer(
             provider_id="digitalocean",
@@ -81,9 +128,13 @@ class AmdPriceTests(unittest.TestCase):
         sql = render_provider_sql(
             ["digitalocean", "openrelay", "coregpu", "gpubank"],
             updated_at="2026-11-17 00:00:00",
+            existing_provider_ids={"digitalocean", "openrelay"},
         )
         self.assertIn("WHERE NOT EXISTS", sql)
-        self.assertIn("'OpenRelay'", sql)
+        self.assertNotIn("'OpenRelay'", sql)
+        self.assertNotIn("'DigitalOcean'", sql)
+        self.assertIn("'CoreGPU'", sql)
+        self.assertIn("'GPUBank'", sql)
         self.assertIn("'Unclassified'", sql)
         self.assertIn("::timestamp without time zone", sql)
 

@@ -262,8 +262,7 @@ class NewProviderParserTests(unittest.TestCase):
                         "region": "CANADA-1",
                         "models": [
                             {"model": "B300-SXM", "available": "0"},
-                            {"model": "B200-SXM", "available": "2"},
-                            {"model": "H200-141G-SXM5", "available": "0"},
+                            {"model": "B200-SXM", "available": "25+"},
                         ],
                     }
                 ]
@@ -271,6 +270,7 @@ class NewProviderParserTests(unittest.TestCase):
         )
         self.assertFalse(stock["B300"])
         self.assertTrue(stock["B200"])
+        self.assertFalse(stock["H200"])
 
     def test_ccir_decodes_zone_history(self) -> None:
         payload = {

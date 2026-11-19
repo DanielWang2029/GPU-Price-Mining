@@ -11,6 +11,7 @@ from typing import Iterable
 
 from openpyxl import load_workbook
 
+from gpu_prices.amd_prices import PROVIDERS as AMD_PROVIDERS
 from gpu_prices.gpu_index import (
     merge_rows as merge_gpu_index_rows,
 )
@@ -123,6 +124,7 @@ GPU_IDS = {
     "B300": "nvidia-b300",
     "GB200": "nvidia-gb200",
     "GB300": "nvidia-gb300",
+    "H100": "nvidia-h100",
     "H200": "nvidia-h200",
     "MI300X": "amd-mi300x",
     "MI325X": "amd-mi325x",
@@ -161,6 +163,12 @@ PROVIDER_IDS = {
     "Hyperstack": "hyperstack",
     "CCIR": "ccir",
 }
+PROVIDER_IDS.update(
+    {
+        provider.provider_name: provider.provider_id
+        for provider in AMD_PROVIDERS.values()
+    }
+)
 
 
 @dataclass(frozen=True, slots=True)
@@ -277,6 +285,23 @@ NEW_PROVIDERS = {
         False,
     ),
 }
+NEW_PROVIDERS.update(
+    {
+        provider_id: Provider(
+            provider.provider_id,
+            provider.provider_name,
+            provider.website,
+            provider.country,
+            provider.region,
+            provider.supplier_type,
+            provider.confidence,
+            "2026-11-19 00:00:00",
+            False,
+        )
+        for provider_id, provider in AMD_PROVIDERS.items()
+        if provider_id in {"coregpu", "gpubank", "openrelay"}
+    }
+)
 
 
 def _clean(value: object) -> str:

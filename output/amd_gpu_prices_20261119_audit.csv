@@ -1,0 +1,17 @@
+﻿provider_name,status,row_count,note
+Bentaus,ok,4,
+Cirrascale,ok,1,
+CoreGPU,ok,1,
+Cyfuture AI,ok,32,
+Daytona,ok,2,
+DigitalOcean,ok,8,
+GPUBank,error,0,"ConnectionError: HTTPSConnectionPool(host='gpubank.io', port=443): Max retries exceeded with url: /prices.json (Caused by NameResolutionError(""<urllib3.connection.HTTPSConnection object at 0x7f0cfa76c0b0>: Failed to resolve 'gpubank.io' ([Errno -2] Name or service not known)""))"
+Hot Aisle,ok,2,
+Impossible Cloud,ok,2,
+Microsoft Azure,ok,3,
+OpenRelay,ok,3,
+Oracle Cloud,ok,2,
+Runcrate,ok,1,
+Runpod,ok,1,
+TensorWave,ok,3,
+Vultr,ok,6,

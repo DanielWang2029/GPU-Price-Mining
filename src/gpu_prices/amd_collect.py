@@ -10,6 +10,7 @@ from pathlib import Path
 from zoneinfo import ZoneInfo
 
 from gpu_prices.amd_prices import (
+    PROVIDERS,
     AmdOffer,
     build_detail_rows,
     render_detail_sql,
@@ -57,6 +58,22 @@ REGISTRY = {
     "Vultr": vultr.collect,
 }
 AUDIT_COLUMNS = ["provider_name", "status", "row_count", "note"]
+EXISTING_PROVIDER_IDS = {
+    "bentaus",
+    "cirrascale",
+    "cyfuture",
+    "daytona",
+    "digitalocean",
+    "hotaisle",
+    "impossible-cloud",
+    "microsoft-azure",
+    "openrelay",
+    "oracle-cloud",
+    "runcrate",
+    "runpod",
+    "tensorwave",
+    "vultr",
+}
 
 
 def _env_flag(name: str) -> bool:
@@ -165,8 +182,9 @@ def run(
     detail_sql_path.write_text(render_detail_sql(rows), encoding="utf-8")
     provider_sql_path.write_text(
         render_provider_sql(
-            {row["provider_id"] for row in rows},
+            PROVIDERS,
             updated_at=f"{run_date} 00:00:00",
+            existing_provider_ids=EXISTING_PROVIDER_IDS,
         ),
         encoding="utf-8",
     )

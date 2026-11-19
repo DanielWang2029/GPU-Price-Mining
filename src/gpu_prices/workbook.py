@@ -86,7 +86,7 @@ AUDIT_HEADERS = [
     "status",
     "effective_at",
     "fetched_at_utc",
-    "source_url",
+    "fetched_source_url",
     "raw_value",
     "note",
 ]
