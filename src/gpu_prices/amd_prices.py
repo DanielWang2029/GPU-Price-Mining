@@ -69,8 +69,8 @@ PROVIDERS = {
         "North America", "General Cloud & Hosting",
     ),
     "gpubank": ProviderMetadata(
-        "gpubank", "GPUBank", "https://gpubank.io", "", "", "Unclassified",
-        "low",
+        "gpubank", "GPUBank", "https://gpubank.io", "Unknown", "Other",
+        "Unclassified", "low",
     ),
     "hotaisle": ProviderMetadata(
         "hotaisle", "Hot Aisle", "https://hotaisle.xyz", "US",
@@ -331,31 +331,33 @@ def render_provider_sql(
     updated_at: str,
     existing_provider_ids: Iterable[str] = (),
 ) -> str:
+    requested = set(provider_ids)
     existing = set(existing_provider_ids)
     providers = [
         PROVIDERS[provider_id]
-        for provider_id in sorted(set(provider_ids) - existing)
+        for provider_id in sorted(requested - existing)
     ]
-    if not providers:
-        return "-- All AMD providers already exist in dim_provider.\n"
-    values = ",\n".join(
-        "    ("
-        + ",".join(
-            [
-                _sql_value("provider_id", provider.provider_id),
-                _sql_value("provider_name", provider.provider_name),
-                _sql_value("website", provider.website),
-                _sql_value("region_or_hq_country", provider.country),
-                _sql_value("provider_hq_region", provider.region),
-                _sql_value("supplier_type", provider.supplier_type),
-                _sql_value("tier_confidence", provider.confidence),
-                _sql_value("updated_at", updated_at),
-            ]
+    chunks: list[str] = []
+    if providers:
+        values = ",\n".join(
+            "    ("
+            + ",".join(
+                [
+                    _sql_value("provider_id", provider.provider_id),
+                    _sql_value("provider_name", provider.provider_name),
+                    _sql_value("website", provider.website),
+                    _sql_value("region_or_hq_country", provider.country),
+                    _sql_value("provider_hq_region", provider.region),
+                    _sql_value("supplier_type", provider.supplier_type),
+                    _sql_value("tier_confidence", provider.confidence),
+                    _sql_value("updated_at", updated_at),
+                ]
+            )
+            + ")"
+            for provider in providers
         )
-        + ")"
-        for provider in providers
-    )
-    return f"""INSERT INTO public.compute_insight_dim_provider (
+        chunks.append(
+            f"""INSERT INTO public.compute_insight_dim_provider (
     provider_id,
     provider_name,
     website,
@@ -392,3 +394,25 @@ WHERE NOT EXISTS (
     WHERE existing.provider_id = values.provider_id
 );
 """
+        )
+    else:
+        chunks.append("-- All AMD providers already exist in dim_provider.\n")
+    if "gpubank" in requested:
+        chunks.append(
+            """UPDATE public.compute_insight_dim_provider
+SET
+    region_or_hq_country = COALESCE(
+        NULLIF(region_or_hq_country, ''),
+        'Unknown'
+    ),
+    provider_hq_region = COALESCE(NULLIF(provider_hq_region, ''), 'Other')
+WHERE provider_id = 'gpubank'
+  AND (
+    region_or_hq_country IS NULL
+    OR region_or_hq_country = ''
+    OR provider_hq_region IS NULL
+    OR provider_hq_region = ''
+  );
+"""
+        )
+    return "\n".join(chunks)

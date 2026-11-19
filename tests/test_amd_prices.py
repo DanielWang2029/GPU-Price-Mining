@@ -136,6 +136,9 @@ class AmdPriceTests(unittest.TestCase):
         self.assertIn("'CoreGPU'", sql)
         self.assertIn("'GPUBank'", sql)
         self.assertIn("'Unclassified'", sql)
+        self.assertIn("'Unknown','Other','Unclassified'", sql)
+        self.assertIn("WHERE provider_id = 'gpubank'", sql)
+        self.assertIn("NULLIF(provider_hq_region, '')", sql)
         self.assertIn("::timestamp without time zone", sql)
 
     def test_provider_page_parsers(self) -> None:

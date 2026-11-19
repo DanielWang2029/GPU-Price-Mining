@@ -202,7 +202,6 @@ def main(argv: list[str] | None = None) -> int:
         ),
         encoding="utf-8",
     )
-
     print(f"Combined raw rows: {len(combined):,}")
     print(f"Detail rows: {len(detail):,}")
     print(f"Provider-series rows: {len(provider_csv_rows):,}")
