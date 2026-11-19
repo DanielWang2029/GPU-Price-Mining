@@ -67,6 +67,17 @@ BILLING_TYPES = {
     "Spot": "SPOT",
     "": "",
 }
+BUILTIN_SOURCES = (
+    {
+        "source_name": "Silicon Data",
+        "supplier_type": "NeoCloud",
+        "gpu_model_code": "H100",
+        "price_type": "",
+        "region": "",
+        "term": None,
+        "url": "https://www.silicondata.com/products/silicon-index/h100",
+    },
+)
 AUDIT_HEADERS = [
     "workbook_row",
     *OUTPUT_HEADERS,
@@ -209,6 +220,21 @@ def load_source_rows(path: Path) -> list[SourceRow]:
                 url=values[6],
             )
         )
+    existing = {
+        (row.source_name, row.gpu_model_code, row.url)
+        for row in rows
+    }
+    next_row = max((row.workbook_row for row in rows), default=1) + 1
+    for source in BUILTIN_SOURCES:
+        identity = (
+            str(source["source_name"]),
+            str(source["gpu_model_code"]),
+            str(source["url"]),
+        )
+        if identity in existing:
+            continue
+        rows.append(SourceRow(workbook_row=next_row, **source))
+        next_row += 1
     return rows
 
 

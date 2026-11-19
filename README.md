@@ -66,6 +66,9 @@ detail and median calculation: their published value is written directly as
 `term_months=0`, and `offering_count=1`.
 Canonical identity values are `provider_id='compute-desk'` for Compute Desk and
 `publisher_name='Silicon Data'` for Silicon Data.
+The loader also registers Silicon Data H100 at
+`https://www.silicondata.com/products/silicon-index/h100` when that row is not
+yet present in the source workbook.
 
 `record_id` is the lowercase MD5 hex digest of the colon-separated
 `price_date`, `run_date`, `source_label`, `provider_id`,
