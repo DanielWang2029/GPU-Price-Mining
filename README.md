@@ -110,6 +110,15 @@ Distinct machine configurations and billing terms remain separate rows.
 Identical listings from multiple URLs are fetched but collapsed because
 `source_url` is not part of the required `record_id` formula.
 
+The source workbook has a `采集任务` routing column. Blank rows use the standard
+collector, Silicon Data H100 is explicitly tagged `gpu_prices.collect`, and AMD
+rows are tagged `gpu_prices.amd_collect`. Synchronize the workbook after AMD
+source changes with:
+
+```bash
+python3 scripts/update_source_workbook.py
+```
+
 ## Source behavior
 
 | Supplier | Collection source and workbook interpretation |

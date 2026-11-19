@@ -30,6 +30,7 @@ EXPECTED_HEADERS = [
     "价格链接",
     "截图",
     "备注",
+    "采集任务",
 ]
 OUTPUT_HEADERS = [
     "price_date",
@@ -61,6 +62,7 @@ OUTPUT_HEADERS = [
     "source_url",
 ]
 DATA_SOURCE = "price_mining"
+COLLECT_TASK = "gpu_prices.collect"
 BILLING_TYPES = {
     "On-Demand": "ON_DEMAND",
     "Reserve": "RESERVATION",
@@ -197,6 +199,9 @@ def load_source_rows(path: Path) -> list[SourceRow]:
     rows: list[SourceRow] = []
     for row_number, cells in xml_rows:
         if row_number < 2:
+            continue
+        task = _clean(cells.get("J", ""))
+        if task not in {"", COLLECT_TASK}:
             continue
         values = [
             _clean(cells.get(get_column_letter(index), "")) for index in range(1, 8)
