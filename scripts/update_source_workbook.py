@@ -251,6 +251,27 @@ def update_workbook(
             owned_rows.append(row_number)
             continue
         source_name = publisher_name(values.get("A", ""))
+        if source_name == "AWS" and values.get("D") == "Reserve":
+            _set_inline_cell(
+                row,
+                column=6,
+                row_number=row_number,
+                value="6",
+            )
+            existing_note = values.get("I", "")
+            aws_note = (
+                "AWS Capacity Block reservation is normalized to a 6-month term."
+            )
+            _set_inline_cell(
+                row,
+                column=9,
+                row_number=row_number,
+                value=(
+                    existing_note
+                    if aws_note in existing_note
+                    else f"{existing_note} {aws_note}".strip()
+                ),
+            )
         if (
             source_name == "Silicon Data"
             and values.get("C") == "H100"
