@@ -31,6 +31,8 @@ from gpu_prices.providers.upcloud import (
 )
 from gpu_prices.workbook import (
     OUTPUT_HEADERS,
+    SOURCE_SHEET,
+    _xml_sheet_rows,
     load_source_rows,
     make_record_id,
     normalize_term_months_value,
@@ -43,6 +45,22 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class WorkbookTests(unittest.TestCase):
+    def test_source_workbook_routes_amd_rows_to_the_amd_collector(self) -> None:
+        rows = _xml_sheet_rows(ROOT / "算力价格爬虫数据整理.xlsx", SOURCE_SHEET)
+        header = next(values for row_number, values in rows if row_number == 1)
+        self.assertEqual(header["J"], "采集任务")
+        amd_rows = [
+            values
+            for row_number, values in rows
+            if row_number > 1 and values.get("J") == "gpu_prices.amd_collect"
+        ]
+        self.assertEqual(len(amd_rows), 48)
+        self.assertTrue(all(values.get("I") for values in amd_rows))
+        self.assertEqual(
+            {values.get("C") for values in amd_rows},
+            {"MI300X", "MI325X", "MI355X"},
+        )
+
     def test_source_workbook_has_one_normalized_row_per_request(self) -> None:
         rows = load_source_rows(ROOT / "算力价格爬虫数据整理.xlsx")
         self.assertEqual(len(rows), 132)
