@@ -130,7 +130,7 @@
 2026-11-01,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,hotaisle,3.19,2,GPU Cloud,https://hotaisle.xyz/pricing,price_mining
 2026-11-01,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,microsoft-azure,6,1,Hyperscaler,https://prices.azure.com/api/retail/prices?$filter=armSkuName%20eq%20%27Standard_ND96isr_MI300X_v5%27%20and%20armRegionName%20eq%20%27eastus2%27,price_mining
 2026-11-01,2026-11-19,amd-mi300x,MI300X,SPOT,0,microsoft-azure,1.1544,2,Hyperscaler,https://prices.azure.com/api/retail/prices?$filter=armSkuName%20eq%20%27Standard_ND96isr_MI300X_v5%27%20and%20armRegionName%20eq%20%27eastus2%27,price_mining
-2026-11-01,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,openrelay,1.99,1,GPU Cloud,https://api.openrelay.inc/v1/public/pricing,price_mining
+2026-11-01,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,openrelay,1.99,1,Unclassified,https://api.openrelay.inc/v1/public/pricing,price_mining
 2026-11-01,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,oracle-cloud,6,1,Hyperscaler,https://apexapps.oracle.com/pls/apex/cetools/api/v1/products/?partNumber=B109485&currencyCode=USD,price_mining
 2026-11-01,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,runcrate,4.85,1,GPU Cloud,https://www.runcrate.ai/api/gpu-pricing,price_mining
 2026-11-01,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,runpod,2.39,1,GPU Cloud,https://api.runpod.io/graphql,price_mining
@@ -146,7 +146,7 @@
 2026-11-01,2026-11-19,amd-mi325x,MI325X,RESERVATION,6,cyfuture,1.86,4,GPU Cloud,https://cyfuture.ai/pricing,price_mining
 2026-11-01,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,digitalocean,3.8,2,General Cloud & Hosting,https://docs.digitalocean.com/products/droplets/details/pricing/,price_mining
 2026-11-01,2026-11-19,amd-mi325x,MI325X,RESERVATION,12,digitalocean,2.88,1,General Cloud & Hosting,https://www.digitalocean.com/pricing/gpu-droplets,price_mining
-2026-11-01,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,openrelay,2.25,1,GPU Cloud,https://api.openrelay.inc/v1/public/pricing,price_mining
+2026-11-01,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,openrelay,2.25,1,Unclassified,https://api.openrelay.inc/v1/public/pricing,price_mining
 2026-11-01,2026-11-19,amd-mi325x,MI325X,RESERVATION,-1,tensorwave,2.25,1,GPU Cloud,https://tensorwave.com/products/accelerators/amd-mi325x,price_mining
 2026-11-01,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,vultr,4.615,1,General Cloud & Hosting,https://api.vultr.com/v2/plans-metal,price_mining
 2026-11-01,2026-11-19,amd-mi325x,MI325X,SPOT,0,vultr,2,1,General Cloud & Hosting,https://api.vultr.com/v2/plans-metal,price_mining
@@ -158,7 +158,7 @@
 2026-11-01,2026-11-19,amd-mi355x,MI355X,SPOT,0,digitalocean,4.5,2,General Cloud & Hosting,https://docs.digitalocean.com/products/droplets/details/pricing/,price_mining
 2026-11-01,2026-11-19,amd-mi355x,MI355X,RESERVATION,12,impossible-cloud,7.21,1,General Cloud & Hosting,https://console.impossiblecloud.com/api/gpu/offers,price_mining
 2026-11-01,2026-11-19,amd-mi355x,MI355X,RESERVATION,24,impossible-cloud,6.13,1,General Cloud & Hosting,https://console.impossiblecloud.com/api/gpu/offers,price_mining
-2026-11-01,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,openrelay,6.3,1,GPU Cloud,https://api.openrelay.inc/v1/public/pricing,price_mining
+2026-11-01,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,openrelay,6.3,1,Unclassified,https://api.openrelay.inc/v1/public/pricing,price_mining
 2026-11-01,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,oracle-cloud,8.6,1,Hyperscaler,https://apexapps.oracle.com/pls/apex/cetools/api/v1/products/?partNumber=B111758&currencyCode=USD,price_mining
 2026-11-01,2026-11-19,amd-mi355x,MI355X,RESERVATION,-1,tensorwave,2.95,1,GPU Cloud,https://tensorwave.com/products/accelerators/amd-mi355x,price_mining
 2026-11-01,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,vultr,2.59,1,General Cloud & Hosting,https://api.vultr.com/v2/plans-metal,price_mining
@@ -294,7 +294,7 @@
 2026-11-02,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,hotaisle,3.19,2,GPU Cloud,https://hotaisle.xyz/pricing,price_mining
 2026-11-02,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,microsoft-azure,6,1,Hyperscaler,https://prices.azure.com/api/retail/prices?$filter=armSkuName%20eq%20%27Standard_ND96isr_MI300X_v5%27%20and%20armRegionName%20eq%20%27eastus2%27,price_mining
 2026-11-02,2026-11-19,amd-mi300x,MI300X,SPOT,0,microsoft-azure,1.1544,2,Hyperscaler,https://prices.azure.com/api/retail/prices?$filter=armSkuName%20eq%20%27Standard_ND96isr_MI300X_v5%27%20and%20armRegionName%20eq%20%27eastus2%27,price_mining
-2026-11-02,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,openrelay,1.99,1,GPU Cloud,https://api.openrelay.inc/v1/public/pricing,price_mining
+2026-11-02,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,openrelay,1.99,1,Unclassified,https://api.openrelay.inc/v1/public/pricing,price_mining
 2026-11-02,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,oracle-cloud,6,1,Hyperscaler,https://apexapps.oracle.com/pls/apex/cetools/api/v1/products/?partNumber=B109485&currencyCode=USD,price_mining
 2026-11-02,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,runcrate,4.85,1,GPU Cloud,https://www.runcrate.ai/api/gpu-pricing,price_mining
 2026-11-02,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,runpod,2.39,1,GPU Cloud,https://api.runpod.io/graphql,price_mining
@@ -310,7 +310,7 @@
 2026-11-02,2026-11-19,amd-mi325x,MI325X,RESERVATION,6,cyfuture,1.86,4,GPU Cloud,https://cyfuture.ai/pricing,price_mining
 2026-11-02,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,digitalocean,3.8,2,General Cloud & Hosting,https://docs.digitalocean.com/products/droplets/details/pricing/,price_mining
 2026-11-02,2026-11-19,amd-mi325x,MI325X,RESERVATION,12,digitalocean,2.88,1,General Cloud & Hosting,https://www.digitalocean.com/pricing/gpu-droplets,price_mining
-2026-11-02,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,openrelay,2.25,1,GPU Cloud,https://api.openrelay.inc/v1/public/pricing,price_mining
+2026-11-02,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,openrelay,2.25,1,Unclassified,https://api.openrelay.inc/v1/public/pricing,price_mining
 2026-11-02,2026-11-19,amd-mi325x,MI325X,RESERVATION,-1,tensorwave,2.25,1,GPU Cloud,https://tensorwave.com/products/accelerators/amd-mi325x,price_mining
 2026-11-02,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,vultr,4.615,1,General Cloud & Hosting,https://api.vultr.com/v2/plans-metal,price_mining
 2026-11-02,2026-11-19,amd-mi325x,MI325X,SPOT,0,vultr,2,1,General Cloud & Hosting,https://api.vultr.com/v2/plans-metal,price_mining
@@ -322,7 +322,7 @@
 2026-11-02,2026-11-19,amd-mi355x,MI355X,SPOT,0,digitalocean,4.5,2,General Cloud & Hosting,https://docs.digitalocean.com/products/droplets/details/pricing/,price_mining
 2026-11-02,2026-11-19,amd-mi355x,MI355X,RESERVATION,12,impossible-cloud,7.21,1,General Cloud & Hosting,https://console.impossiblecloud.com/api/gpu/offers,price_mining
 2026-11-02,2026-11-19,amd-mi355x,MI355X,RESERVATION,24,impossible-cloud,6.13,1,General Cloud & Hosting,https://console.impossiblecloud.com/api/gpu/offers,price_mining
-2026-11-02,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,openrelay,6.3,1,GPU Cloud,https://api.openrelay.inc/v1/public/pricing,price_mining
+2026-11-02,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,openrelay,6.3,1,Unclassified,https://api.openrelay.inc/v1/public/pricing,price_mining
 2026-11-02,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,oracle-cloud,8.6,1,Hyperscaler,https://apexapps.oracle.com/pls/apex/cetools/api/v1/products/?partNumber=B111758&currencyCode=USD,price_mining
 2026-11-02,2026-11-19,amd-mi355x,MI355X,RESERVATION,-1,tensorwave,2.95,1,GPU Cloud,https://tensorwave.com/products/accelerators/amd-mi355x,price_mining
 2026-11-02,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,vultr,2.59,1,General Cloud & Hosting,https://api.vultr.com/v2/plans-metal,price_mining
@@ -458,7 +458,7 @@
 2026-11-03,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,hotaisle,3.19,2,GPU Cloud,https://hotaisle.xyz/pricing,price_mining
 2026-11-03,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,microsoft-azure,6,1,Hyperscaler,https://prices.azure.com/api/retail/prices?$filter=armSkuName%20eq%20%27Standard_ND96isr_MI300X_v5%27%20and%20armRegionName%20eq%20%27eastus2%27,price_mining
 2026-11-03,2026-11-19,amd-mi300x,MI300X,SPOT,0,microsoft-azure,1.1544,2,Hyperscaler,https://prices.azure.com/api/retail/prices?$filter=armSkuName%20eq%20%27Standard_ND96isr_MI300X_v5%27%20and%20armRegionName%20eq%20%27eastus2%27,price_mining
-2026-11-03,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,openrelay,1.99,1,GPU Cloud,https://api.openrelay.inc/v1/public/pricing,price_mining
+2026-11-03,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,openrelay,1.99,1,Unclassified,https://api.openrelay.inc/v1/public/pricing,price_mining
 2026-11-03,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,oracle-cloud,6,1,Hyperscaler,https://apexapps.oracle.com/pls/apex/cetools/api/v1/products/?partNumber=B109485&currencyCode=USD,price_mining
 2026-11-03,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,runcrate,4.85,1,GPU Cloud,https://www.runcrate.ai/api/gpu-pricing,price_mining
 2026-11-03,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,runpod,2.39,1,GPU Cloud,https://api.runpod.io/graphql,price_mining
@@ -474,7 +474,7 @@
 2026-11-03,2026-11-19,amd-mi325x,MI325X,RESERVATION,6,cyfuture,1.86,4,GPU Cloud,https://cyfuture.ai/pricing,price_mining
 2026-11-03,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,digitalocean,3.8,2,General Cloud & Hosting,https://docs.digitalocean.com/products/droplets/details/pricing/,price_mining
 2026-11-03,2026-11-19,amd-mi325x,MI325X,RESERVATION,12,digitalocean,2.88,1,General Cloud & Hosting,https://www.digitalocean.com/pricing/gpu-droplets,price_mining
-2026-11-03,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,openrelay,2.25,1,GPU Cloud,https://api.openrelay.inc/v1/public/pricing,price_mining
+2026-11-03,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,openrelay,2.25,1,Unclassified,https://api.openrelay.inc/v1/public/pricing,price_mining
 2026-11-03,2026-11-19,amd-mi325x,MI325X,RESERVATION,-1,tensorwave,2.25,1,GPU Cloud,https://tensorwave.com/products/accelerators/amd-mi325x,price_mining
 2026-11-03,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,vultr,4.615,1,General Cloud & Hosting,https://api.vultr.com/v2/plans-metal,price_mining
 2026-11-03,2026-11-19,amd-mi325x,MI325X,SPOT,0,vultr,2,1,General Cloud & Hosting,https://api.vultr.com/v2/plans-metal,price_mining
@@ -486,7 +486,7 @@
 2026-11-03,2026-11-19,amd-mi355x,MI355X,SPOT,0,digitalocean,4.5,2,General Cloud & Hosting,https://docs.digitalocean.com/products/droplets/details/pricing/,price_mining
 2026-11-03,2026-11-19,amd-mi355x,MI355X,RESERVATION,12,impossible-cloud,7.21,1,General Cloud & Hosting,https://console.impossiblecloud.com/api/gpu/offers,price_mining
 2026-11-03,2026-11-19,amd-mi355x,MI355X,RESERVATION,24,impossible-cloud,6.13,1,General Cloud & Hosting,https://console.impossiblecloud.com/api/gpu/offers,price_mining
-2026-11-03,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,openrelay,6.3,1,GPU Cloud,https://api.openrelay.inc/v1/public/pricing,price_mining
+2026-11-03,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,openrelay,6.3,1,Unclassified,https://api.openrelay.inc/v1/public/pricing,price_mining
 2026-11-03,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,oracle-cloud,8.6,1,Hyperscaler,https://apexapps.oracle.com/pls/apex/cetools/api/v1/products/?partNumber=B111758&currencyCode=USD,price_mining
 2026-11-03,2026-11-19,amd-mi355x,MI355X,RESERVATION,-1,tensorwave,2.95,1,GPU Cloud,https://tensorwave.com/products/accelerators/amd-mi355x,price_mining
 2026-11-03,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,vultr,2.59,1,General Cloud & Hosting,https://api.vultr.com/v2/plans-metal,price_mining
@@ -619,7 +619,7 @@
 2026-11-04,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,hotaisle,3.19,2,GPU Cloud,https://hotaisle.xyz/pricing,price_mining
 2026-11-04,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,microsoft-azure,6,1,Hyperscaler,https://prices.azure.com/api/retail/prices?$filter=armSkuName%20eq%20%27Standard_ND96isr_MI300X_v5%27%20and%20armRegionName%20eq%20%27eastus2%27,price_mining
 2026-11-04,2026-11-19,amd-mi300x,MI300X,SPOT,0,microsoft-azure,1.1544,2,Hyperscaler,https://prices.azure.com/api/retail/prices?$filter=armSkuName%20eq%20%27Standard_ND96isr_MI300X_v5%27%20and%20armRegionName%20eq%20%27eastus2%27,price_mining
-2026-11-04,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,openrelay,1.99,1,GPU Cloud,https://api.openrelay.inc/v1/public/pricing,price_mining
+2026-11-04,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,openrelay,1.99,1,Unclassified,https://api.openrelay.inc/v1/public/pricing,price_mining
 2026-11-04,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,oracle-cloud,6,1,Hyperscaler,https://apexapps.oracle.com/pls/apex/cetools/api/v1/products/?partNumber=B109485&currencyCode=USD,price_mining
 2026-11-04,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,runcrate,4.85,1,GPU Cloud,https://www.runcrate.ai/api/gpu-pricing,price_mining
 2026-11-04,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,runpod,2.39,1,GPU Cloud,https://api.runpod.io/graphql,price_mining
@@ -635,7 +635,7 @@
 2026-11-04,2026-11-19,amd-mi325x,MI325X,RESERVATION,6,cyfuture,1.86,4,GPU Cloud,https://cyfuture.ai/pricing,price_mining
 2026-11-04,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,digitalocean,3.8,2,General Cloud & Hosting,https://docs.digitalocean.com/products/droplets/details/pricing/,price_mining
 2026-11-04,2026-11-19,amd-mi325x,MI325X,RESERVATION,12,digitalocean,2.88,1,General Cloud & Hosting,https://www.digitalocean.com/pricing/gpu-droplets,price_mining
-2026-11-04,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,openrelay,2.25,1,GPU Cloud,https://api.openrelay.inc/v1/public/pricing,price_mining
+2026-11-04,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,openrelay,2.25,1,Unclassified,https://api.openrelay.inc/v1/public/pricing,price_mining
 2026-11-04,2026-11-19,amd-mi325x,MI325X,RESERVATION,-1,tensorwave,2.25,1,GPU Cloud,https://tensorwave.com/products/accelerators/amd-mi325x,price_mining
 2026-11-04,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,vultr,4.615,1,General Cloud & Hosting,https://api.vultr.com/v2/plans-metal,price_mining
 2026-11-04,2026-11-19,amd-mi325x,MI325X,SPOT,0,vultr,2,1,General Cloud & Hosting,https://api.vultr.com/v2/plans-metal,price_mining
@@ -647,7 +647,7 @@
 2026-11-04,2026-11-19,amd-mi355x,MI355X,SPOT,0,digitalocean,4.5,2,General Cloud & Hosting,https://docs.digitalocean.com/products/droplets/details/pricing/,price_mining
 2026-11-04,2026-11-19,amd-mi355x,MI355X,RESERVATION,12,impossible-cloud,7.21,1,General Cloud & Hosting,https://console.impossiblecloud.com/api/gpu/offers,price_mining
 2026-11-04,2026-11-19,amd-mi355x,MI355X,RESERVATION,24,impossible-cloud,6.13,1,General Cloud & Hosting,https://console.impossiblecloud.com/api/gpu/offers,price_mining
-2026-11-04,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,openrelay,6.3,1,GPU Cloud,https://api.openrelay.inc/v1/public/pricing,price_mining
+2026-11-04,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,openrelay,6.3,1,Unclassified,https://api.openrelay.inc/v1/public/pricing,price_mining
 2026-11-04,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,oracle-cloud,8.6,1,Hyperscaler,https://apexapps.oracle.com/pls/apex/cetools/api/v1/products/?partNumber=B111758&currencyCode=USD,price_mining
 2026-11-04,2026-11-19,amd-mi355x,MI355X,RESERVATION,-1,tensorwave,2.95,1,GPU Cloud,https://tensorwave.com/products/accelerators/amd-mi355x,price_mining
 2026-11-04,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,vultr,2.59,1,General Cloud & Hosting,https://api.vultr.com/v2/plans-metal,price_mining
@@ -780,7 +780,7 @@
 2026-11-05,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,hotaisle,3.19,2,GPU Cloud,https://hotaisle.xyz/pricing,price_mining
 2026-11-05,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,microsoft-azure,6,1,Hyperscaler,https://prices.azure.com/api/retail/prices?$filter=armSkuName%20eq%20%27Standard_ND96isr_MI300X_v5%27%20and%20armRegionName%20eq%20%27eastus2%27,price_mining
 2026-11-05,2026-11-19,amd-mi300x,MI300X,SPOT,0,microsoft-azure,1.1544,2,Hyperscaler,https://prices.azure.com/api/retail/prices?$filter=armSkuName%20eq%20%27Standard_ND96isr_MI300X_v5%27%20and%20armRegionName%20eq%20%27eastus2%27,price_mining
-2026-11-05,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,openrelay,1.99,1,GPU Cloud,https://api.openrelay.inc/v1/public/pricing,price_mining
+2026-11-05,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,openrelay,1.99,1,Unclassified,https://api.openrelay.inc/v1/public/pricing,price_mining
 2026-11-05,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,oracle-cloud,6,1,Hyperscaler,https://apexapps.oracle.com/pls/apex/cetools/api/v1/products/?partNumber=B109485&currencyCode=USD,price_mining
 2026-11-05,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,runcrate,4.85,1,GPU Cloud,https://www.runcrate.ai/api/gpu-pricing,price_mining
 2026-11-05,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,runpod,2.39,1,GPU Cloud,https://api.runpod.io/graphql,price_mining
@@ -796,7 +796,7 @@
 2026-11-05,2026-11-19,amd-mi325x,MI325X,RESERVATION,6,cyfuture,1.86,4,GPU Cloud,https://cyfuture.ai/pricing,price_mining
 2026-11-05,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,digitalocean,3.8,2,General Cloud & Hosting,https://docs.digitalocean.com/products/droplets/details/pricing/,price_mining
 2026-11-05,2026-11-19,amd-mi325x,MI325X,RESERVATION,12,digitalocean,2.88,1,General Cloud & Hosting,https://www.digitalocean.com/pricing/gpu-droplets,price_mining
-2026-11-05,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,openrelay,2.25,1,GPU Cloud,https://api.openrelay.inc/v1/public/pricing,price_mining
+2026-11-05,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,openrelay,2.25,1,Unclassified,https://api.openrelay.inc/v1/public/pricing,price_mining
 2026-11-05,2026-11-19,amd-mi325x,MI325X,RESERVATION,-1,tensorwave,2.25,1,GPU Cloud,https://tensorwave.com/products/accelerators/amd-mi325x,price_mining
 2026-11-05,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,vultr,4.615,1,General Cloud & Hosting,https://api.vultr.com/v2/plans-metal,price_mining
 2026-11-05,2026-11-19,amd-mi325x,MI325X,SPOT,0,vultr,2,1,General Cloud & Hosting,https://api.vultr.com/v2/plans-metal,price_mining
@@ -808,7 +808,7 @@
 2026-11-05,2026-11-19,amd-mi355x,MI355X,SPOT,0,digitalocean,4.5,2,General Cloud & Hosting,https://docs.digitalocean.com/products/droplets/details/pricing/,price_mining
 2026-11-05,2026-11-19,amd-mi355x,MI355X,RESERVATION,12,impossible-cloud,7.21,1,General Cloud & Hosting,https://console.impossiblecloud.com/api/gpu/offers,price_mining
 2026-11-05,2026-11-19,amd-mi355x,MI355X,RESERVATION,24,impossible-cloud,6.13,1,General Cloud & Hosting,https://console.impossiblecloud.com/api/gpu/offers,price_mining
-2026-11-05,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,openrelay,6.3,1,GPU Cloud,https://api.openrelay.inc/v1/public/pricing,price_mining
+2026-11-05,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,openrelay,6.3,1,Unclassified,https://api.openrelay.inc/v1/public/pricing,price_mining
 2026-11-05,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,oracle-cloud,8.6,1,Hyperscaler,https://apexapps.oracle.com/pls/apex/cetools/api/v1/products/?partNumber=B111758&currencyCode=USD,price_mining
 2026-11-05,2026-11-19,amd-mi355x,MI355X,RESERVATION,-1,tensorwave,2.95,1,GPU Cloud,https://tensorwave.com/products/accelerators/amd-mi355x,price_mining
 2026-11-05,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,vultr,2.59,1,General Cloud & Hosting,https://api.vultr.com/v2/plans-metal,price_mining
@@ -941,7 +941,7 @@
 2026-11-06,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,hotaisle,3.19,2,GPU Cloud,https://hotaisle.xyz/pricing,price_mining
 2026-11-06,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,microsoft-azure,6,1,Hyperscaler,https://prices.azure.com/api/retail/prices?$filter=armSkuName%20eq%20%27Standard_ND96isr_MI300X_v5%27%20and%20armRegionName%20eq%20%27eastus2%27,price_mining
 2026-11-06,2026-11-19,amd-mi300x,MI300X,SPOT,0,microsoft-azure,1.1544,2,Hyperscaler,https://prices.azure.com/api/retail/prices?$filter=armSkuName%20eq%20%27Standard_ND96isr_MI300X_v5%27%20and%20armRegionName%20eq%20%27eastus2%27,price_mining
-2026-11-06,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,openrelay,1.99,1,GPU Cloud,https://api.openrelay.inc/v1/public/pricing,price_mining
+2026-11-06,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,openrelay,1.99,1,Unclassified,https://api.openrelay.inc/v1/public/pricing,price_mining
 2026-11-06,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,oracle-cloud,6,1,Hyperscaler,https://apexapps.oracle.com/pls/apex/cetools/api/v1/products/?partNumber=B109485&currencyCode=USD,price_mining
 2026-11-06,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,runcrate,4.85,1,GPU Cloud,https://www.runcrate.ai/api/gpu-pricing,price_mining
 2026-11-06,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,runpod,2.39,1,GPU Cloud,https://api.runpod.io/graphql,price_mining
@@ -957,7 +957,7 @@
 2026-11-06,2026-11-19,amd-mi325x,MI325X,RESERVATION,6,cyfuture,1.86,4,GPU Cloud,https://cyfuture.ai/pricing,price_mining
 2026-11-06,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,digitalocean,3.8,2,General Cloud & Hosting,https://docs.digitalocean.com/products/droplets/details/pricing/,price_mining
 2026-11-06,2026-11-19,amd-mi325x,MI325X,RESERVATION,12,digitalocean,2.88,1,General Cloud & Hosting,https://www.digitalocean.com/pricing/gpu-droplets,price_mining
-2026-11-06,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,openrelay,2.25,1,GPU Cloud,https://api.openrelay.inc/v1/public/pricing,price_mining
+2026-11-06,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,openrelay,2.25,1,Unclassified,https://api.openrelay.inc/v1/public/pricing,price_mining
 2026-11-06,2026-11-19,amd-mi325x,MI325X,RESERVATION,-1,tensorwave,2.25,1,GPU Cloud,https://tensorwave.com/products/accelerators/amd-mi325x,price_mining
 2026-11-06,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,vultr,4.615,1,General Cloud & Hosting,https://api.vultr.com/v2/plans-metal,price_mining
 2026-11-06,2026-11-19,amd-mi325x,MI325X,SPOT,0,vultr,2,1,General Cloud & Hosting,https://api.vultr.com/v2/plans-metal,price_mining
@@ -969,7 +969,7 @@
 2026-11-06,2026-11-19,amd-mi355x,MI355X,SPOT,0,digitalocean,4.5,2,General Cloud & Hosting,https://docs.digitalocean.com/products/droplets/details/pricing/,price_mining
 2026-11-06,2026-11-19,amd-mi355x,MI355X,RESERVATION,12,impossible-cloud,7.21,1,General Cloud & Hosting,https://console.impossiblecloud.com/api/gpu/offers,price_mining
 2026-11-06,2026-11-19,amd-mi355x,MI355X,RESERVATION,24,impossible-cloud,6.13,1,General Cloud & Hosting,https://console.impossiblecloud.com/api/gpu/offers,price_mining
-2026-11-06,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,openrelay,6.3,1,GPU Cloud,https://api.openrelay.inc/v1/public/pricing,price_mining
+2026-11-06,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,openrelay,6.3,1,Unclassified,https://api.openrelay.inc/v1/public/pricing,price_mining
 2026-11-06,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,oracle-cloud,8.6,1,Hyperscaler,https://apexapps.oracle.com/pls/apex/cetools/api/v1/products/?partNumber=B111758&currencyCode=USD,price_mining
 2026-11-06,2026-11-19,amd-mi355x,MI355X,RESERVATION,-1,tensorwave,2.95,1,GPU Cloud,https://tensorwave.com/products/accelerators/amd-mi355x,price_mining
 2026-11-06,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,vultr,2.59,1,General Cloud & Hosting,https://api.vultr.com/v2/plans-metal,price_mining
@@ -1102,7 +1102,7 @@
 2026-11-07,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,hotaisle,3.19,2,GPU Cloud,https://hotaisle.xyz/pricing,price_mining
 2026-11-07,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,microsoft-azure,6,1,Hyperscaler,https://prices.azure.com/api/retail/prices?$filter=armSkuName%20eq%20%27Standard_ND96isr_MI300X_v5%27%20and%20armRegionName%20eq%20%27eastus2%27,price_mining
 2026-11-07,2026-11-19,amd-mi300x,MI300X,SPOT,0,microsoft-azure,1.1544,2,Hyperscaler,https://prices.azure.com/api/retail/prices?$filter=armSkuName%20eq%20%27Standard_ND96isr_MI300X_v5%27%20and%20armRegionName%20eq%20%27eastus2%27,price_mining
-2026-11-07,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,openrelay,1.99,1,GPU Cloud,https://api.openrelay.inc/v1/public/pricing,price_mining
+2026-11-07,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,openrelay,1.99,1,Unclassified,https://api.openrelay.inc/v1/public/pricing,price_mining
 2026-11-07,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,oracle-cloud,6,1,Hyperscaler,https://apexapps.oracle.com/pls/apex/cetools/api/v1/products/?partNumber=B109485&currencyCode=USD,price_mining
 2026-11-07,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,runcrate,4.85,1,GPU Cloud,https://www.runcrate.ai/api/gpu-pricing,price_mining
 2026-11-07,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,runpod,2.39,1,GPU Cloud,https://api.runpod.io/graphql,price_mining
@@ -1118,7 +1118,7 @@
 2026-11-07,2026-11-19,amd-mi325x,MI325X,RESERVATION,6,cyfuture,1.86,4,GPU Cloud,https://cyfuture.ai/pricing,price_mining
 2026-11-07,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,digitalocean,3.8,2,General Cloud & Hosting,https://docs.digitalocean.com/products/droplets/details/pricing/,price_mining
 2026-11-07,2026-11-19,amd-mi325x,MI325X,RESERVATION,12,digitalocean,2.88,1,General Cloud & Hosting,https://www.digitalocean.com/pricing/gpu-droplets,price_mining
-2026-11-07,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,openrelay,2.25,1,GPU Cloud,https://api.openrelay.inc/v1/public/pricing,price_mining
+2026-11-07,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,openrelay,2.25,1,Unclassified,https://api.openrelay.inc/v1/public/pricing,price_mining
 2026-11-07,2026-11-19,amd-mi325x,MI325X,RESERVATION,-1,tensorwave,2.25,1,GPU Cloud,https://tensorwave.com/products/accelerators/amd-mi325x,price_mining
 2026-11-07,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,vultr,4.615,1,General Cloud & Hosting,https://api.vultr.com/v2/plans-metal,price_mining
 2026-11-07,2026-11-19,amd-mi325x,MI325X,SPOT,0,vultr,2,1,General Cloud & Hosting,https://api.vultr.com/v2/plans-metal,price_mining
@@ -1130,7 +1130,7 @@
 2026-11-07,2026-11-19,amd-mi355x,MI355X,SPOT,0,digitalocean,4.5,2,General Cloud & Hosting,https://docs.digitalocean.com/products/droplets/details/pricing/,price_mining
 2026-11-07,2026-11-19,amd-mi355x,MI355X,RESERVATION,12,impossible-cloud,7.21,1,General Cloud & Hosting,https://console.impossiblecloud.com/api/gpu/offers,price_mining
 2026-11-07,2026-11-19,amd-mi355x,MI355X,RESERVATION,24,impossible-cloud,6.13,1,General Cloud & Hosting,https://console.impossiblecloud.com/api/gpu/offers,price_mining
-2026-11-07,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,openrelay,6.3,1,GPU Cloud,https://api.openrelay.inc/v1/public/pricing,price_mining
+2026-11-07,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,openrelay,6.3,1,Unclassified,https://api.openrelay.inc/v1/public/pricing,price_mining
 2026-11-07,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,oracle-cloud,8.6,1,Hyperscaler,https://apexapps.oracle.com/pls/apex/cetools/api/v1/products/?partNumber=B111758&currencyCode=USD,price_mining
 2026-11-07,2026-11-19,amd-mi355x,MI355X,RESERVATION,-1,tensorwave,2.95,1,GPU Cloud,https://tensorwave.com/products/accelerators/amd-mi355x,price_mining
 2026-11-07,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,vultr,2.59,1,General Cloud & Hosting,https://api.vultr.com/v2/plans-metal,price_mining
@@ -1263,7 +1263,7 @@
 2026-11-08,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,hotaisle,3.19,2,GPU Cloud,https://hotaisle.xyz/pricing,price_mining
 2026-11-08,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,microsoft-azure,6,1,Hyperscaler,https://prices.azure.com/api/retail/prices?$filter=armSkuName%20eq%20%27Standard_ND96isr_MI300X_v5%27%20and%20armRegionName%20eq%20%27eastus2%27,price_mining
 2026-11-08,2026-11-19,amd-mi300x,MI300X,SPOT,0,microsoft-azure,1.1544,2,Hyperscaler,https://prices.azure.com/api/retail/prices?$filter=armSkuName%20eq%20%27Standard_ND96isr_MI300X_v5%27%20and%20armRegionName%20eq%20%27eastus2%27,price_mining
-2026-11-08,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,openrelay,1.99,1,GPU Cloud,https://api.openrelay.inc/v1/public/pricing,price_mining
+2026-11-08,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,openrelay,1.99,1,Unclassified,https://api.openrelay.inc/v1/public/pricing,price_mining
 2026-11-08,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,oracle-cloud,6,1,Hyperscaler,https://apexapps.oracle.com/pls/apex/cetools/api/v1/products/?partNumber=B109485&currencyCode=USD,price_mining
 2026-11-08,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,runcrate,4.85,1,GPU Cloud,https://www.runcrate.ai/api/gpu-pricing,price_mining
 2026-11-08,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,runpod,2.39,1,GPU Cloud,https://api.runpod.io/graphql,price_mining
@@ -1279,7 +1279,7 @@
 2026-11-08,2026-11-19,amd-mi325x,MI325X,RESERVATION,6,cyfuture,1.86,4,GPU Cloud,https://cyfuture.ai/pricing,price_mining
 2026-11-08,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,digitalocean,3.8,2,General Cloud & Hosting,https://docs.digitalocean.com/products/droplets/details/pricing/,price_mining
 2026-11-08,2026-11-19,amd-mi325x,MI325X,RESERVATION,12,digitalocean,2.88,1,General Cloud & Hosting,https://www.digitalocean.com/pricing/gpu-droplets,price_mining
-2026-11-08,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,openrelay,2.25,1,GPU Cloud,https://api.openrelay.inc/v1/public/pricing,price_mining
+2026-11-08,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,openrelay,2.25,1,Unclassified,https://api.openrelay.inc/v1/public/pricing,price_mining
 2026-11-08,2026-11-19,amd-mi325x,MI325X,RESERVATION,-1,tensorwave,2.25,1,GPU Cloud,https://tensorwave.com/products/accelerators/amd-mi325x,price_mining
 2026-11-08,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,vultr,4.615,1,General Cloud & Hosting,https://api.vultr.com/v2/plans-metal,price_mining
 2026-11-08,2026-11-19,amd-mi325x,MI325X,SPOT,0,vultr,2,1,General Cloud & Hosting,https://api.vultr.com/v2/plans-metal,price_mining
@@ -1291,7 +1291,7 @@
 2026-11-08,2026-11-19,amd-mi355x,MI355X,SPOT,0,digitalocean,4.5,2,General Cloud & Hosting,https://docs.digitalocean.com/products/droplets/details/pricing/,price_mining
 2026-11-08,2026-11-19,amd-mi355x,MI355X,RESERVATION,12,impossible-cloud,7.21,1,General Cloud & Hosting,https://console.impossiblecloud.com/api/gpu/offers,price_mining
 2026-11-08,2026-11-19,amd-mi355x,MI355X,RESERVATION,24,impossible-cloud,6.13,1,General Cloud & Hosting,https://console.impossiblecloud.com/api/gpu/offers,price_mining
-2026-11-08,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,openrelay,6.3,1,GPU Cloud,https://api.openrelay.inc/v1/public/pricing,price_mining
+2026-11-08,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,openrelay,6.3,1,Unclassified,https://api.openrelay.inc/v1/public/pricing,price_mining
 2026-11-08,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,oracle-cloud,8.6,1,Hyperscaler,https://apexapps.oracle.com/pls/apex/cetools/api/v1/products/?partNumber=B111758&currencyCode=USD,price_mining
 2026-11-08,2026-11-19,amd-mi355x,MI355X,RESERVATION,-1,tensorwave,2.95,1,GPU Cloud,https://tensorwave.com/products/accelerators/amd-mi355x,price_mining
 2026-11-08,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,vultr,2.59,1,General Cloud & Hosting,https://api.vultr.com/v2/plans-metal,price_mining
@@ -1425,7 +1425,7 @@
 2026-11-09,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,hotaisle,3.19,2,GPU Cloud,https://hotaisle.xyz/pricing,price_mining
 2026-11-09,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,microsoft-azure,6,1,Hyperscaler,https://prices.azure.com/api/retail/prices?$filter=armSkuName%20eq%20%27Standard_ND96isr_MI300X_v5%27%20and%20armRegionName%20eq%20%27eastus2%27,price_mining
 2026-11-09,2026-11-19,amd-mi300x,MI300X,SPOT,0,microsoft-azure,1.1544,2,Hyperscaler,https://prices.azure.com/api/retail/prices?$filter=armSkuName%20eq%20%27Standard_ND96isr_MI300X_v5%27%20and%20armRegionName%20eq%20%27eastus2%27,price_mining
-2026-11-09,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,openrelay,1.99,1,GPU Cloud,https://api.openrelay.inc/v1/public/pricing,price_mining
+2026-11-09,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,openrelay,1.99,1,Unclassified,https://api.openrelay.inc/v1/public/pricing,price_mining
 2026-11-09,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,oracle-cloud,6,1,Hyperscaler,https://apexapps.oracle.com/pls/apex/cetools/api/v1/products/?partNumber=B109485&currencyCode=USD,price_mining
 2026-11-09,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,runcrate,4.85,1,GPU Cloud,https://www.runcrate.ai/api/gpu-pricing,price_mining
 2026-11-09,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,runpod,2.39,1,GPU Cloud,https://api.runpod.io/graphql,price_mining
@@ -1441,7 +1441,7 @@
 2026-11-09,2026-11-19,amd-mi325x,MI325X,RESERVATION,6,cyfuture,1.86,4,GPU Cloud,https://cyfuture.ai/pricing,price_mining
 2026-11-09,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,digitalocean,3.8,2,General Cloud & Hosting,https://docs.digitalocean.com/products/droplets/details/pricing/,price_mining
 2026-11-09,2026-11-19,amd-mi325x,MI325X,RESERVATION,12,digitalocean,2.88,1,General Cloud & Hosting,https://www.digitalocean.com/pricing/gpu-droplets,price_mining
-2026-11-09,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,openrelay,2.25,1,GPU Cloud,https://api.openrelay.inc/v1/public/pricing,price_mining
+2026-11-09,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,openrelay,2.25,1,Unclassified,https://api.openrelay.inc/v1/public/pricing,price_mining
 2026-11-09,2026-11-19,amd-mi325x,MI325X,RESERVATION,-1,tensorwave,2.25,1,GPU Cloud,https://tensorwave.com/products/accelerators/amd-mi325x,price_mining
 2026-11-09,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,vultr,4.615,1,General Cloud & Hosting,https://api.vultr.com/v2/plans-metal,price_mining
 2026-11-09,2026-11-19,amd-mi325x,MI325X,SPOT,0,vultr,2,1,General Cloud & Hosting,https://api.vultr.com/v2/plans-metal,price_mining
@@ -1453,7 +1453,7 @@
 2026-11-09,2026-11-19,amd-mi355x,MI355X,SPOT,0,digitalocean,4.5,2,General Cloud & Hosting,https://docs.digitalocean.com/products/droplets/details/pricing/,price_mining
 2026-11-09,2026-11-19,amd-mi355x,MI355X,RESERVATION,12,impossible-cloud,7.21,1,General Cloud & Hosting,https://console.impossiblecloud.com/api/gpu/offers,price_mining
 2026-11-09,2026-11-19,amd-mi355x,MI355X,RESERVATION,24,impossible-cloud,6.13,1,General Cloud & Hosting,https://console.impossiblecloud.com/api/gpu/offers,price_mining
-2026-11-09,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,openrelay,6.3,1,GPU Cloud,https://api.openrelay.inc/v1/public/pricing,price_mining
+2026-11-09,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,openrelay,6.3,1,Unclassified,https://api.openrelay.inc/v1/public/pricing,price_mining
 2026-11-09,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,oracle-cloud,8.6,1,Hyperscaler,https://apexapps.oracle.com/pls/apex/cetools/api/v1/products/?partNumber=B111758&currencyCode=USD,price_mining
 2026-11-09,2026-11-19,amd-mi355x,MI355X,RESERVATION,-1,tensorwave,2.95,1,GPU Cloud,https://tensorwave.com/products/accelerators/amd-mi355x,price_mining
 2026-11-09,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,vultr,2.59,1,General Cloud & Hosting,https://api.vultr.com/v2/plans-metal,price_mining
@@ -1587,7 +1587,7 @@
 2026-11-10,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,hotaisle,3.19,2,GPU Cloud,https://hotaisle.xyz/pricing,price_mining
 2026-11-10,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,microsoft-azure,6,1,Hyperscaler,https://prices.azure.com/api/retail/prices?$filter=armSkuName%20eq%20%27Standard_ND96isr_MI300X_v5%27%20and%20armRegionName%20eq%20%27eastus2%27,price_mining
 2026-11-10,2026-11-19,amd-mi300x,MI300X,SPOT,0,microsoft-azure,1.1544,2,Hyperscaler,https://prices.azure.com/api/retail/prices?$filter=armSkuName%20eq%20%27Standard_ND96isr_MI300X_v5%27%20and%20armRegionName%20eq%20%27eastus2%27,price_mining
-2026-11-10,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,openrelay,1.99,1,GPU Cloud,https://api.openrelay.inc/v1/public/pricing,price_mining
+2026-11-10,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,openrelay,1.99,1,Unclassified,https://api.openrelay.inc/v1/public/pricing,price_mining
 2026-11-10,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,oracle-cloud,6,1,Hyperscaler,https://apexapps.oracle.com/pls/apex/cetools/api/v1/products/?partNumber=B109485&currencyCode=USD,price_mining
 2026-11-10,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,runcrate,4.85,1,GPU Cloud,https://www.runcrate.ai/api/gpu-pricing,price_mining
 2026-11-10,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,runpod,2.39,1,GPU Cloud,https://api.runpod.io/graphql,price_mining
@@ -1603,7 +1603,7 @@
 2026-11-10,2026-11-19,amd-mi325x,MI325X,RESERVATION,6,cyfuture,1.86,4,GPU Cloud,https://cyfuture.ai/pricing,price_mining
 2026-11-10,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,digitalocean,3.8,2,General Cloud & Hosting,https://docs.digitalocean.com/products/droplets/details/pricing/,price_mining
 2026-11-10,2026-11-19,amd-mi325x,MI325X,RESERVATION,12,digitalocean,2.88,1,General Cloud & Hosting,https://www.digitalocean.com/pricing/gpu-droplets,price_mining
-2026-11-10,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,openrelay,2.25,1,GPU Cloud,https://api.openrelay.inc/v1/public/pricing,price_mining
+2026-11-10,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,openrelay,2.25,1,Unclassified,https://api.openrelay.inc/v1/public/pricing,price_mining
 2026-11-10,2026-11-19,amd-mi325x,MI325X,RESERVATION,-1,tensorwave,2.25,1,GPU Cloud,https://tensorwave.com/products/accelerators/amd-mi325x,price_mining
 2026-11-10,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,vultr,4.615,1,General Cloud & Hosting,https://api.vultr.com/v2/plans-metal,price_mining
 2026-11-10,2026-11-19,amd-mi325x,MI325X,SPOT,0,vultr,2,1,General Cloud & Hosting,https://api.vultr.com/v2/plans-metal,price_mining
@@ -1615,7 +1615,7 @@
 2026-11-10,2026-11-19,amd-mi355x,MI355X,SPOT,0,digitalocean,4.5,2,General Cloud & Hosting,https://docs.digitalocean.com/products/droplets/details/pricing/,price_mining
 2026-11-10,2026-11-19,amd-mi355x,MI355X,RESERVATION,12,impossible-cloud,7.21,1,General Cloud & Hosting,https://console.impossiblecloud.com/api/gpu/offers,price_mining
 2026-11-10,2026-11-19,amd-mi355x,MI355X,RESERVATION,24,impossible-cloud,6.13,1,General Cloud & Hosting,https://console.impossiblecloud.com/api/gpu/offers,price_mining
-2026-11-10,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,openrelay,6.3,1,GPU Cloud,https://api.openrelay.inc/v1/public/pricing,price_mining
+2026-11-10,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,openrelay,6.3,1,Unclassified,https://api.openrelay.inc/v1/public/pricing,price_mining
 2026-11-10,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,oracle-cloud,8.6,1,Hyperscaler,https://apexapps.oracle.com/pls/apex/cetools/api/v1/products/?partNumber=B111758&currencyCode=USD,price_mining
 2026-11-10,2026-11-19,amd-mi355x,MI355X,RESERVATION,-1,tensorwave,2.95,1,GPU Cloud,https://tensorwave.com/products/accelerators/amd-mi355x,price_mining
 2026-11-10,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,vultr,2.59,1,General Cloud & Hosting,https://api.vultr.com/v2/plans-metal,price_mining
@@ -1749,7 +1749,7 @@
 2026-11-11,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,hotaisle,3.19,2,GPU Cloud,https://hotaisle.xyz/pricing,price_mining
 2026-11-11,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,microsoft-azure,6,1,Hyperscaler,https://prices.azure.com/api/retail/prices?$filter=armSkuName%20eq%20%27Standard_ND96isr_MI300X_v5%27%20and%20armRegionName%20eq%20%27eastus2%27,price_mining
 2026-11-11,2026-11-19,amd-mi300x,MI300X,SPOT,0,microsoft-azure,1.1544,2,Hyperscaler,https://prices.azure.com/api/retail/prices?$filter=armSkuName%20eq%20%27Standard_ND96isr_MI300X_v5%27%20and%20armRegionName%20eq%20%27eastus2%27,price_mining
-2026-11-11,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,openrelay,1.99,1,GPU Cloud,https://api.openrelay.inc/v1/public/pricing,price_mining
+2026-11-11,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,openrelay,1.99,1,Unclassified,https://api.openrelay.inc/v1/public/pricing,price_mining
 2026-11-11,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,oracle-cloud,6,1,Hyperscaler,https://apexapps.oracle.com/pls/apex/cetools/api/v1/products/?partNumber=B109485&currencyCode=USD,price_mining
 2026-11-11,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,runcrate,4.85,1,GPU Cloud,https://www.runcrate.ai/api/gpu-pricing,price_mining
 2026-11-11,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,runpod,2.39,1,GPU Cloud,https://api.runpod.io/graphql,price_mining
@@ -1765,7 +1765,7 @@
 2026-11-11,2026-11-19,amd-mi325x,MI325X,RESERVATION,6,cyfuture,1.86,4,GPU Cloud,https://cyfuture.ai/pricing,price_mining
 2026-11-11,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,digitalocean,3.8,2,General Cloud & Hosting,https://docs.digitalocean.com/products/droplets/details/pricing/,price_mining
 2026-11-11,2026-11-19,amd-mi325x,MI325X,RESERVATION,12,digitalocean,2.88,1,General Cloud & Hosting,https://www.digitalocean.com/pricing/gpu-droplets,price_mining
-2026-11-11,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,openrelay,2.25,1,GPU Cloud,https://api.openrelay.inc/v1/public/pricing,price_mining
+2026-11-11,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,openrelay,2.25,1,Unclassified,https://api.openrelay.inc/v1/public/pricing,price_mining
 2026-11-11,2026-11-19,amd-mi325x,MI325X,RESERVATION,-1,tensorwave,2.25,1,GPU Cloud,https://tensorwave.com/products/accelerators/amd-mi325x,price_mining
 2026-11-11,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,vultr,4.615,1,General Cloud & Hosting,https://api.vultr.com/v2/plans-metal,price_mining
 2026-11-11,2026-11-19,amd-mi325x,MI325X,SPOT,0,vultr,2,1,General Cloud & Hosting,https://api.vultr.com/v2/plans-metal,price_mining
@@ -1777,7 +1777,7 @@
 2026-11-11,2026-11-19,amd-mi355x,MI355X,SPOT,0,digitalocean,4.5,2,General Cloud & Hosting,https://docs.digitalocean.com/products/droplets/details/pricing/,price_mining
 2026-11-11,2026-11-19,amd-mi355x,MI355X,RESERVATION,12,impossible-cloud,7.21,1,General Cloud & Hosting,https://console.impossiblecloud.com/api/gpu/offers,price_mining
 2026-11-11,2026-11-19,amd-mi355x,MI355X,RESERVATION,24,impossible-cloud,6.13,1,General Cloud & Hosting,https://console.impossiblecloud.com/api/gpu/offers,price_mining
-2026-11-11,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,openrelay,6.3,1,GPU Cloud,https://api.openrelay.inc/v1/public/pricing,price_mining
+2026-11-11,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,openrelay,6.3,1,Unclassified,https://api.openrelay.inc/v1/public/pricing,price_mining
 2026-11-11,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,oracle-cloud,8.6,1,Hyperscaler,https://apexapps.oracle.com/pls/apex/cetools/api/v1/products/?partNumber=B111758&currencyCode=USD,price_mining
 2026-11-11,2026-11-19,amd-mi355x,MI355X,RESERVATION,-1,tensorwave,2.95,1,GPU Cloud,https://tensorwave.com/products/accelerators/amd-mi355x,price_mining
 2026-11-11,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,vultr,2.59,1,General Cloud & Hosting,https://api.vultr.com/v2/plans-metal,price_mining
@@ -1911,7 +1911,7 @@
 2026-11-12,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,hotaisle,3.19,2,GPU Cloud,https://hotaisle.xyz/pricing,price_mining
 2026-11-12,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,microsoft-azure,6,1,Hyperscaler,https://prices.azure.com/api/retail/prices?$filter=armSkuName%20eq%20%27Standard_ND96isr_MI300X_v5%27%20and%20armRegionName%20eq%20%27eastus2%27,price_mining
 2026-11-12,2026-11-19,amd-mi300x,MI300X,SPOT,0,microsoft-azure,1.1544,2,Hyperscaler,https://prices.azure.com/api/retail/prices?$filter=armSkuName%20eq%20%27Standard_ND96isr_MI300X_v5%27%20and%20armRegionName%20eq%20%27eastus2%27,price_mining
-2026-11-12,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,openrelay,1.99,1,GPU Cloud,https://api.openrelay.inc/v1/public/pricing,price_mining
+2026-11-12,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,openrelay,1.99,1,Unclassified,https://api.openrelay.inc/v1/public/pricing,price_mining
 2026-11-12,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,oracle-cloud,6,1,Hyperscaler,https://apexapps.oracle.com/pls/apex/cetools/api/v1/products/?partNumber=B109485&currencyCode=USD,price_mining
 2026-11-12,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,runcrate,4.85,1,GPU Cloud,https://www.runcrate.ai/api/gpu-pricing,price_mining
 2026-11-12,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,runpod,2.39,1,GPU Cloud,https://api.runpod.io/graphql,price_mining
@@ -1927,7 +1927,7 @@
 2026-11-12,2026-11-19,amd-mi325x,MI325X,RESERVATION,6,cyfuture,1.86,4,GPU Cloud,https://cyfuture.ai/pricing,price_mining
 2026-11-12,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,digitalocean,3.8,2,General Cloud & Hosting,https://docs.digitalocean.com/products/droplets/details/pricing/,price_mining
 2026-11-12,2026-11-19,amd-mi325x,MI325X,RESERVATION,12,digitalocean,2.88,1,General Cloud & Hosting,https://www.digitalocean.com/pricing/gpu-droplets,price_mining
-2026-11-12,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,openrelay,2.25,1,GPU Cloud,https://api.openrelay.inc/v1/public/pricing,price_mining
+2026-11-12,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,openrelay,2.25,1,Unclassified,https://api.openrelay.inc/v1/public/pricing,price_mining
 2026-11-12,2026-11-19,amd-mi325x,MI325X,RESERVATION,-1,tensorwave,2.25,1,GPU Cloud,https://tensorwave.com/products/accelerators/amd-mi325x,price_mining
 2026-11-12,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,vultr,4.615,1,General Cloud & Hosting,https://api.vultr.com/v2/plans-metal,price_mining
 2026-11-12,2026-11-19,amd-mi325x,MI325X,SPOT,0,vultr,2,1,General Cloud & Hosting,https://api.vultr.com/v2/plans-metal,price_mining
@@ -1939,7 +1939,7 @@
 2026-11-12,2026-11-19,amd-mi355x,MI355X,SPOT,0,digitalocean,4.5,2,General Cloud & Hosting,https://docs.digitalocean.com/products/droplets/details/pricing/,price_mining
 2026-11-12,2026-11-19,amd-mi355x,MI355X,RESERVATION,12,impossible-cloud,7.21,1,General Cloud & Hosting,https://console.impossiblecloud.com/api/gpu/offers,price_mining
 2026-11-12,2026-11-19,amd-mi355x,MI355X,RESERVATION,24,impossible-cloud,6.13,1,General Cloud & Hosting,https://console.impossiblecloud.com/api/gpu/offers,price_mining
-2026-11-12,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,openrelay,6.3,1,GPU Cloud,https://api.openrelay.inc/v1/public/pricing,price_mining
+2026-11-12,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,openrelay,6.3,1,Unclassified,https://api.openrelay.inc/v1/public/pricing,price_mining
 2026-11-12,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,oracle-cloud,8.6,1,Hyperscaler,https://apexapps.oracle.com/pls/apex/cetools/api/v1/products/?partNumber=B111758&currencyCode=USD,price_mining
 2026-11-12,2026-11-19,amd-mi355x,MI355X,RESERVATION,-1,tensorwave,2.95,1,GPU Cloud,https://tensorwave.com/products/accelerators/amd-mi355x,price_mining
 2026-11-12,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,vultr,2.59,1,General Cloud & Hosting,https://api.vultr.com/v2/plans-metal,price_mining
@@ -2073,7 +2073,7 @@
 2026-11-13,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,hotaisle,3.19,2,GPU Cloud,https://hotaisle.xyz/pricing,price_mining
 2026-11-13,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,microsoft-azure,6,1,Hyperscaler,https://prices.azure.com/api/retail/prices?$filter=armSkuName%20eq%20%27Standard_ND96isr_MI300X_v5%27%20and%20armRegionName%20eq%20%27eastus2%27,price_mining
 2026-11-13,2026-11-19,amd-mi300x,MI300X,SPOT,0,microsoft-azure,1.1544,2,Hyperscaler,https://prices.azure.com/api/retail/prices?$filter=armSkuName%20eq%20%27Standard_ND96isr_MI300X_v5%27%20and%20armRegionName%20eq%20%27eastus2%27,price_mining
-2026-11-13,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,openrelay,1.99,1,GPU Cloud,https://api.openrelay.inc/v1/public/pricing,price_mining
+2026-11-13,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,openrelay,1.99,1,Unclassified,https://api.openrelay.inc/v1/public/pricing,price_mining
 2026-11-13,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,oracle-cloud,6,1,Hyperscaler,https://apexapps.oracle.com/pls/apex/cetools/api/v1/products/?partNumber=B109485&currencyCode=USD,price_mining
 2026-11-13,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,runcrate,4.85,1,GPU Cloud,https://www.runcrate.ai/api/gpu-pricing,price_mining
 2026-11-13,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,runpod,2.39,1,GPU Cloud,https://api.runpod.io/graphql,price_mining
@@ -2089,7 +2089,7 @@
 2026-11-13,2026-11-19,amd-mi325x,MI325X,RESERVATION,6,cyfuture,1.86,4,GPU Cloud,https://cyfuture.ai/pricing,price_mining
 2026-11-13,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,digitalocean,3.8,2,General Cloud & Hosting,https://docs.digitalocean.com/products/droplets/details/pricing/,price_mining
 2026-11-13,2026-11-19,amd-mi325x,MI325X,RESERVATION,12,digitalocean,2.88,1,General Cloud & Hosting,https://www.digitalocean.com/pricing/gpu-droplets,price_mining
-2026-11-13,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,openrelay,2.25,1,GPU Cloud,https://api.openrelay.inc/v1/public/pricing,price_mining
+2026-11-13,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,openrelay,2.25,1,Unclassified,https://api.openrelay.inc/v1/public/pricing,price_mining
 2026-11-13,2026-11-19,amd-mi325x,MI325X,RESERVATION,-1,tensorwave,2.25,1,GPU Cloud,https://tensorwave.com/products/accelerators/amd-mi325x,price_mining
 2026-11-13,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,vultr,4.615,1,General Cloud & Hosting,https://api.vultr.com/v2/plans-metal,price_mining
 2026-11-13,2026-11-19,amd-mi325x,MI325X,SPOT,0,vultr,2,1,General Cloud & Hosting,https://api.vultr.com/v2/plans-metal,price_mining
@@ -2101,7 +2101,7 @@
 2026-11-13,2026-11-19,amd-mi355x,MI355X,SPOT,0,digitalocean,4.5,2,General Cloud & Hosting,https://docs.digitalocean.com/products/droplets/details/pricing/,price_mining
 2026-11-13,2026-11-19,amd-mi355x,MI355X,RESERVATION,12,impossible-cloud,7.21,1,General Cloud & Hosting,https://console.impossiblecloud.com/api/gpu/offers,price_mining
 2026-11-13,2026-11-19,amd-mi355x,MI355X,RESERVATION,24,impossible-cloud,6.13,1,General Cloud & Hosting,https://console.impossiblecloud.com/api/gpu/offers,price_mining
-2026-11-13,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,openrelay,6.3,1,GPU Cloud,https://api.openrelay.inc/v1/public/pricing,price_mining
+2026-11-13,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,openrelay,6.3,1,Unclassified,https://api.openrelay.inc/v1/public/pricing,price_mining
 2026-11-13,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,oracle-cloud,8.6,1,Hyperscaler,https://apexapps.oracle.com/pls/apex/cetools/api/v1/products/?partNumber=B111758&currencyCode=USD,price_mining
 2026-11-13,2026-11-19,amd-mi355x,MI355X,RESERVATION,-1,tensorwave,2.95,1,GPU Cloud,https://tensorwave.com/products/accelerators/amd-mi355x,price_mining
 2026-11-13,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,vultr,2.59,1,General Cloud & Hosting,https://api.vultr.com/v2/plans-metal,price_mining
@@ -2235,7 +2235,7 @@
 2026-11-14,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,hotaisle,3.19,2,GPU Cloud,https://hotaisle.xyz/pricing,price_mining
 2026-11-14,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,microsoft-azure,6,1,Hyperscaler,https://prices.azure.com/api/retail/prices?$filter=armSkuName%20eq%20%27Standard_ND96isr_MI300X_v5%27%20and%20armRegionName%20eq%20%27eastus2%27,price_mining
 2026-11-14,2026-11-19,amd-mi300x,MI300X,SPOT,0,microsoft-azure,1.1544,2,Hyperscaler,https://prices.azure.com/api/retail/prices?$filter=armSkuName%20eq%20%27Standard_ND96isr_MI300X_v5%27%20and%20armRegionName%20eq%20%27eastus2%27,price_mining
-2026-11-14,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,openrelay,1.99,1,GPU Cloud,https://api.openrelay.inc/v1/public/pricing,price_mining
+2026-11-14,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,openrelay,1.99,1,Unclassified,https://api.openrelay.inc/v1/public/pricing,price_mining
 2026-11-14,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,oracle-cloud,6,1,Hyperscaler,https://apexapps.oracle.com/pls/apex/cetools/api/v1/products/?partNumber=B109485&currencyCode=USD,price_mining
 2026-11-14,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,runcrate,4.85,1,GPU Cloud,https://www.runcrate.ai/api/gpu-pricing,price_mining
 2026-11-14,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,runpod,2.39,1,GPU Cloud,https://api.runpod.io/graphql,price_mining
@@ -2251,7 +2251,7 @@
 2026-11-14,2026-11-19,amd-mi325x,MI325X,RESERVATION,6,cyfuture,1.86,4,GPU Cloud,https://cyfuture.ai/pricing,price_mining
 2026-11-14,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,digitalocean,3.8,2,General Cloud & Hosting,https://docs.digitalocean.com/products/droplets/details/pricing/,price_mining
 2026-11-14,2026-11-19,amd-mi325x,MI325X,RESERVATION,12,digitalocean,2.88,1,General Cloud & Hosting,https://www.digitalocean.com/pricing/gpu-droplets,price_mining
-2026-11-14,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,openrelay,2.25,1,GPU Cloud,https://api.openrelay.inc/v1/public/pricing,price_mining
+2026-11-14,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,openrelay,2.25,1,Unclassified,https://api.openrelay.inc/v1/public/pricing,price_mining
 2026-11-14,2026-11-19,amd-mi325x,MI325X,RESERVATION,-1,tensorwave,2.25,1,GPU Cloud,https://tensorwave.com/products/accelerators/amd-mi325x,price_mining
 2026-11-14,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,vultr,4.615,1,General Cloud & Hosting,https://api.vultr.com/v2/plans-metal,price_mining
 2026-11-14,2026-11-19,amd-mi325x,MI325X,SPOT,0,vultr,2,1,General Cloud & Hosting,https://api.vultr.com/v2/plans-metal,price_mining
@@ -2263,7 +2263,7 @@
 2026-11-14,2026-11-19,amd-mi355x,MI355X,SPOT,0,digitalocean,4.5,2,General Cloud & Hosting,https://docs.digitalocean.com/products/droplets/details/pricing/,price_mining
 2026-11-14,2026-11-19,amd-mi355x,MI355X,RESERVATION,12,impossible-cloud,7.21,1,General Cloud & Hosting,https://console.impossiblecloud.com/api/gpu/offers,price_mining
 2026-11-14,2026-11-19,amd-mi355x,MI355X,RESERVATION,24,impossible-cloud,6.13,1,General Cloud & Hosting,https://console.impossiblecloud.com/api/gpu/offers,price_mining
-2026-11-14,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,openrelay,6.3,1,GPU Cloud,https://api.openrelay.inc/v1/public/pricing,price_mining
+2026-11-14,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,openrelay,6.3,1,Unclassified,https://api.openrelay.inc/v1/public/pricing,price_mining
 2026-11-14,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,oracle-cloud,8.6,1,Hyperscaler,https://apexapps.oracle.com/pls/apex/cetools/api/v1/products/?partNumber=B111758&currencyCode=USD,price_mining
 2026-11-14,2026-11-19,amd-mi355x,MI355X,RESERVATION,-1,tensorwave,2.95,1,GPU Cloud,https://tensorwave.com/products/accelerators/amd-mi355x,price_mining
 2026-11-14,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,vultr,2.59,1,General Cloud & Hosting,https://api.vultr.com/v2/plans-metal,price_mining
@@ -2397,7 +2397,7 @@
 2026-11-15,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,hotaisle,3.19,2,GPU Cloud,https://hotaisle.xyz/pricing,price_mining
 2026-11-15,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,microsoft-azure,6,1,Hyperscaler,https://prices.azure.com/api/retail/prices?$filter=armSkuName%20eq%20%27Standard_ND96isr_MI300X_v5%27%20and%20armRegionName%20eq%20%27eastus2%27,price_mining
 2026-11-15,2026-11-19,amd-mi300x,MI300X,SPOT,0,microsoft-azure,1.1544,2,Hyperscaler,https://prices.azure.com/api/retail/prices?$filter=armSkuName%20eq%20%27Standard_ND96isr_MI300X_v5%27%20and%20armRegionName%20eq%20%27eastus2%27,price_mining
-2026-11-15,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,openrelay,1.99,1,GPU Cloud,https://api.openrelay.inc/v1/public/pricing,price_mining
+2026-11-15,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,openrelay,1.99,1,Unclassified,https://api.openrelay.inc/v1/public/pricing,price_mining
 2026-11-15,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,oracle-cloud,6,1,Hyperscaler,https://apexapps.oracle.com/pls/apex/cetools/api/v1/products/?partNumber=B109485&currencyCode=USD,price_mining
 2026-11-15,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,runcrate,4.85,1,GPU Cloud,https://www.runcrate.ai/api/gpu-pricing,price_mining
 2026-11-15,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,runpod,2.39,1,GPU Cloud,https://api.runpod.io/graphql,price_mining
@@ -2413,7 +2413,7 @@
 2026-11-15,2026-11-19,amd-mi325x,MI325X,RESERVATION,6,cyfuture,1.86,4,GPU Cloud,https://cyfuture.ai/pricing,price_mining
 2026-11-15,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,digitalocean,3.8,2,General Cloud & Hosting,https://docs.digitalocean.com/products/droplets/details/pricing/,price_mining
 2026-11-15,2026-11-19,amd-mi325x,MI325X,RESERVATION,12,digitalocean,2.88,1,General Cloud & Hosting,https://www.digitalocean.com/pricing/gpu-droplets,price_mining
-2026-11-15,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,openrelay,2.25,1,GPU Cloud,https://api.openrelay.inc/v1/public/pricing,price_mining
+2026-11-15,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,openrelay,2.25,1,Unclassified,https://api.openrelay.inc/v1/public/pricing,price_mining
 2026-11-15,2026-11-19,amd-mi325x,MI325X,RESERVATION,-1,tensorwave,2.25,1,GPU Cloud,https://tensorwave.com/products/accelerators/amd-mi325x,price_mining
 2026-11-15,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,vultr,4.615,1,General Cloud & Hosting,https://api.vultr.com/v2/plans-metal,price_mining
 2026-11-15,2026-11-19,amd-mi325x,MI325X,SPOT,0,vultr,2,1,General Cloud & Hosting,https://api.vultr.com/v2/plans-metal,price_mining
@@ -2425,7 +2425,7 @@
 2026-11-15,2026-11-19,amd-mi355x,MI355X,SPOT,0,digitalocean,4.5,2,General Cloud & Hosting,https://docs.digitalocean.com/products/droplets/details/pricing/,price_mining
 2026-11-15,2026-11-19,amd-mi355x,MI355X,RESERVATION,12,impossible-cloud,7.21,1,General Cloud & Hosting,https://console.impossiblecloud.com/api/gpu/offers,price_mining
 2026-11-15,2026-11-19,amd-mi355x,MI355X,RESERVATION,24,impossible-cloud,6.13,1,General Cloud & Hosting,https://console.impossiblecloud.com/api/gpu/offers,price_mining
-2026-11-15,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,openrelay,6.3,1,GPU Cloud,https://api.openrelay.inc/v1/public/pricing,price_mining
+2026-11-15,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,openrelay,6.3,1,Unclassified,https://api.openrelay.inc/v1/public/pricing,price_mining
 2026-11-15,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,oracle-cloud,8.6,1,Hyperscaler,https://apexapps.oracle.com/pls/apex/cetools/api/v1/products/?partNumber=B111758&currencyCode=USD,price_mining
 2026-11-15,2026-11-19,amd-mi355x,MI355X,RESERVATION,-1,tensorwave,2.95,1,GPU Cloud,https://tensorwave.com/products/accelerators/amd-mi355x,price_mining
 2026-11-15,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,vultr,2.59,1,General Cloud & Hosting,https://api.vultr.com/v2/plans-metal,price_mining
@@ -2559,7 +2559,7 @@
 2026-11-16,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,hotaisle,3.19,2,GPU Cloud,https://hotaisle.xyz/pricing,price_mining
 2026-11-16,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,microsoft-azure,6,1,Hyperscaler,https://prices.azure.com/api/retail/prices?$filter=armSkuName%20eq%20%27Standard_ND96isr_MI300X_v5%27%20and%20armRegionName%20eq%20%27eastus2%27,price_mining
 2026-11-16,2026-11-19,amd-mi300x,MI300X,SPOT,0,microsoft-azure,1.1544,2,Hyperscaler,https://prices.azure.com/api/retail/prices?$filter=armSkuName%20eq%20%27Standard_ND96isr_MI300X_v5%27%20and%20armRegionName%20eq%20%27eastus2%27,price_mining
-2026-11-16,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,openrelay,1.99,1,GPU Cloud,https://api.openrelay.inc/v1/public/pricing,price_mining
+2026-11-16,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,openrelay,1.99,1,Unclassified,https://api.openrelay.inc/v1/public/pricing,price_mining
 2026-11-16,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,oracle-cloud,6,1,Hyperscaler,https://apexapps.oracle.com/pls/apex/cetools/api/v1/products/?partNumber=B109485&currencyCode=USD,price_mining
 2026-11-16,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,runcrate,4.85,1,GPU Cloud,https://www.runcrate.ai/api/gpu-pricing,price_mining
 2026-11-16,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,runpod,2.39,1,GPU Cloud,https://api.runpod.io/graphql,price_mining
@@ -2575,7 +2575,7 @@
 2026-11-16,2026-11-19,amd-mi325x,MI325X,RESERVATION,6,cyfuture,1.86,4,GPU Cloud,https://cyfuture.ai/pricing,price_mining
 2026-11-16,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,digitalocean,3.8,2,General Cloud & Hosting,https://docs.digitalocean.com/products/droplets/details/pricing/,price_mining
 2026-11-16,2026-11-19,amd-mi325x,MI325X,RESERVATION,12,digitalocean,2.88,1,General Cloud & Hosting,https://www.digitalocean.com/pricing/gpu-droplets,price_mining
-2026-11-16,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,openrelay,2.25,1,GPU Cloud,https://api.openrelay.inc/v1/public/pricing,price_mining
+2026-11-16,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,openrelay,2.25,1,Unclassified,https://api.openrelay.inc/v1/public/pricing,price_mining
 2026-11-16,2026-11-19,amd-mi325x,MI325X,RESERVATION,-1,tensorwave,2.25,1,GPU Cloud,https://tensorwave.com/products/accelerators/amd-mi325x,price_mining
 2026-11-16,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,vultr,4.615,1,General Cloud & Hosting,https://api.vultr.com/v2/plans-metal,price_mining
 2026-11-16,2026-11-19,amd-mi325x,MI325X,SPOT,0,vultr,2,1,General Cloud & Hosting,https://api.vultr.com/v2/plans-metal,price_mining
@@ -2587,7 +2587,7 @@
 2026-11-16,2026-11-19,amd-mi355x,MI355X,SPOT,0,digitalocean,4.5,2,General Cloud & Hosting,https://docs.digitalocean.com/products/droplets/details/pricing/,price_mining
 2026-11-16,2026-11-19,amd-mi355x,MI355X,RESERVATION,12,impossible-cloud,7.21,1,General Cloud & Hosting,https://console.impossiblecloud.com/api/gpu/offers,price_mining
 2026-11-16,2026-11-19,amd-mi355x,MI355X,RESERVATION,24,impossible-cloud,6.13,1,General Cloud & Hosting,https://console.impossiblecloud.com/api/gpu/offers,price_mining
-2026-11-16,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,openrelay,6.3,1,GPU Cloud,https://api.openrelay.inc/v1/public/pricing,price_mining
+2026-11-16,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,openrelay,6.3,1,Unclassified,https://api.openrelay.inc/v1/public/pricing,price_mining
 2026-11-16,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,oracle-cloud,8.6,1,Hyperscaler,https://apexapps.oracle.com/pls/apex/cetools/api/v1/products/?partNumber=B111758&currencyCode=USD,price_mining
 2026-11-16,2026-11-19,amd-mi355x,MI355X,RESERVATION,-1,tensorwave,2.95,1,GPU Cloud,https://tensorwave.com/products/accelerators/amd-mi355x,price_mining
 2026-11-16,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,vultr,2.59,1,General Cloud & Hosting,https://api.vultr.com/v2/plans-metal,price_mining
@@ -2721,7 +2721,7 @@
 2026-11-17,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,hotaisle,3.19,2,GPU Cloud,https://hotaisle.xyz/pricing,price_mining
 2026-11-17,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,microsoft-azure,6,1,Hyperscaler,https://prices.azure.com/api/retail/prices?$filter=armSkuName%20eq%20%27Standard_ND96isr_MI300X_v5%27%20and%20armRegionName%20eq%20%27eastus2%27,price_mining
 2026-11-17,2026-11-19,amd-mi300x,MI300X,SPOT,0,microsoft-azure,1.1544,2,Hyperscaler,https://prices.azure.com/api/retail/prices?$filter=armSkuName%20eq%20%27Standard_ND96isr_MI300X_v5%27%20and%20armRegionName%20eq%20%27eastus2%27,price_mining
-2026-11-17,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,openrelay,1.99,1,GPU Cloud,https://api.openrelay.inc/v1/public/pricing,price_mining
+2026-11-17,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,openrelay,1.99,1,Unclassified,https://api.openrelay.inc/v1/public/pricing,price_mining
 2026-11-17,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,oracle-cloud,6,1,Hyperscaler,https://apexapps.oracle.com/pls/apex/cetools/api/v1/products/?partNumber=B109485&currencyCode=USD,price_mining
 2026-11-17,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,runcrate,4.85,1,GPU Cloud,https://www.runcrate.ai/api/gpu-pricing,price_mining
 2026-11-17,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,runpod,2.39,1,GPU Cloud,https://api.runpod.io/graphql,price_mining
@@ -2737,7 +2737,7 @@
 2026-11-17,2026-11-19,amd-mi325x,MI325X,RESERVATION,6,cyfuture,1.86,4,GPU Cloud,https://cyfuture.ai/pricing,price_mining
 2026-11-17,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,digitalocean,3.8,2,General Cloud & Hosting,https://docs.digitalocean.com/products/droplets/details/pricing/,price_mining
 2026-11-17,2026-11-19,amd-mi325x,MI325X,RESERVATION,12,digitalocean,2.88,1,General Cloud & Hosting,https://www.digitalocean.com/pricing/gpu-droplets,price_mining
-2026-11-17,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,openrelay,2.25,1,GPU Cloud,https://api.openrelay.inc/v1/public/pricing,price_mining
+2026-11-17,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,openrelay,2.25,1,Unclassified,https://api.openrelay.inc/v1/public/pricing,price_mining
 2026-11-17,2026-11-19,amd-mi325x,MI325X,RESERVATION,-1,tensorwave,2.25,1,GPU Cloud,https://tensorwave.com/products/accelerators/amd-mi325x,price_mining
 2026-11-17,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,vultr,4.615,1,General Cloud & Hosting,https://api.vultr.com/v2/plans-metal,price_mining
 2026-11-17,2026-11-19,amd-mi325x,MI325X,SPOT,0,vultr,2,1,General Cloud & Hosting,https://api.vultr.com/v2/plans-metal,price_mining
@@ -2749,7 +2749,7 @@
 2026-11-17,2026-11-19,amd-mi355x,MI355X,SPOT,0,digitalocean,4.5,2,General Cloud & Hosting,https://docs.digitalocean.com/products/droplets/details/pricing/,price_mining
 2026-11-17,2026-11-19,amd-mi355x,MI355X,RESERVATION,12,impossible-cloud,7.21,1,General Cloud & Hosting,https://console.impossiblecloud.com/api/gpu/offers,price_mining
 2026-11-17,2026-11-19,amd-mi355x,MI355X,RESERVATION,24,impossible-cloud,6.13,1,General Cloud & Hosting,https://console.impossiblecloud.com/api/gpu/offers,price_mining
-2026-11-17,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,openrelay,6.3,1,GPU Cloud,https://api.openrelay.inc/v1/public/pricing,price_mining
+2026-11-17,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,openrelay,6.3,1,Unclassified,https://api.openrelay.inc/v1/public/pricing,price_mining
 2026-11-17,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,oracle-cloud,8.6,1,Hyperscaler,https://apexapps.oracle.com/pls/apex/cetools/api/v1/products/?partNumber=B111758&currencyCode=USD,price_mining
 2026-11-17,2026-11-19,amd-mi355x,MI355X,RESERVATION,-1,tensorwave,2.95,1,GPU Cloud,https://tensorwave.com/products/accelerators/amd-mi355x,price_mining
 2026-11-17,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,vultr,2.59,1,General Cloud & Hosting,https://api.vultr.com/v2/plans-metal,price_mining
@@ -2883,7 +2883,7 @@
 2026-11-18,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,hotaisle,3.19,2,GPU Cloud,https://hotaisle.xyz/pricing,price_mining
 2026-11-18,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,microsoft-azure,6,1,Hyperscaler,https://prices.azure.com/api/retail/prices?$filter=armSkuName%20eq%20%27Standard_ND96isr_MI300X_v5%27%20and%20armRegionName%20eq%20%27eastus2%27,price_mining
 2026-11-18,2026-11-19,amd-mi300x,MI300X,SPOT,0,microsoft-azure,1.1544,2,Hyperscaler,https://prices.azure.com/api/retail/prices?$filter=armSkuName%20eq%20%27Standard_ND96isr_MI300X_v5%27%20and%20armRegionName%20eq%20%27eastus2%27,price_mining
-2026-11-18,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,openrelay,1.99,1,GPU Cloud,https://api.openrelay.inc/v1/public/pricing,price_mining
+2026-11-18,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,openrelay,1.99,1,Unclassified,https://api.openrelay.inc/v1/public/pricing,price_mining
 2026-11-18,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,oracle-cloud,6,1,Hyperscaler,https://apexapps.oracle.com/pls/apex/cetools/api/v1/products/?partNumber=B109485&currencyCode=USD,price_mining
 2026-11-18,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,runcrate,4.85,1,GPU Cloud,https://www.runcrate.ai/api/gpu-pricing,price_mining
 2026-11-18,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,runpod,2.39,1,GPU Cloud,https://api.runpod.io/graphql,price_mining
@@ -2899,7 +2899,7 @@
 2026-11-18,2026-11-19,amd-mi325x,MI325X,RESERVATION,6,cyfuture,1.86,4,GPU Cloud,https://cyfuture.ai/pricing,price_mining
 2026-11-18,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,digitalocean,3.8,2,General Cloud & Hosting,https://docs.digitalocean.com/products/droplets/details/pricing/,price_mining
 2026-11-18,2026-11-19,amd-mi325x,MI325X,RESERVATION,12,digitalocean,2.88,1,General Cloud & Hosting,https://www.digitalocean.com/pricing/gpu-droplets,price_mining
-2026-11-18,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,openrelay,2.25,1,GPU Cloud,https://api.openrelay.inc/v1/public/pricing,price_mining
+2026-11-18,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,openrelay,2.25,1,Unclassified,https://api.openrelay.inc/v1/public/pricing,price_mining
 2026-11-18,2026-11-19,amd-mi325x,MI325X,RESERVATION,-1,tensorwave,2.25,1,GPU Cloud,https://tensorwave.com/products/accelerators/amd-mi325x,price_mining
 2026-11-18,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,vultr,4.615,1,General Cloud & Hosting,https://api.vultr.com/v2/plans-metal,price_mining
 2026-11-18,2026-11-19,amd-mi325x,MI325X,SPOT,0,vultr,2,1,General Cloud & Hosting,https://api.vultr.com/v2/plans-metal,price_mining
@@ -2911,7 +2911,7 @@
 2026-11-18,2026-11-19,amd-mi355x,MI355X,SPOT,0,digitalocean,4.5,2,General Cloud & Hosting,https://docs.digitalocean.com/products/droplets/details/pricing/,price_mining
 2026-11-18,2026-11-19,amd-mi355x,MI355X,RESERVATION,12,impossible-cloud,7.21,1,General Cloud & Hosting,https://console.impossiblecloud.com/api/gpu/offers,price_mining
 2026-11-18,2026-11-19,amd-mi355x,MI355X,RESERVATION,24,impossible-cloud,6.13,1,General Cloud & Hosting,https://console.impossiblecloud.com/api/gpu/offers,price_mining
-2026-11-18,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,openrelay,6.3,1,GPU Cloud,https://api.openrelay.inc/v1/public/pricing,price_mining
+2026-11-18,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,openrelay,6.3,1,Unclassified,https://api.openrelay.inc/v1/public/pricing,price_mining
 2026-11-18,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,oracle-cloud,8.6,1,Hyperscaler,https://apexapps.oracle.com/pls/apex/cetools/api/v1/products/?partNumber=B111758&currencyCode=USD,price_mining
 2026-11-18,2026-11-19,amd-mi355x,MI355X,RESERVATION,-1,tensorwave,2.95,1,GPU Cloud,https://tensorwave.com/products/accelerators/amd-mi355x,price_mining
 2026-11-18,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,vultr,2.59,1,General Cloud & Hosting,https://api.vultr.com/v2/plans-metal,price_mining
@@ -3045,7 +3045,7 @@
 2026-11-19,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,hotaisle,3.19,2,GPU Cloud,https://hotaisle.xyz/pricing,price_mining
 2026-11-19,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,microsoft-azure,6,1,Hyperscaler,https://prices.azure.com/api/retail/prices?$filter=armSkuName%20eq%20%27Standard_ND96isr_MI300X_v5%27%20and%20armRegionName%20eq%20%27eastus2%27,price_mining
 2026-11-19,2026-11-19,amd-mi300x,MI300X,SPOT,0,microsoft-azure,1.1544,2,Hyperscaler,https://prices.azure.com/api/retail/prices?$filter=armSkuName%20eq%20%27Standard_ND96isr_MI300X_v5%27%20and%20armRegionName%20eq%20%27eastus2%27,price_mining
-2026-11-19,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,openrelay,1.99,1,GPU Cloud,https://api.openrelay.inc/v1/public/pricing,price_mining
+2026-11-19,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,openrelay,1.99,1,Unclassified,https://api.openrelay.inc/v1/public/pricing,price_mining
 2026-11-19,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,oracle-cloud,6,1,Hyperscaler,https://apexapps.oracle.com/pls/apex/cetools/api/v1/products/?partNumber=B109485&currencyCode=USD,price_mining
 2026-11-19,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,runcrate,4.85,1,GPU Cloud,https://www.runcrate.ai/api/gpu-pricing,price_mining
 2026-11-19,2026-11-19,amd-mi300x,MI300X,ON_DEMAND,0,runpod,2.39,1,GPU Cloud,https://api.runpod.io/graphql,price_mining
@@ -3061,7 +3061,7 @@
 2026-11-19,2026-11-19,amd-mi325x,MI325X,RESERVATION,6,cyfuture,1.86,4,GPU Cloud,https://cyfuture.ai/pricing,price_mining
 2026-11-19,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,digitalocean,3.8,2,General Cloud & Hosting,https://docs.digitalocean.com/products/droplets/details/pricing/,price_mining
 2026-11-19,2026-11-19,amd-mi325x,MI325X,RESERVATION,12,digitalocean,2.88,1,General Cloud & Hosting,https://www.digitalocean.com/pricing/gpu-droplets,price_mining
-2026-11-19,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,openrelay,2.25,1,GPU Cloud,https://api.openrelay.inc/v1/public/pricing,price_mining
+2026-11-19,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,openrelay,2.25,1,Unclassified,https://api.openrelay.inc/v1/public/pricing,price_mining
 2026-11-19,2026-11-19,amd-mi325x,MI325X,RESERVATION,-1,tensorwave,2.25,1,GPU Cloud,https://tensorwave.com/products/accelerators/amd-mi325x,price_mining
 2026-11-19,2026-11-19,amd-mi325x,MI325X,ON_DEMAND,0,vultr,4.615,1,General Cloud & Hosting,https://api.vultr.com/v2/plans-metal,price_mining
 2026-11-19,2026-11-19,amd-mi325x,MI325X,SPOT,0,vultr,2,1,General Cloud & Hosting,https://api.vultr.com/v2/plans-metal,price_mining
@@ -3073,7 +3073,7 @@
 2026-11-19,2026-11-19,amd-mi355x,MI355X,SPOT,0,digitalocean,4.5,2,General Cloud & Hosting,https://docs.digitalocean.com/products/droplets/details/pricing/,price_mining
 2026-11-19,2026-11-19,amd-mi355x,MI355X,RESERVATION,12,impossible-cloud,7.21,1,General Cloud & Hosting,https://console.impossiblecloud.com/api/gpu/offers,price_mining
 2026-11-19,2026-11-19,amd-mi355x,MI355X,RESERVATION,24,impossible-cloud,6.13,1,General Cloud & Hosting,https://console.impossiblecloud.com/api/gpu/offers,price_mining
-2026-11-19,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,openrelay,6.3,1,GPU Cloud,https://api.openrelay.inc/v1/public/pricing,price_mining
+2026-11-19,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,openrelay,6.3,1,Unclassified,https://api.openrelay.inc/v1/public/pricing,price_mining
 2026-11-19,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,oracle-cloud,8.6,1,Hyperscaler,https://apexapps.oracle.com/pls/apex/cetools/api/v1/products/?partNumber=B111758&currencyCode=USD,price_mining
 2026-11-19,2026-11-19,amd-mi355x,MI355X,RESERVATION,-1,tensorwave,2.95,1,GPU Cloud,https://tensorwave.com/products/accelerators/amd-mi355x,price_mining
 2026-11-19,2026-11-19,amd-mi355x,MI355X,ON_DEMAND,0,vultr,2.59,1,General Cloud & Hosting,https://api.vultr.com/v2/plans-metal,price_mining

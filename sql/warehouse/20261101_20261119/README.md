@@ -7,6 +7,9 @@ Run in this order:
 3. `14_insert_compute_insight_gpu_provider_series_daily.sql`
 4. `15_insert_compute_insight_gpu_price_series_daily.sql`
 
+Only `coregpu` and `gpubank` are absent from the supplied provider dimension;
+SQL 12 contains only those two IDs.
+
 Coverage:
 
 - Existing non-AMD raw data from November 1–8 is retained in the replacement
@@ -24,4 +27,4 @@ Row counts:
 
 - Detail: 3,767
 - Provider series SQL: 3,039
-- Price series: 2,240
+- Price series: 2,297
